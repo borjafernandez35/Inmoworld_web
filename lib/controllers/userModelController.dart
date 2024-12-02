@@ -1,106 +1,99 @@
 import 'package:get/get.dart';
 import 'package:inmoworld_web/models/userModel.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:inmoworld_web/services/user.dart';
 
 class UserModelController extends GetxController {
-  // Datos del usuario actual
-  final Rx<UserModel> user = UserModel(
-    name: 'Usuario desconocido',
-    email: 'No especificado',
-    password: '',
-   // comment: '',
-  ).obs;
+  final UserService userService=UserService(); // Instancia del servicio
+  final Rx<UserModel?> user =
+      Rx<UserModel?>(null); // Estado reactivo del usuario
+  final RxString statusMessage = ''.obs; // Mensajes para la UI
 
-  final GetStorage _storage = GetStorage(); // Almacenamiento local
-  String? userId; // ID del usuario logueado
+  
 
   @override
   void onInit() {
     super.onInit();
-    _loadUserFromStorage(); // Cargar datos al inicializar
   }
 
-  // Cargar usuario desde el almacenamiento
-  void _loadUserFromStorage() {
-    userId = _storage.read<String>('userId');
-    final storedUser = _storage.read<Map<String, dynamic>>('user');
-    if (storedUser != null) {
-      user.value = UserModel.fromJson(storedUser);
+// Cargar datos del usuario desde el backend
+  Future<void> fetchUser() async {
+    try {
+      statusMessage.value = 'Cargando datos del usuario...';
+      final fetchedUser = await userService.getUser(); // Llamada al backend
+      user.value = fetchedUser;
+      statusMessage.value = 'Datos del usuario cargados correctamente.';
+    } catch (e) {
+      statusMessage.value = 'Error al cargar datos del usuario.';
+      print('Error en fetchUser: $e');
     }
-    print(userId != null
-        ? "Usuario cargado: ${user.value.name} con ID: $userId"
-        : "No se encontró un usuario guardado.");
   }
 
-  // Validar credenciales del usuario (simulado)
-  bool validateCredentials(String email, String password) {
-    if (user.value.email == email && user.value.password == password) {
-      print("Credenciales válidas para: ${user.value.name}");
-      return true;
-    }
-    print("Credenciales inválidas.");
-    return false;
-  }
-
-  // Guardar usuario e ID en el almacenamiento
-  void saveUser(String id, UserModel userModel) {
-    userId = id;
-    user.value = userModel;
-    _storage.write('userId', id);
-    _storage.write('user', userModel.toJson());
-    print("Usuario guardado: ${userModel.name} con ID: $id");
-  }
-
-  // Actualizar información del usuario actual
-  void updateUser({
+  // Actualizar datos del usuario en el backend
+  Future<void> updateUser({
     String? name,
     String? email,
     String? password,
-    //String? comment,
     bool? isAdmin,
-  }) {
-    user.update((currentUser) {
-      if (currentUser != null) {
-        currentUser.setUser(
-          name ?? currentUser.name,
-          email ?? currentUser.email,
-          password ?? currentUser.password,
-         // comment ?? currentUser.comment,
-          isAdmin ?? currentUser.isAdmin,
-          id: userId,
-        );
-        _storage.write('user', currentUser.toJson()); // Guardar cambios
-        print("Usuario actualizado: ${currentUser.name}");
-      }
-    });
-  }
-
-  // Eliminar usuario actual
-  void clearUser() {
-    userId = null;
-    user.value = UserModel(
-      name: 'Usuario desconocido',
-      email: 'No especificado',
-      password: '',
-      //comment: '',
-    );
-    _storage.remove('userId');
-    _storage.remove('user');
-    print("Usuario eliminado del almacenamiento.");
-  }
-
-  // Manejar inicio de sesión
-  bool logIn(String email, String password) {
-    if (validateCredentials(email, password)) {
-      print("Inicio de sesión exitoso para: ${user.value.name}");
-      return true;
+  }) async {
+    if (user.value == null) {
+      statusMessage.value = 'No hay usuario cargado para actualizar.';
+      return;
     }
-    print("Inicio de sesión fallido.");
-    return false;
+
+    try {
+      // Actualizar los datos en el modelo local
+      user.update((currentUser) {
+        if (currentUser != null) {
+          currentUser.setUser(
+            name ?? currentUser.name,
+            email ?? currentUser.email,
+            password ?? currentUser.password,
+            isAdmin ?? currentUser.isAdmin,
+            id: currentUser.id,
+          );
+        }
+      });
+
+      // Sincronizar cambios con el backend
+      if (user.value != null) {
+        statusMessage.value = 'Actualizando datos en el servidor...';
+        final statusCode = await userService.updateUser(user.value!);
+        if (statusCode == 200) {
+          statusMessage.value = 'Usuario actualizado correctamente.';
+        } else {
+          statusMessage.value = 'Error al actualizar usuario en el servidor.';
+        }
+      }
+    } catch (e) {
+      statusMessage.value = 'Error al actualizar usuario.';
+      print('Error en updateUser: $e');
+    }
   }
 
-  // Verificar si hay un usuario logueado
-  bool isUserLoggedIn() {
-    return userId != null;
+  // Eliminar datos del usuario en el backend
+  Future<void> deleteUser() async {
+    if (user.value == null) {
+      statusMessage.value = 'No hay usuario cargado para eliminar.';
+      return;
+    }
+
+    try {
+      statusMessage.value = 'Eliminando usuario en el servidor...';
+      final statusCode = await userService.deleteUser();
+      if (statusCode == 201) {
+        user.value = null; // Limpiar el modelo local
+        statusMessage.value = 'Usuario eliminado correctamente.';
+      } else {
+        statusMessage.value = 'Error al eliminar usuario en el servidor.';
+      }
+    } catch (e) {
+      statusMessage.value = 'Error al eliminar usuario.';
+      print('Error en deleteUser: $e');
+    }
+  }
+
+  // Verificar si hay un usuario cargado
+  bool isUserLoaded() {
+    return user.value != null;
   }
 }

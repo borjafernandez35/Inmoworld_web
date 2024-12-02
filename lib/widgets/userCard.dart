@@ -21,8 +21,6 @@ class UserCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(user.email),
-           /*  const SizedBox(height: 8),
-            Text(user.comment ?? "Sin comentarios"), */
           ],
         ),
       ),

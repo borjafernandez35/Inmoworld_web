@@ -8,6 +8,8 @@ class UserService {
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
   final GetStorage box = GetStorage();
+  int totalPages = 1;
+  int totalUsers = 1;
 
   UserService() {
     // Configurar Interceptor para manejar tokens
@@ -31,31 +33,43 @@ class UserService {
     ));
   }
 
-  Future<List<UserModel>> getUsers() async {
-  print('Fetching all users...');
-  try {
-    // Realizar la solicitud GET al endpoint `/user`
-    final response = await dio.get('$baseUrl/user');
+  Future<List<UserModel>> getUsers(int page, int limit) async {
+    print('Fetching all users...');
+    //_configureInterceptors();
+    try {
+      // Realizar la solicitud GET al endpoint `/user`
+      final response = await dio.get('$baseUrl/user/$page/$limit');
 
-    // Validar la respuesta
-    final statusCode = _validateResponse(response);
-    if (statusCode == -1) {
-      throw Exception('Error en la respuesta del servidor');
+      // Validar la respuesta
+      final statusCode = _validateResponse(response);
+      if (statusCode == -1) {
+        throw Exception('Error en la respuesta del servidor');
+      }
+
+// Asegurarse de que response.data sea un Map y no una lista
+      final Map<String, dynamic> responseData = response.data;
+
+      // Extraer la lista de usuarios
+      final List<dynamic> usersData = responseData['users'];
+
+      print('aquiii etnras???:$usersData');
+       // Almacenar los valores adicionales como totalPages y totalUsers
+      totalPages = responseData['totalPages'] ?? 1; // Usar 0 si es null
+      totalUsers = responseData['totalUsers'] ?? 1; // Usar 0 si es null
+
+      // Convertir los datos recibidos a una lista de UserModel
+      final List<UserModel> users =
+          usersData.map((data) => UserModel.fromJson(data)).toList();
+      print('los usuarios son:$users');
+
+      print('Usuarios obtenidos: ${users.length}');
+      print('los total users son:$totalUsers,y las paginas son:$totalPages');
+      return users;
+    } catch (e) {
+      print('Error en getUsers: $e');
+      rethrow; // Relanzar el error para manejarlo en el llamador
     }
-
-    // Convertir los datos recibidos a una lista de UserModel
-    final List<dynamic> responseData = response.data; // JSON como lista
-    final List<UserModel> users = responseData
-        .map((data) => UserModel.fromJson(data))
-        .toList();
-
-    print('Usuarios obtenidos: ${users.length}');
-    return users;
-  } catch (e) {
-    print('Error en getUsers: $e');
-    rethrow; // Relanzar el error para manejarlo en el llamador
   }
-}
 
   // Guardar datos de sesión
   void saveToken(String token) => box.write('token', token);
@@ -107,6 +121,7 @@ class UserService {
 
   // Obtener Usuario Actual
   Future<UserModel> getUser() async {
+    print('GETTTTTUSEEERRRR!!!! me llamaaaaannnn!!!');
     try {
       final response = await dio.get('$baseUrl/user/${getId()}');
       return UserModel.fromJson(response.data['data']);

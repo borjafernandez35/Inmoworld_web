@@ -1,28 +1,41 @@
 import 'package:get/get.dart';
 import 'package:inmoworld_web/services/user.dart';
 import 'package:inmoworld_web/models/userModel.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class UserListController extends GetxController {
-  var isLoading = true.obs;
-  var userList = <UserModel>[].obs;
+  final PagingController<int, UserModel> pagingController =
+      PagingController(firstPageKey: 1);
   final UserService userService = UserService();
+  static const int pageSize = 10;
 
   @override
   void onInit() {
     super.onInit();
-    fetchUsers();
+    pagingController.addPageRequestListener((pageKey) {
+      fetchUsers(pageKey);
+    });
   }
 
-  Future<void> fetchUsers() async {
+  Future<void> fetchUsers(int pageKey) async {
     try {
-      isLoading(true);
-      var users = await userService.getUsers();
-      userList.assignAll(users);
-      
-    } catch (e) {
-      print("Error fetching users: $e");
-    } finally {
-      isLoading(false);
+      final users = await userService.getUsers(pageKey, pageSize);
+      final isLastPage = users.length < pageSize;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(users);
+      } else {
+        final nextPageKey = pageKey + 1;
+        pagingController.appendPage(users, nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
     }
+  }
+
+  @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
   }
 }
