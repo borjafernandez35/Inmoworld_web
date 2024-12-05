@@ -30,10 +30,11 @@ class RegisterScreen extends StatelessWidget {
               label: 'Contraseña',
               obscureText: true,
             ),
-            /* _buildTextField(
-              controller: registerController.commentController,
-              label: 'Comentario',
-            ), */
+             _buildTextField(
+              controller: registerController.password2Controller,
+              label: 'Contraseña',
+              obscureText: true,
+            ), 
             const SizedBox(height: 16),
 
             // Botón de registro o indicador de carga

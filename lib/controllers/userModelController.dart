@@ -10,10 +10,6 @@ class UserModelController extends GetxController {
 
   
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
 // Cargar datos del usuario desde el backend
   Future<void> fetchUser() async {

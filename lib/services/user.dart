@@ -26,7 +26,7 @@ class UserService {
         }
         handler.next(options);
       },
-      onError: (DioError e, handler) {
+      onError: (DioException e, handler) {
         print('Error en petición: ${e.response?.statusCode}');
         handler.next(e); // Pasar el error al flujo siguiente
       },

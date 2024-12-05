@@ -10,7 +10,7 @@ class RegisterController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController mailController = TextEditingController();
-  //final TextEditingController commentController = TextEditingController();
+  final TextEditingController password2Controller = TextEditingController();
 
   // Variables reactivas para la UI
   var isLoading = false.obs;
@@ -62,7 +62,31 @@ class RegisterController extends GetxController {
       _showError('Correo electrónico no válido.');
       return false;
     }
+
+ if (!_isPasswordStrong(passwordController.text)) {
+      _showError('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.');
+      return false;
+    }
+
+    if (passwordController.text != password2Controller.text) {
+      _showError('Las contraseñas no coinciden.');
+      return false;
+    }
+
     return true;
+  }
+
+   bool _isPasswordStrong(String password) {
+    // Longitud mínima
+    if (password.length < 8) return false;
+
+    // Debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial
+    final hasUppercase = password.contains(RegExp(r'[A-Z]'));
+    final hasLowercase = password.contains(RegExp(r'[a-z]'));
+    final hasNumber = password.contains(RegExp(r'\d'));
+    final hasSpecialChar = password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+    return hasUppercase && hasLowercase && hasNumber && hasSpecialChar;
   }
 
   // Construir modelo de usuario desde los campos
@@ -71,7 +95,6 @@ class RegisterController extends GetxController {
       name: nameController.text,
       password: passwordController.text,
       email: mailController.text,
-      //comment: commentController.text,
     );
   }
 
@@ -87,7 +110,7 @@ class RegisterController extends GetxController {
     nameController.dispose();
     passwordController.dispose();
     mailController.dispose();
-   // commentController.dispose();
+    password2Controller.dispose();
     super.onClose();
   }
 }

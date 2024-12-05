@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inmoworld_web/models/userModel.dart';
-import 'package:inmoworld_web/services/user.dart';
 
 class PropertyModel with ChangeNotifier {
   final String id;
