@@ -15,6 +15,7 @@ class RegisterController extends GetxController {
   // Variables reactivas para la UI
   var isLoading = false.obs;
   var errorMessage = ''.obs;
+   var isPasswordValid = false.obs;
 
   // Lógica de registro de usuario
   void signUp() async {
@@ -50,44 +51,34 @@ class RegisterController extends GetxController {
     }
   }
 
+   // Validar y actualizar las sugerencias de la contraseña
+
+
+
   // Validar entradas
-  bool _validateInputs() {
-    if (nameController.text.isEmpty ||
-        passwordController.text.isEmpty ||
-        mailController.text.isEmpty ) {
-      _showError('Por favor llena todos los campos.');
-      return false;
-    }
-    if (!GetUtils.isEmail(mailController.text)) {
-      _showError('Correo electrónico no válido.');
-      return false;
-    }
-
- if (!_isPasswordStrong(passwordController.text)) {
-      _showError('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.');
-      return false;
-    }
-
-    if (passwordController.text != password2Controller.text) {
-      _showError('Las contraseñas no coinciden.');
-      return false;
-    }
-
-    return true;
+ bool _validateInputs() {
+  if (nameController.text.isEmpty ||
+      passwordController.text.isEmpty ||
+      mailController.text.isEmpty ||
+      password2Controller.text.isEmpty) {
+    _showError('Por favor llena todos los campos.');
+    return false;
   }
 
-   bool _isPasswordStrong(String password) {
-    // Longitud mínima
-    if (password.length < 8) return false;
-
-    // Debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial
-    final hasUppercase = password.contains(RegExp(r'[A-Z]'));
-    final hasLowercase = password.contains(RegExp(r'[a-z]'));
-    final hasNumber = password.contains(RegExp(r'\d'));
-    final hasSpecialChar = password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-
-    return hasUppercase && hasLowercase && hasNumber && hasSpecialChar;
+  if (!GetUtils.isEmail(mailController.text)) {
+    _showError('Correo electrónico no válido.');
+    return false;
   }
+
+  if (passwordController.text != password2Controller.text) {
+    _showError('Las contraseñas no coinciden.');
+    return false;
+  }
+
+  return true;
+}
+
+ 
 
   // Construir modelo de usuario desde los campos
   UserModel _buildUserModel() {
