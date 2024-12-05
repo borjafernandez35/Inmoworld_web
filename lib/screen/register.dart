@@ -19,6 +19,13 @@ class RegisterScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Logo de la aplicación
+          Image.asset(
+            'assets/logo.png', // Ruta del logo
+            height: 200, // Altura fija del logo
+            width: 200, // Anchura fija del logo
+          ),
+          const SizedBox(height: 20),
             // Campos de texto reutilizables
             _buildTextField(
               controller: registerController.nameController,
@@ -36,7 +43,12 @@ class RegisterScreen extends StatelessWidget {
                 // Actualiza el validador en tiempo real
                 validatorKey.currentState?.validate();
               },
-            ),
+            ),            
+             _buildTextField(
+              controller: registerController.password2Controller,
+              label: 'Rewrite Password',
+              obscureText: true,
+            ), 
 
             const SizedBox(height: 8),
 
@@ -49,6 +61,7 @@ class RegisterScreen extends StatelessWidget {
               lowercaseCharCount: 1,
               numericCharCount: 1,
               specialCharCount: 1,
+              normalCharCount: 1,
               width: 300,
               height: 150,
               successColor: Colors.green, // Color cuando la regla es válida
@@ -62,13 +75,7 @@ class RegisterScreen extends StatelessWidget {
                 registerController.isPasswordValid.value = false; // Deshabilita el botón
               },
             ),
-            const SizedBox(height: 16),
-             _buildTextField(
-              controller: registerController.password2Controller,
-              label: 'Rewrite Password',
-              obscureText: true,
-            ), 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             // Botón de registro o indicador de carga
            Obx(() {
@@ -96,7 +103,7 @@ class RegisterScreen extends StatelessWidget {
               return const SizedBox();
             }),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             // Botón para volver al login
             ElevatedButton(
