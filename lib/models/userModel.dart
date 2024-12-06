@@ -5,25 +5,32 @@ class UserModel with ChangeNotifier {
   String _name;
   String _email;
   String _password;
-  //String _comment;
   bool _isAdmin;
 
-  // Constructor
-   UserModel({
+  // Nuevas propiedades
+  String? _lastMessage; // Último mensaje enviado o recibido
+  DateTime? _lastMessageTime; // Hora del último mensaje
+
+  // Constructor actualizado
+  UserModel({
     required String name,
     required String email,
     required String password,
-    //required String comment,
     bool isAdmin = false,
     String? id,
+    String? lastMessage,
+    DateTime? lastMessageTime,
   })  : _id = id,
         _name = name,
         _email = email,
         _password = password,
-       // _comment = comment,
-        _isAdmin = isAdmin;
+        _isAdmin = isAdmin,
+        _lastMessage = lastMessage,
+        _lastMessageTime = lastMessageTime;
 
-  // Getters
+  // Getters para las nuevas propiedades
+  String? get lastMessage => _lastMessage;
+  DateTime? get lastMessageTime => _lastMessageTime;
   String? get id => _id;
   String get name => _name;
   String get email => _email;
@@ -31,39 +38,44 @@ class UserModel with ChangeNotifier {
  // String get comment => _comment;
   bool get isAdmin => _isAdmin;
 
-  // Método para actualizar el usuario
-  void setUser(String name, String email, String password,bool isAdmin,
-      {String? id}) {
+  // Método para actualizar el usuario (extendido con nuevos campos)
+  void setUser(String name, String email, String password, bool isAdmin,
+      {String? id, String? lastMessage, DateTime? lastMessageTime}) {
     _id = id;
     _name = name;
     _email = email;
     _password = password;
-    //_comment = comment;
-    _isAdmin=isAdmin;
+    _isAdmin = isAdmin;
+    _lastMessage = lastMessage;
+    _lastMessageTime = lastMessageTime;
     notifyListeners();
   }
 
-  // Método fromJson para crear una instancia de UserModel desde un Map
+  // Método fromJson para incluir los nuevos campos
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['_id']?.toString(), // Convertir a String si es int
       name: json['name']?.toString() ?? 'Usuario desconocido',
       email: json['email']?.toString() ?? 'No especificado',
       password: json['password']?.toString() ?? 'Sin contraseña',
-      //comment: json['comment']?.toString() ?? 'Sin comentarios',
       isAdmin: json['isAdmin'] ?? false, // Manejar el campo isAdmin
+      lastMessage: json['lastMessage']?.toString(),
+      lastMessageTime: json['lastMessageTime'] != null
+          ? DateTime.parse(json['lastMessageTime'])
+          : null,
     );
   }
 
-  // Método toJson para convertir una instancia de UserModel en un Map
+  // Método toJson para convertir la instancia en un Map
   Map<String, dynamic> toJson() {
     return {
       '_id': _id,
       'name': _name,
       'email': _email,
       'password': _password,
-     // 'comment': _comment,
       'isAdmin': _isAdmin,
+      'lastMessage': _lastMessage,
+      'lastMessageTime': _lastMessageTime?.toIso8601String(),
     };
   }
 }
