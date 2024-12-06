@@ -28,12 +28,13 @@ class UserCard extends StatelessWidget {
         style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
       ),
       onTap: () {
+        // Navegar a la pantalla de chat
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ChatScreen(
-              userId: user.id ?? '',
-              userName: user.name,
+              userId: user.id ?? '',  // Aquí pasas el ID del usuario
+              userName: user.name,     // Aquí pasas el nombre del usuario
             ),
           ),
         );

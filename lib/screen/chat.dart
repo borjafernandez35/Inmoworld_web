@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:inmoworld_web/services/chat.dart'; // Asumiendo que existe un servicio para el chat
 
 class ChatScreen extends StatefulWidget {
@@ -14,15 +15,17 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<Map<String, dynamic>> _messages = []; // Almacena mensajes junto con timestamps
-  final ChatService chatService = ChatService(); // Servicio para gestionar el chat
+  late final ChatService chatService; // Servicio para gestionar el chat
 
   @override
   void initState() {
     super.initState();
+    chatService = ChatService(); // Inicializa el servicio de chat
+    chatService.connect(); // Conecta el WebSocket al iniciar la pantalla
 
     // Escuchar mensajes entrantes del servidor
     chatService.messages.listen((event) {
-      final data = event; // Suponiendo que el evento ya contiene el mensaje y timestamp
+      final data = jsonDecode(event); // Suponiendo que el evento contiene JSON con el mensaje y timestamp
       setState(() {
         _messages.add({
           "sender": data['sender'],
@@ -33,17 +36,23 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    chatService.disconnect(); // Desconectar WebSocket cuando se salga de la pantalla
+  }
+
   void _sendMessage() {
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final timestamp = DateTime.now();
 
       // Enviar mensaje al servidor
-      chatService.sendMessage({
+      chatService.sendMessage(json.encode({
         "receiverId": widget.userId,
         "message": text,
         "timestamp": timestamp.toIso8601String(),
-      });
+      }));
 
       // Agregar mensaje local
       setState(() {
@@ -66,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          // Lista de mensajes
           Expanded(
             child: ListView.builder(
               reverse: true, // Los mensajes más recientes se muestran al final
@@ -114,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
+          // Campo de texto para escribir un mensaje
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
