@@ -6,6 +6,7 @@ import 'package:inmoworld_web/widgets/bottomNavigationBar.dart';
 //import 'package:flutter_application_1/screen/experiencies.dart';
 import 'package:inmoworld_web/screen/perfil.dart';
 import 'package:inmoworld_web/screen/user.dart';
+import 'package:inmoworld_web/screen/property.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
 //import 'package:flutter_application_1/controllers/experienceController.dart';
@@ -50,10 +51,11 @@ class MyApp extends StatelessWidget {
           name: '/usuarios',
           page: () => BottomNavScaffold(child: const UserScreen()),
         ),
-        /* GetPage(
-          name: '/propietarios',
-          page: () => BottomNavScaffold(child: ExperiencePage()),
-        ), */
+       GetPage(
+          name: '/properties',
+          page: () => BottomNavScaffold(child: const PropertyScreen()),
+        ),
+
         GetPage(
           name: '/perfil',
           page: () => BottomNavScaffold(child: const PerfilScreen()),
