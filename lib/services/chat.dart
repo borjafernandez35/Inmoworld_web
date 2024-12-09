@@ -1,48 +1,65 @@
 import 'dart:convert';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
-  final String wsUrl = "ws://127.0.0.1:3001/chat"; // Cambia esta URL según tu backend
-  WebSocketChannel? channel;  // Hacemos el canal nullable
+  final String socketUrl = "http://127.0.0.1:3001"; // Cambia esta URL según tu backend
+  IO.Socket? socket; // Hacemos el socket nullable
 
   // Método para establecer la conexión
-  Future<void> connect() async {
+  void connect() {
     try {
-      channel = WebSocketChannel.connect(Uri.parse(wsUrl)); // Inicializamos el canal
-      print('Conexión establecida');
-    } catch (e) {
-      print('Error al conectar a WebSocket: $e');
-    }
-  }
+      // Inicializamos el socket con la URL del servidor
+      socket = IO.io(
+        socketUrl,
+        IO.OptionBuilder()
+            .setTransports(['websocket']) // Usar transporte WebSocket
+            .disableAutoConnect()         // Conexión manual
+            .build(),
+      );
 
-  // Stream para escuchar mensajes
-  Stream<dynamic> get messages {
-    // Verificamos si el canal está inicializado antes de intentar acceder al stream
-    if (channel == null) {
-      throw Exception("WebSocketChannel no está conectado. Llama a connect() primero.");
+      // Escuchar el evento de conexión
+      socket!.on('connect', (_) {
+        print('Conexión establecida con el servidor de Socket.IO');
+      });
+
+      // Escuchar el evento de desconexión
+      socket!.on('disconnect', (_) {
+        print('Desconectado del servidor de Socket.IO');
+      });
+
+      // Escuchar errores
+      socket!.on('error', (error) {
+        print('Error en el socket: $error');
+      });
+
+      // Escuchar mensajes personalizados (por ejemplo, "message")
+      socket!.on('message', (data) {
+        print('Mensaje recibido: $data');
+      });
+
+      // Conectar manualmente
+      socket!.connect();
+    } catch (e) {
+      print('Error al conectar al servidor de Socket.IO: $e');
     }
-    return channel!.stream; // Usamos el operador '!' porque sabemos que channel no es null
   }
 
   // Método para enviar un mensaje
-  Future<void> sendMessage(String message) async {
-    // Verificamos que el canal esté inicializado antes de enviar el mensaje
-    if (channel == null) {
-      print('Error: Intentando enviar mensaje sin conexión establecida');
-      return;
+  void sendMessage(String message) {
+    if (socket != null && socket!.connected) {
+      // Emitir un evento personalizado con el mensaje
+      socket!.emit('sendMessage', message);
+      print('Mensaje enviado: $message');
+    } else {
+      print('Error: No se puede enviar el mensaje, el socket está desconectado.');
     }
-
-    // Si el canal está conectado, enviamos el mensaje
-    channel!.sink.add(message);
-    print('Mensaje enviado: $message');
   }
 
-  // Método para desconectar el canal
+  // Método para desconectar el socket
   void disconnect() {
-    // Verificamos si el canal está inicializado antes de intentar cerrar la conexión
-    if (channel != null) {
-      channel!.sink.close();
-      print('Conexión cerrada');
+    if (socket != null && socket!.connected) {
+      socket!.disconnect();
+      print('Socket desconectado');
     } else {
       print('Error: No hay conexión para cerrar');
     }

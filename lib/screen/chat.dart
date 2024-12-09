@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:inmoworld_web/services/chat.dart'; // Asumiendo que existe un servicio para el chat
+import '../services/chat.dart';
+import '../services/user.dart';
 
 class ChatScreen extends StatefulWidget {
   final String userId;
@@ -14,23 +15,26 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, dynamic>> _messages = []; // Almacena mensajes junto con timestamps
-  late final ChatService chatService; // Servicio para gestionar el chat
+  final List<Map<String, dynamic>> _messages = []; // Lista de mensajes
+  late final ChatService chatService;
+  late final UserService userService;
 
   @override
   void initState() {
     super.initState();
-    chatService = ChatService(); // Inicializa el servicio de chat
-    chatService.connect(); // Conecta el WebSocket al iniciar la pantalla
+    userService = UserService();
+    chatService = ChatService();
+    chatService.connect(); // Conecta al servidor de Socket.IO
 
-    // Escuchar mensajes entrantes del servidor
-    chatService.messages.listen((event) {
-      final data = jsonDecode(event); // Suponiendo que el evento contiene JSON con el mensaje y timestamp
+    // Escuchar mensajes entrantes
+    chatService.socket?.on('message', (data) {
+      final messageData = jsonDecode(data); // Suponiendo que el mensaje es un JSON
       setState(() {
         _messages.add({
-          "sender": data['sender'],
-          "message": data['message'],
-          "timestamp": DateTime.parse(data['timestamp']), // Convertir string a DateTime
+          "receiver": messageData['receiver'],
+          "sender": messageData['sender'],
+          "message": messageData['message'],
+          "timestamp": DateTime.parse(messageData['timestamp']),
         });
       });
     });
@@ -38,8 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    chatService.disconnect(); // Desconectar cuando se destruye el widget
     super.dispose();
-    chatService.disconnect(); // Desconectar WebSocket cuando se salga de la pantalla
   }
 
   void _sendMessage() {
@@ -48,13 +52,14 @@ class _ChatScreenState extends State<ChatScreen> {
       final timestamp = DateTime.now();
 
       // Enviar mensaje al servidor
-      chatService.sendMessage(json.encode({
-        "receiverId": widget.userId,
+      chatService.sendMessage(jsonEncode({
+        "receiver": widget.userId,
+        "sender": userService.getId(),
         "message": text,
         "timestamp": timestamp.toIso8601String(),
       }));
 
-      // Agregar mensaje local
+      // Añadir mensaje local
       setState(() {
         _messages.add({
           "sender": "me",
@@ -63,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       });
 
-      _messageController.clear(); // Limpiar el campo de entrada
+      _messageController.clear(); // Limpia el campo de texto
     }
   }
 
@@ -71,14 +76,13 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userName), // Nombre del usuario en el encabezado
+        title: Text(widget.userName), // Nombre del usuario en la cabecera
       ),
       body: Column(
         children: [
-          // Lista de mensajes
           Expanded(
             child: ListView.builder(
-              reverse: true, // Los mensajes más recientes se muestran al final
+              reverse: true, // Mostrar los mensajes más recientes al final
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[_messages.length - 1 - index];
@@ -124,7 +128,6 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          // Campo de texto para escribir un mensaje
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

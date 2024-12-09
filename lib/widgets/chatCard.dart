@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import '../services/chat.dart';
 
 class ChatWidget extends StatefulWidget {
@@ -20,24 +19,26 @@ class _ChatWidgetState extends State<ChatWidget> {
   void initState() {
     super.initState();
     chatService = ChatService();
-    chatService.connect();  // Asegúrate de conectar al iniciar el widget
-    chatService.messages.listen((message) {
+    chatService.connect(); // Conecta al servidor
+
+    // Escuchar mensajes recibidos
+    chatService.socket?.on('message', (data) {
       setState(() {
-        messages.add(message);
+        messages.add(data.toString()); // Agrega el mensaje al listado
       });
     });
   }
 
   @override
   void dispose() {
-    chatService.disconnect();
+    chatService.disconnect(); // Desconectar el socket
     super.dispose();
   }
 
-  void _sendMessage() async {
-    String message = _controller.text;
+  void _sendMessage() {
+    String message = _controller.text.trim();
     if (message.isNotEmpty) {
-      await chatService.sendMessage(message); // Envía el mensaje
+      chatService.sendMessage(message); // Envía el mensaje al servidor
       _controller.clear(); // Limpia el campo de texto
     }
   }
@@ -75,7 +76,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: _sendMessage,  // Llama al método para enviar el mensaje
+                  onPressed: _sendMessage, // Envía el mensaje
                 ),
               ],
             ),
