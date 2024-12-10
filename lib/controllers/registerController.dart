@@ -9,13 +9,32 @@ class RegisterController extends GetxController {
   // Controladores de texto para la UI
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
   final TextEditingController mailController = TextEditingController();
   final TextEditingController password2Controller = TextEditingController();
+  late String date;
 
   // Variables reactivas para la UI
   var isLoading = false.obs;
   var errorMessage = ''.obs;
-   var isPasswordValid = false.obs;
+  var isPasswordValid = false.obs;
+   var birthday = ''.obs;
+
+   void selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      final utcDate = pickedDate.toUtc();
+      String formattedDate =
+          "${pickedDate.day.toString().padLeft(2, '0')}/${pickedDate.month.toString().padLeft(2, '0')}/${pickedDate.year.toString()}";
+      birthday.value = formattedDate; // Actualiza la variable observable
+      date = utcDate.toIso8601String(); // Almacena en formato ISO
+    }
+  }
 
   // Lógica de registro de usuario
   void signUp() async {
@@ -51,34 +70,30 @@ class RegisterController extends GetxController {
     }
   }
 
-   // Validar y actualizar las sugerencias de la contraseña
-
-
+  // Validar y actualizar las sugerencias de la contraseña
 
   // Validar entradas
- bool _validateInputs() {
-  if (nameController.text.isEmpty ||
-      passwordController.text.isEmpty ||
-      mailController.text.isEmpty ||
-      password2Controller.text.isEmpty) {
-    _showError('Por favor llena todos los campos.');
-    return false;
+  bool _validateInputs() {
+    if (nameController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        mailController.text.isEmpty ||
+        password2Controller.text.isEmpty) {
+      _showError('Por favor llena todos los campos.');
+      return false;
+    }
+
+    if (!GetUtils.isEmail(mailController.text)) {
+      _showError('Correo electrónico no válido.');
+      return false;
+    }
+
+    if (passwordController.text != password2Controller.text) {
+      _showError('Las contraseñas no coinciden.');
+      return false;
+    }
+
+    return true;
   }
-
-  if (!GetUtils.isEmail(mailController.text)) {
-    _showError('Correo electrónico no válido.');
-    return false;
-  }
-
-  if (passwordController.text != password2Controller.text) {
-    _showError('Las contraseñas no coinciden.');
-    return false;
-  }
-
-  return true;
-}
-
- 
 
   // Construir modelo de usuario desde los campos
   UserModel _buildUserModel() {
@@ -86,6 +101,7 @@ class RegisterController extends GetxController {
       name: nameController.text,
       password: passwordController.text,
       email: mailController.text,
+      birthday: date,
     );
   }
 
@@ -102,6 +118,7 @@ class RegisterController extends GetxController {
     passwordController.dispose();
     mailController.dispose();
     password2Controller.dispose();
+    birthdayController.dispose();
     super.onClose();
   }
 }

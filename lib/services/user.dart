@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 
 class UserService {
-   final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
+  final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
-  final GetStorage box = GetStorage();
+  //final GetStorage box = GetStorage();
   int totalPages = 1;
   int totalUsers = 1;
 
@@ -20,7 +20,7 @@ class UserService {
   void _configureInterceptors() {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = getToken();
+        final token =StorageService.getToken();
         if (token != null) {
           options.headers['x-access-token'] = token;
         }
@@ -53,7 +53,7 @@ class UserService {
       final List<dynamic> usersData = responseData['users'];
 
       print('aquiii etnras???:$usersData');
-       // Almacenar los valores adicionales como totalPages y totalUsers
+      // Almacenar los valores adicionales como totalPages y totalUsers
       totalPages = responseData['totalPages'] ?? 1; // Usar 0 si es null
       totalUsers = responseData['totalUsers'] ?? 1; // Usar 0 si es null
 
@@ -72,18 +72,18 @@ class UserService {
   }
 
   // Guardar datos de sesión
-  void saveToken(String token) => box.write('token', token);
+  /* void saveToken(String token) => box.write('token', token);
   void saveId(String id) => box.write('_id', id);
   void saveAdmin(bool isAdmin) => box.write('isAdmin', isAdmin);
 
   // Obtener datos de sesión
   String? getToken() => box.read('token');
   String? getId() => box.read('_id');
-  bool get isAdmin => box.read('isAdmin') ?? false;
+  bool get isAdmin => box.read('isAdmin') ?? false; */
 
   // Eliminar datos de sesión
   void logout() {
-    box.erase(); // Limpia todos los datos almacenados
+     StorageService.clearSession(); // Limpia todos los datos almacenados
   }
 
   // Validar y manejar respuesta
@@ -100,7 +100,8 @@ class UserService {
   // Crear Usuario
   Future<int> createUser(UserModel newUser) async {
     try {
-      final response = await dio.post('$baseUrl/user/register', data: newUser.toJson());
+      final response =
+          await dio.post('$baseUrl/user/register', data: newUser.toJson());
       return _validateResponse(response);
     } catch (e) {
       print('Error en createUser: $e');
@@ -111,7 +112,8 @@ class UserService {
   // Actualizar Usuario
   Future<int> updateUser(UserModel user) async {
     try {
-      final response = await dio.put('$baseUrl/user/${user.id}', data: user.toJson());
+      final response =
+          await dio.put('$baseUrl/user/${user.id}', data: user.toJson());
       return _validateResponse(response);
     } catch (e) {
       print('Error en updateUser: $e');
@@ -123,7 +125,7 @@ class UserService {
   Future<UserModel> getUser() async {
     print('GETTTTTUSEEERRRR!!!! me llamaaaaannnn!!!');
     try {
-      final response = await dio.get('$baseUrl/user/${getId()}');
+      final response = await dio.get('$baseUrl/user/${StorageService.getId()}');
       return UserModel.fromJson(response.data['data']);
     } catch (e) {
       print('Error en getUser: $e');
@@ -163,9 +165,9 @@ class UserService {
 
       if (statusCode == 201) {
         // Guardar sesión si el login es exitoso
-        saveToken(response.data['token']);
-        saveId(response.data['user']['id']);
-        saveAdmin(response.data['user']['isAdmin']);
+        StorageService.saveToken(response.data['token']);
+        StorageService.saveId(response.data['user']['id']);
+        StorageService.saveAdmin(response.data['user']['isAdmin']);
       }
 
       return statusCode;
@@ -178,7 +180,7 @@ class UserService {
   // Eliminar Usuario Actual
   Future<int> deleteUser() async {
     try {
-      final response = await dio.delete('$baseUrl/user/${getId()}');
+      final response = await dio.delete('$baseUrl/user/${StorageService.getId()}');
       final statusCode = _validateResponse(response);
 
       if (statusCode == 201) {

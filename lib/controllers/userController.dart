@@ -3,9 +3,13 @@ import 'package:get/get.dart';
 import 'package:inmoworld_web/services/user.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
 
+
 class UserController extends GetxController {
   final UserService userService = UserService();
   final UserModelController userModelController = Get.find();
+
+  // Google Sign-In Service
+ 
 
   // Controladores de texto para la UI
   final TextEditingController emailController = TextEditingController();
@@ -14,6 +18,7 @@ class UserController extends GetxController {
   // Variables reactivas para la UI
   var isLoading = false.obs;
   var errorMessage = ''.obs;
+
 
   // Lógica para Iniciar Sesión
   void logIn() async {

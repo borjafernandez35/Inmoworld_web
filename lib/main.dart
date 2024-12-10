@@ -8,14 +8,13 @@ import 'package:inmoworld_web/screen/perfil.dart';
 import 'package:inmoworld_web/screen/user.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
+import 'package:inmoworld_web/screen/title.dart';
 //import 'package:flutter_application_1/controllers/experienceController.dart';
 //import 'package:flutter_application_1/controllers/experienceListController.dart';
 
 void main() async {
   await GetStorage.init();
   Get.put(UserModelController());
-  
-  
 
   runApp(
     const MyApp(),
@@ -34,7 +33,11 @@ class MyApp extends StatelessWidget {
         // Ruta de inicio de sesión
         GetPage(
           name: '/login',
-          page: () => const LogInScreen(),
+          page: () =>  TitleScreen(),
+        ),
+        GetPage(
+          name: '/logearse',
+          page: () =>  LogInScreen(),
         ),
         // Ruta de registro
         GetPage(
@@ -42,9 +45,9 @@ class MyApp extends StatelessWidget {
           page: () => const RegisterScreen(),
         ),
         // Ruta de la pantalla principal con BottomNavScaffold
-       /*  GetPage(
-          name: '/home',
-          page: () => BottomNavScaffold(child: const HomePage()),
+        /*  GetPage(
+          name: '/registerGoogle',
+          page: () => BottomNavScaffold(child: const Regi()),
         ), */
         GetPage(
           name: '/usuarios',

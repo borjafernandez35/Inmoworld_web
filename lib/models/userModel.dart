@@ -5,7 +5,7 @@ class UserModel with ChangeNotifier {
   String _name;
   String _email;
   String _password;
-  //String _comment;
+  String _birthday;
   bool _isAdmin;
 
   // Constructor
@@ -13,14 +13,14 @@ class UserModel with ChangeNotifier {
     required String name,
     required String email,
     required String password,
-    //required String comment,
+    required String birthday,
     bool isAdmin = false,
-    String? id,
+    String? id, 
   })  : _id = id,
         _name = name,
         _email = email,
         _password = password,
-       // _comment = comment,
+        _birthday = birthday,
         _isAdmin = isAdmin;
 
   // Getters
@@ -28,7 +28,7 @@ class UserModel with ChangeNotifier {
   String get name => _name;
   String get email => _email;
   String get password => _password;
- // String get comment => _comment;
+  String get birthday => _birthday;
   bool get isAdmin => _isAdmin;
 
   // Método para actualizar el usuario
@@ -38,7 +38,7 @@ class UserModel with ChangeNotifier {
     _name = name;
     _email = email;
     _password = password;
-    //_comment = comment;
+    _birthday = birthday;
     _isAdmin=isAdmin;
     notifyListeners();
   }
@@ -50,7 +50,7 @@ class UserModel with ChangeNotifier {
       name: json['name']?.toString() ?? 'Usuario desconocido',
       email: json['email']?.toString() ?? 'No especificado',
       password: json['password']?.toString() ?? 'Sin contraseña',
-      //comment: json['comment']?.toString() ?? 'Sin comentarios',
+      birthday: json['birthday']?.toString() ?? 'Sin edad',
       isAdmin: json['isAdmin'] ?? false, // Manejar el campo isAdmin
     );
   }
@@ -62,7 +62,7 @@ class UserModel with ChangeNotifier {
       'name': _name,
       'email': _email,
       'password': _password,
-     // 'comment': _comment,
+      'birthday': _birthday,
       'isAdmin': _isAdmin,
     };
   }

@@ -26,10 +26,10 @@ class BottomNavScaffold extends StatelessWidget {
                 icon: Icon(Icons.person),
                 label: 'Usuarios',
               ),
-              BottomNavigationBarItem(
+              /* BottomNavigationBarItem(
                 icon: Icon(Icons.local_activity),
                 label: 'Properties',
-              ),
+              ), */
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Perfil',

@@ -18,13 +18,13 @@ class LogInScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          // Logo de la aplicación
-          Image.asset(
-            'assets/logo.png', // Ruta del logo
-            height: 200, // Altura fija del logo
-            width: 200, // Anchura fija del logo
-          ),
-          const SizedBox(height: 20),
+            // Logo de la aplicación
+            Image.asset(
+              'assets/logo.png', // Ruta del logo
+              height: 200, // Altura fija del logo
+              width: 200, // Anchura fija del logo
+            ),
+            const SizedBox(height: 20),
             // Campo de Correo Electrónico
             _buildTextField(
               controller: userController.emailController,
@@ -49,7 +49,8 @@ class LogInScreen extends StatelessWidget {
                     child: const Text('Iniciar Sesión'),
                   )),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
+
 
             // Mostrar mensaje de error si existe
             Obx(() => userController.errorMessage.isNotEmpty
@@ -84,4 +85,6 @@ class LogInScreen extends StatelessWidget {
       obscureText: obscureText,
     );
   }
+
+  
 }
