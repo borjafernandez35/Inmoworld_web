@@ -1,9 +1,20 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import './user.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
   final String socketUrl = "http://127.0.0.1:3001"; // Cambia esta URL según tu backend
-  IO.Socket? socket; // Hacemos el socket nullable
+  IO.Socket? socket; // Socket nullable
+  final Dio dio = Dio();
+  late final UserService userService; // Aseguramos inicialización
+
+  ChatService(UserService userService) {
+    // Asignamos UserService
+    this.userService = userService;
+    // Configuramos interceptores
+    _configureInterceptors();
+  }
 
   // Método para establecer la conexión
   void connect() {
@@ -47,12 +58,54 @@ class ChatService {
   // Método para enviar un mensaje
   void sendMessage(String message) {
     if (socket != null && socket!.connected) {
-      // Emitir un evento personalizado con el mensaje
+      // Emitir un evento "message" (asegúrate de que coincida con el backend)
       socket!.emit('sendMessage', message);
       print('Mensaje enviado: $message');
     } else {
       print('Error: No se puede enviar el mensaje, el socket está desconectado.');
     }
+  }
+
+  // Cargar chats del usuario desde el backend
+  Future<List<dynamic>> chatStartup(String userId) async {
+    try {
+      // Realiza la solicitud para obtener los chats
+      final response = await dio.get('$socketUrl/user/chats/$userId');
+
+      print('Respuesta recibida chats: $response');
+
+      final List<dynamic> chats = response.data['chats'];
+
+      // Ordenar los chats por timestamp
+      chats.sort((a, b) => DateTime.parse(a['timestamp']).compareTo(DateTime.parse(b['timestamp'])));
+
+      return chats;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 403) {
+        print('Error 403: Acceso denegado. Verifica el token.');
+      } else {
+        print('Error al realizar la solicitud HTTP: ${e.message}');
+      }
+      return []; // Devuelve una lista vacía en caso de error
+    }
+  }
+
+  // Configurar interceptores de solicitudes HTTP
+  void _configureInterceptors() {
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        // Obtener token del usuario
+        final token = userService.getToken();
+        if (token != null) {
+          options.headers['x-access-token'] = token;
+        }
+        handler.next(options); // Continuar con la solicitud
+      },
+      onError: (DioError e, handler) {
+        print('Error en petición: ${e.response?.statusCode}');
+        handler.next(e); // Pasar el error al flujo siguiente
+      },
+    ));
   }
 
   // Método para desconectar el socket

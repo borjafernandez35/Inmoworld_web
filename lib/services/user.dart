@@ -46,7 +46,7 @@ class UserService {
         throw Exception('Error en la respuesta del servidor');
       }
 
-// Asegurarse de que response.data sea un Map y no una lista
+      // Asegurarse de que response.data sea un Map y no una lista
       final Map<String, dynamic> responseData = response.data;
 
       // Extraer la lista de usuarios
@@ -78,7 +78,7 @@ class UserService {
 
   // Obtener datos de sesión
   String? getToken() => box.read('token');
-  String? getId() => box.read('_id');
+  String getId() => box.read('_id');
   bool get isAdmin => box.read('isAdmin') ?? false;
 
   // Eliminar datos de sesión
