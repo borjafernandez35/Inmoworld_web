@@ -25,7 +25,8 @@ class _PropertyScreenState extends State<PropertyScreen> {
   Future<void> _fetchProperties(int pageKey) async {
     try {
       final properties = await _userService.getProperties(pageKey, _pageSize);
-      print("Propiedades obtenidas: ${properties.map((e) => e.toJson()).toList()}");
+      print(
+          "Propiedades obtenidas: ${properties.map((e) => e.toJson()).toList()}");
       final isLastPage = properties.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(properties);
@@ -47,38 +48,90 @@ class _PropertyScreenState extends State<PropertyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/logo.png',
-          height: 40,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
-      body: PagedListView<int, PropertyModel>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<PropertyModel>(
-          itemBuilder: (context, property, index) {
-            try {
-              return Card(
-                child: ListTile(
-                  title: Text(property.address),
-                  subtitle: Text(property.description),
+      body: Column(
+        children: [
+          // Logo con tamaño duplicado
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Image.asset(
+              'assets/logo.png',
+              height: 110, 
+            ),
+          ),
+          // Barra de búsqueda
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Nº de huéspedes | Ubicación | Precio | Check in | Check out ',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-              );
-            } catch (e) {
-              print("Error al renderizar propiedad: $e");
-              return const Center(child: Text('Error al mostrar propiedad.'));
-            }
-          },
-          noItemsFoundIndicatorBuilder: (context) => const Center(
-            child: Text('No properties found'),
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
           ),
-          firstPageErrorIndicatorBuilder: (context) => const Center(
-            child: Text('Error al cargar propiedades.'),
+          // Lista de propiedades
+          Expanded(
+            child: PagedListView<int, PropertyModel>(
+              pagingController: _pagingController,
+              builderDelegate: PagedChildBuilderDelegate<PropertyModel>(
+                itemBuilder: (context, property, index) {
+                  try {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[850], 
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            property.address,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            property.description,
+                            style: TextStyle(
+                              color: Colors.white70, 
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } catch (e) {
+                    print("Error al renderizar propiedad: $e");
+                    return const Center(
+                        child: Text('Error al mostrar propiedad.'));
+                  }
+                },
+                noItemsFoundIndicatorBuilder: (context) => const Center(
+                  child: Text(
+                    'No properties found',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                firstPageErrorIndicatorBuilder: (context) => const Center(
+                  child: Text(
+                    'Error al cargar propiedades.',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-      )
+        ],
+      ),
+      backgroundColor: Colors.white, 
     );
   }
 }
