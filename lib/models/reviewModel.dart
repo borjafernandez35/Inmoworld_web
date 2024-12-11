@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:inmoworld_web/models/userModel.dart';
+import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:inmoworld_web/services/user.dart';
 
 class ReviewModel with ChangeNotifier {
@@ -22,7 +23,7 @@ class ReviewModel with ChangeNotifier {
   }) : participants = participants.whereType<String>().toList();
 
   // Método para crear una instancia desde un JSON
-   factory ReviewModel.fromJson(Map<String, dynamic> json) {
+  factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(
       id: _validateObjectId(json['_id']),
       owner: _validateObjectId(json['owner']?['_id']),
@@ -59,7 +60,7 @@ class ReviewModel with ChangeNotifier {
 
     try {
       // Obtener solo los IDs de los usuarios
-      final usersId = await userService.getUsersId();
+      final usersId = await userService.getUser();
 
       if (usersId.isEmpty) {
         print("No se encontraron usuarios.");
@@ -77,20 +78,20 @@ class ReviewModel with ChangeNotifier {
           experience.ownerDetails = ownerDetails;
           print(
               'Detalles del propietario cargados: ${ownerDetails.name} para experiencia ${experience.id}');
-                } else {
+        } else {
           print(
               'El propietario con ID ${experience.owner} no está en la lista de usuarios.');
         }
 
         // Validar y cargar los detalles de los participantes
-         experience.participantsDetails = await Future.wait(
-        experience.participants.map((participantId) async {
-          if (usersId.contains(participantId)) {
-            return await userService.getUser(participantId);
-          }
-          return null; // Ignorar IDs de participantes no válidos
-        }),
-      ).then((list) => list.whereType<UserModel>().toList());
+        experience.participantsDetails = await Future.wait(
+          experience.participants.map((participantId) async {
+            if (usersId.contains(participantId)) {
+              return await userService.getUser(participantId);
+            }
+            return null; // Ignorar IDs de participantes no válidos
+          }),
+        ).then((list) => list.whereType<UserModel>().toList());
 
         print(
             'Detalles de participantes cargados para experiencia ${experience.id}: '
@@ -104,3 +105,4 @@ class ReviewModel with ChangeNotifier {
     }
   }
 }
+ */
