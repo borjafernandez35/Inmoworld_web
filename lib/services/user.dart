@@ -4,7 +4,7 @@ import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 
 class UserService {
-   final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
+   final String baseUrl = "http://147.83.7.157:8080"; // URL de tu backend Web
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
   final GetStorage box = GetStorage();

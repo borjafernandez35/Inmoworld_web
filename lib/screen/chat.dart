@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart'; // Para formatear timestamps
 import '../services/chat.dart';
 import '../services/user.dart';
 
@@ -36,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     // Escuchar mensajes entrantes en tiempo real
     chatService.socket?.on('message', (data) {
-      final messageData = jsonDecode(data); // Suponiendo que el mensaje es un JSON
+      final messageData = jsonDecode(data); // Decodificar JSON
       setState(() {
         _messages.add({
           "receiver": messageData['receiver'],
@@ -57,17 +58,17 @@ class _ChatScreenState extends State<ChatScreen> {
       // Llama al método de ChatService para obtener los chats
       final chatList = await chatService.chatStartup(userId);
 
-      // Asegúrate de que cada elemento sea un Map<String, dynamic>
+      // Convierte los datos a Map<String, dynamic>
       final convertedChats = chatList.map<Map<String, dynamic>>((chat) {
-        return {
-          "receiver": chat['receiver'],
-          "sender": chat['sender'],
-          "message": chat['message'],
-          "timestamp": chat['timestamp'],
-        };
-      }).toList();
+      return {
+        "receiver": chat.receiver, // Acceso directo a las propiedades
+        "sender": chat.sender,
+        "message": chat.message,
+        "date": chat.date,
+      };
+    }).toList();
 
-      // Actualiza la lista de mensajes local con los datos del backend
+      // Actualiza la lista de mensajes locales
       setState(() {
         _messages.clear();
         _messages.addAll(convertedChats.map((chat) => {
@@ -78,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
             }));
       });
 
-      return convertedChats; // Devuelve la lista convertida
+      return convertedChats;
     } catch (error) {
       print("Error al cargar los chats: $error");
       return []; // Devuelve una lista vacía en caso de error
@@ -96,15 +97,18 @@ class _ChatScreenState extends State<ChatScreen> {
     if (text.isNotEmpty) {
       final timestamp = DateTime.now();
 
-      // Enviar mensaje al servidor
-      chatService.sendMessage(jsonEncode({
+      // Crear el mensaje
+      final chatMessage = {
         "receiver": widget.userId,
         "sender": userService.getId(),
         "message": text,
         "timestamp": timestamp.toIso8601String(),
-      }));
+      };
 
-      // Añadir mensaje local
+      // Enviar mensaje al servidor
+      chatService.sendMessage(jsonEncode(chatMessage));
+
+      // Añadir mensaje localmente
       setState(() {
         _messages.add({
           "sender": "me",
@@ -142,8 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       final isMe = message['sender'] == 'me';
 
                       final timestamp = message['timestamp'] as DateTime;
-                      final formattedTime =
-                          "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+                      final formattedTime = DateFormat('HH:mm').format(timestamp);
 
                       return Align(
                         alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,

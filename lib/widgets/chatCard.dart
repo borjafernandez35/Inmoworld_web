@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:convert'; // Para procesar JSON
+import 'package:intl/intl.dart'; // Para formatear fechas
+import 'dart:convert';
 import '../services/chat.dart';
 import '../services/user.dart';
+import '../models/chatModel.dart'; // Importamos el modelo Chat
 
 class ChatWidget extends StatefulWidget {
   final String userId;
@@ -15,9 +17,9 @@ class ChatWidget extends StatefulWidget {
 class _ChatWidgetState extends State<ChatWidget> {
   late ChatService chatService; // Servicio de chat
   late UserService userService; // Servicio de usuario
-  late Future<List<Map<String, dynamic>>> chats; // Lista para cargar los chats iniciales
+  late Future<List<Chat>> chats; // Lista de chats
   TextEditingController _controller = TextEditingController();
-  List<Map<String, dynamic>> messages = []; // Mensajes en pantalla
+  List<Chat> messages = []; // Lista local de mensajes
 
   @override
   void initState() {
@@ -35,43 +37,24 @@ class _ChatWidgetState extends State<ChatWidget> {
 
     // Escuchar mensajes en tiempo real
     chatService.socket?.on('message', (data) {
-      final messageData = jsonDecode(data); // Decodificar mensaje JSON
+      final messageData = Chat.fromJson(data); // Convertir el mensaje a objeto Chat
       setState(() {
-        messages.add({
-          "receiver": messageData['receiver'],
-          "sender": messageData['sender'],
-          "message": messageData['message'],
-          "timestamp": DateTime.parse(messageData['timestamp']),
-        });
+        messages.add(messageData);
       });
     });
   }
 
   // Carga los mensajes iniciales desde el backend
-  Future<List<Map<String, dynamic>>> _loadChats() async {
+  Future<List<Chat>> _loadChats() async {
     try {
-      final userId = userService.getId(); // Obtén el ID del usuario
+      final userId = userService.getId(); // Obtén el ID del usuario actual
       final chatList = await chatService.chatStartup(userId);
 
-      final convertedChats = chatList.map<Map<String, dynamic>>((chat) {
-        return {
-          "receiver": chat['receiver'],
-          "sender": chat['sender'],
-          "message": chat['message'],
-          "timestamp": chat['timestamp'],
-        };
-      }).toList();
-
       setState(() {
-        messages = convertedChats.map((chat) => {
-              "receiver": chat['receiver'],
-              "sender": chat['sender'],
-              "message": chat['message'],
-              "timestamp": DateTime.parse(chat['timestamp']),
-            }).toList();
+        messages = chatList; // Actualizar la lista local de mensajes
       });
 
-      return convertedChats;
+      return chatList;
     } catch (error) {
       print("Error al cargar los chats: $error");
       return [];
@@ -84,21 +67,20 @@ class _ChatWidgetState extends State<ChatWidget> {
     if (message.isNotEmpty) {
       final timestamp = DateTime.now();
 
+      // Crear el mensaje como objeto Chat
+      final chatMessage = Chat(
+        receiver: widget.userId,
+        sender: userService.getId(),
+        message: message,
+        date: timestamp,
+      );
+
       // Envía el mensaje al servidor
-      chatService.sendMessage(jsonEncode({
-        "receiver": widget.userId,
-        "sender": userService.getId(),
-        "message": message,
-        "timestamp": timestamp.toIso8601String(),
-      }));
+      chatService.sendMessage(jsonEncode(chatMessage.toJson()));
 
       // Agrega el mensaje localmente
       setState(() {
-        messages.add({
-          "sender": "me",
-          "message": message,
-          "timestamp": timestamp,
-        });
+        messages.add(chatMessage);
       });
 
       _controller.clear(); // Limpia el campo de texto
@@ -120,11 +102,11 @@ class _ChatWidgetState extends State<ChatWidget> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: FutureBuilder<List<Map<String, dynamic>>>(
+            child: FutureBuilder<List<Chat>>(
               future: chats,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator()); // Muestra un indicador de carga
+                  return Center(child: CircularProgressIndicator()); // Indicador de carga
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error al cargar los mensajes'));
                 } else {
@@ -134,11 +116,10 @@ class _ChatWidgetState extends State<ChatWidget> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[messages.length - 1 - index];
-                      final isMe = message['sender'] == 'me';
+                      final isMe = message.sender == userService.getId();
 
-                      final timestamp = message['timestamp'] as DateTime;
                       final formattedTime =
-                          "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+                          DateFormat('HH:mm').format(message.date);
 
                       return Align(
                         alignment: isMe
@@ -160,7 +141,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
-                                message['message'] ?? '',
+                                message.message,
                                 style: TextStyle(
                                   color: isMe ? Colors.white : Colors.black,
                                 ),

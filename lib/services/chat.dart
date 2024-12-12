@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import './user.dart';
+import '../models/chatModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
-  final String socketUrl = "http://127.0.0.1:3001"; // Cambia esta URL según tu backend
+  final String socketUrl = "http://147.83.7.157:8080"; // Cambia esta URL según tu backend
   IO.Socket? socket; // Socket nullable
   final Dio dio = Dio();
   late final UserService userService; // Aseguramos inicialización
@@ -67,17 +68,20 @@ class ChatService {
   }
 
   // Cargar chats del usuario desde el backend
-  Future<List<dynamic>> chatStartup(String userId) async {
+  Future<List<Chat>> chatStartup(String userId) async {
     try {
       // Realiza la solicitud para obtener los chats
       final response = await dio.get('$socketUrl/user/chats/$userId');
 
-      print('Respuesta recibida chats: $response');
+      print('Respuesta recibida chats: ${response.data}');
 
-      final List<dynamic> chats = response.data['chats'];
+      // Mapeamos la lista de datos a objetos del modelo Chat
+      final List<Chat> chats = (response.data['chats'] as List)
+          .map((chat) => Chat.fromJson(chat))
+          .toList();
 
-      // Ordenar los chats por timestamp
-      chats.sort((a, b) => DateTime.parse(a['timestamp']).compareTo(DateTime.parse(b['timestamp'])));
+      // Ordenar los chats por fecha
+      chats.sort((a, b) => a.date.compareTo(b.date));
 
       return chats;
     } on DioError catch (e) {
