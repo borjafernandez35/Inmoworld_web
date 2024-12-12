@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:inmoworld_web/models/userModel.dart';
 
 class PropertyModel with ChangeNotifier {
-  final String id;
-  final owner;
-  String address;
-  String description;
+  final String id; 
+  final String owner;
+  final String address;
+  final String description;
 
   UserModel? ownerDetails; // Detalles del propietario
   List<UserModel>? participantsDetails;
@@ -21,21 +21,29 @@ class PropertyModel with ChangeNotifier {
   });
 
   static String _validateObjectId(dynamic id) {
-    if (id == null || id.toString().isEmpty) {
-      throw ArgumentError('ID inválido');
-    }
-    return id.toString();
+  if (id == null || id.toString().isEmpty) {
+    print('ObjectId inválido detectado: $id');
+    throw ArgumentError('ID inválido: $id');
+  }
+  return id.toString();
   }
 
+
   // Método para crear una instancia desde un JSON
-  factory PropertyModel.fromJson(Map<String, dynamic> json) {
+ factory PropertyModel.fromJson(Map<String, dynamic> json) {
+  try {
     return PropertyModel(
-      id: _validateObjectId(json['_id']),
-      owner: _validateObjectId(json['owner']?['_id']),
-      address: json['address']?.toString() ?? 'Sin dirección',
-      description: json['description']?.toString() ?? 'Sin descripción',
+      id: json['_id'] ?? 'Sin ID',
+      owner: json['owner'] ?? 'Sin Propietario',
+      address: json['address'] ?? 'Sin Dirección',
+      description: json['description'] ?? 'Sin Descripción',
     );
+  } catch (e) {
+    throw Exception('Error al procesar propiedad: $json');
   }
+}
+
+
 
   // Helper function to validate ObjectId
   /* static String _validateObjectId(dynamic id) {

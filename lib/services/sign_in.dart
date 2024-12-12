@@ -108,7 +108,7 @@ class SignInService {
 
   void onPromptMoment(PromptMomentNotification o) {
     final MomentType type = o.getMomentType();
-    print("Prompt moment: ${type}");
+    print("Prompt moment: $type");
   }
 
   Future<void> handleSignOut() async => await _googleSignIn.disconnect();
@@ -151,7 +151,7 @@ class SignInService {
       }
     } catch (e) {
       print('Error al verificar el estado de registro: $e');
-      throw e;
+      rethrow;
     }
   }
 

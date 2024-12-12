@@ -124,10 +124,11 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
-    if (picked != null && picked != DateTime.now())
+    if (picked != null && picked != DateTime.now()) {
       setState(() {
         _birthdayController.text = "${picked.toLocal()}".split(' ')[0];
       });
+    }
   }
 
   @override

@@ -34,6 +34,10 @@ class BottomNavScaffold extends StatelessWidget {
                 icon: Icon(Icons.person),
                 label: 'Perfil',
               ),
+              BottomNavigationBarItem( 
+                icon: Icon(Icons.location_pin),
+                label: 'Mapa',
+              ),  
             ],
           )),
     );
