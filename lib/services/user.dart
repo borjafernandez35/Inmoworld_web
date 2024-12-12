@@ -4,7 +4,7 @@ import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 
 class UserService {
-  final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
+   final String baseUrl = "http://147.83.7.157:8080"; // URL de tu backend Web
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
   //final GetStorage box = GetStorage();
@@ -46,7 +46,7 @@ class UserService {
         throw Exception('Error en la respuesta del servidor');
       }
 
-// Asegurarse de que response.data sea un Map y no una lista
+      // Asegurarse de que response.data sea un Map y no una lista
       final Map<String, dynamic> responseData = response.data;
 
       // Extraer la lista de usuarios
@@ -78,8 +78,12 @@ class UserService {
 
   // Obtener datos de sesión
   String? getToken() => box.read('token');
+
   String? getId() => box.read('_id');
   bool get isAdmin => box.read('isAdmin') ?? false; */
+
+  String getId() => box.read('_id');
+  bool get isAdmin => box.read('isAdmin') ?? false;
 
   // Eliminar datos de sesión
   void logout() {
