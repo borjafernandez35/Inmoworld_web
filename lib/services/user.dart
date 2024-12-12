@@ -4,8 +4,8 @@ import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 
 class UserService {
-  //final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
-  final String baseUrl = 'http://147.83.7.157:3000';
+  final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
+  //final String baseUrl = 'http://147.83.7.157:3000';
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
   //final GetStorage box = GetStorage();
@@ -47,7 +47,7 @@ class UserService {
         throw Exception('Error en la respuesta del servidor');
       }
 
-// Asegurarse de que response.data sea un Map y no una lista
+      // Asegurarse de que response.data sea un Map y no una lista
       final Map<String, dynamic> responseData = response.data;
 
       // Extraer la lista de usuarios
@@ -144,6 +144,31 @@ class UserService {
     } catch (e) {
       print('Error en getData: $e');
       rethrow;
+    }
+  }
+
+  Future<List<PropertyModel>> getProperties(int page, int limit) async {
+    try {
+      print(
+          'Intentando obtener propiedades para la página $page con límite $limit...');
+      final response = await dio.get('$baseUrl/property/$page/$limit');
+      print('Respuesta recibida: ${response.data}');
+
+      if (response.data == null || response.data['properties'] == null) {
+        throw Exception("Datos de propiedades no encontrados en la respuesta.");
+      }
+
+      final List<dynamic> propertiesData =
+          response.data['properties'] as List<dynamic>;
+
+      print('Datos de propiedades procesados correctamente: $propertiesData');
+      return propertiesData
+          .map((data) => PropertyModel.fromJson(data))
+          .toList();
+    } catch (e, stackTrace) {
+      print('Error al obtener propiedades: $e');
+      print('Detalles del error: $stackTrace');
+      rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
     }
   }
 

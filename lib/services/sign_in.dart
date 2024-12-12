@@ -27,8 +27,8 @@ class SignInService {
   final GoogleSignIn _googleSignIn;
   late final IdConfiguration idConfiguration;
   final Dio dio = Dio();
-  //final String baseUrl = 'http://127.0.0.1:3001';
-  final String baseUrl = 'http://147.83.7.157:3000';
+  final String baseUrl = 'http://127.0.0.1:3000';
+  //final String baseUrl = 'http://147.83.7.157:3000';
 
   GoogleSignInAccount? _currentUser;
   bool _isAuthorized = false; // has granted permissions?
