@@ -5,7 +5,9 @@ import '../models/chatModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
-  final String socketUrl = "http://147.83.7.157:8080"; // Cambia esta URL según tu backend
+
+  final String socketUrl =
+      "http://127.0.0.1:3001"; // Cambia esta URL según tu backend
   IO.Socket? socket; // Socket nullable
   final Dio dio = Dio();
   late final UserService userService; // Aseguramos inicialización
@@ -25,7 +27,7 @@ class ChatService {
         socketUrl,
         IO.OptionBuilder()
             .setTransports(['websocket']) // Usar transporte WebSocket
-            .disableAutoConnect()         // Conexión manual
+            .disableAutoConnect() // Conexión manual
             .build(),
       );
 
@@ -63,7 +65,8 @@ class ChatService {
       socket!.emit('sendMessage', message);
       print('Mensaje enviado: $message');
     } else {
-      print('Error: No se puede enviar el mensaje, el socket está desconectado.');
+      print(
+          'Error: No se puede enviar el mensaje, el socket está desconectado.');
     }
   }
 
@@ -71,7 +74,8 @@ class ChatService {
   Future<List<Chat>> chatStartup(String userId) async {
     try {
       // Realiza la solicitud para obtener los chats
-      final response = await dio.get('$socketUrl/user/chats/$userId');
+      final response =
+          await dio.get('$socketUrl/user/chats/guarda/usuarios/$userId');
 
       print('Respuesta recibida chats: ${response.data}');
 
@@ -79,7 +83,6 @@ class ChatService {
       final List<Chat> chats = (response.data['chats'] as List)
           .map((chat) => Chat.fromJson(chat))
           .toList();
-
       // Ordenar los chats por fecha
       chats.sort((a, b) => a.date.compareTo(b.date));
 
