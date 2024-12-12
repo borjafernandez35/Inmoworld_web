@@ -120,7 +120,7 @@ class RegisterScreen extends StatelessWidget {
 
                       // Botón para volver al login
                       ElevatedButton(
-                        onPressed: () => Get.toNamed('/login'),
+                        onPressed: () => Get.toNamed('/logearse'),
                         child: const Text('Volver'),
                       ),
                     ],

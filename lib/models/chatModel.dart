@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Chat {
   final String receiver;
-  final String sender;
+  final String? sender;
   final String message;
   final DateTime date;
 

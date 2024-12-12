@@ -5,8 +5,8 @@ import './user.dart';
 import '../models/chatModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class ChatService {
 
+class ChatService {
   final String socketUrl =
       "http://127.0.0.1:3000"; // Cambia esta URL según tu backend
   IO.Socket? socket; // Socket nullable

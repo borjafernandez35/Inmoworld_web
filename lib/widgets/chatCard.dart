@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../services/chat.dart';
 import '../services/user.dart';
 import '../models/chatModel.dart'; // Importamos el modelo Chat
+import 'package:inmoworld_web/services/storage.dart';
 
 class ChatWidget extends StatefulWidget {
   final String userId;
@@ -47,8 +48,8 @@ class _ChatWidgetState extends State<ChatWidget> {
   // Carga los mensajes iniciales desde el backend
   Future<List<Chat>> _loadChats() async {
     try {
-      final userId = userService.getId(); // Obtén el ID del usuario actual
-      final chatList = await chatService.chatStartup(userId);
+      final userId = StorageService.getId(); // Obtén el ID del usuario actual
+      final chatList = await chatService.chatStartup(userId!);
 
       setState(() {
         messages = chatList; // Actualizar la lista local de mensajes
@@ -70,7 +71,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       // Crear el mensaje como objeto Chat
       final chatMessage = Chat(
         receiver: widget.userId,
-        sender: userService.getId(),
+        sender: StorageService.getId(),
         message: message,
         date: timestamp,
       );
@@ -116,7 +117,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[messages.length - 1 - index];
-                      final isMe = message.sender == userService.getId();
+                      final isMe = message.sender == StorageService.getId();
 
                       final formattedTime =
                           DateFormat('HH:mm').format(message.date);

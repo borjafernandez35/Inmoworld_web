@@ -56,7 +56,7 @@ class RegisterController extends GetxController {
         // Registro exitoso
         Get.snackbar('Éxito', 'Usuario creado exitosamente',
             snackPosition: SnackPosition.BOTTOM);
-        Get.toNamed('/login');
+        Get.toNamed('/logearse');
       } else if (statusCode == 400) {
         _showError('Este E-Mail o Teléfono ya están en uso');
       } else {
