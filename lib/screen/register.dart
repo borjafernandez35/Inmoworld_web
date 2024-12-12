@@ -59,7 +59,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       _buildTextField(
                         controller: registerController.password2Controller,
-                        label: 'Rewrite Password',
+                        label: 'Reescribe contraseña',
                         obscureText: true,
                       ),
 

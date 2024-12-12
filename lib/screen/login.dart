@@ -64,9 +64,9 @@ class LogInScreen extends StatelessWidget {
 
             // Botón para Navegar a Registrarse
             ElevatedButton(
-              onPressed: () => Get.toNamed('/register'),
-              child: const Text('Registrarse'),
-            ),
+                        onPressed: () => Get.toNamed('/login'),
+                        child: const Text('Volver'),
+                      ),
           ],
         ),
       ),

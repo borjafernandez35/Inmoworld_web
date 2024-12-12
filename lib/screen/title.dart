@@ -3,7 +3,6 @@ import 'package:google_identity_services_web/oauth2.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:spotfinder/Resources/pallete.dart';
 import 'package:inmoworld_web/src/sign_in_button.dart';
 import 'package:inmoworld_web/services/sign_in.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
@@ -64,7 +63,7 @@ class _TitleScreenState extends State<TitleScreen> {
   }
 
   Future<void> _handleSignIn() async {
-     if (_currentUser != null) return;
+    if (_currentUser != null) return;
 
     isLoading.value = true;
     errorMessage.value = '';
@@ -102,9 +101,10 @@ class _TitleScreenState extends State<TitleScreen> {
     }
   }
 
-    void _handleLoginResponse(int statusCode) {
-    if (statusCode == 201 || statusCode== 200) {
-      Get.snackbar('Success', 'Login successful', snackPosition: SnackPosition.BOTTOM);
+  void _handleLoginResponse(int statusCode) {
+    if (statusCode == 201 || statusCode == 200) {
+      Get.snackbar('Success', 'Login successful',
+          snackPosition: SnackPosition.BOTTOM);
       Get.toNamed('/perfil');
     } else if (statusCode == 400) {
       _showError('Incorrect credentials. Please try again.');
@@ -120,7 +120,7 @@ class _TitleScreenState extends State<TitleScreen> {
     // Get.toNamed('/');
   }
 
-   void _showError(String message) {
+  void _showError(String message) {
     errorMessage.value = message;
     Get.snackbar('Error', message, snackPosition: SnackPosition.BOTTOM);
   }
@@ -143,7 +143,6 @@ class _TitleScreenState extends State<TitleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -180,7 +179,8 @@ class _TitleScreenState extends State<TitleScreen> {
                     'Log in',
                     style: TextStyle(
                       fontSize: 26, // Ajusta el tamaño del texto aquí
-                      color: Color.fromARGB(255, 21, 9, 9), // Cambia el color del texto a blanco
+                      color: Color.fromARGB(
+                          255, 21, 9, 9), // Cambia el color del texto a blanco
                     ),
                   ),
                 ),

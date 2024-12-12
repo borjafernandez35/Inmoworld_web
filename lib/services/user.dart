@@ -4,7 +4,8 @@ import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 
 class UserService {
-  final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
+  //final String baseUrl = "http://127.0.0.1:3001"; // URL de tu backend Web
+  final String baseUrl = 'http://147.83.7.157:3000';
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
   //final GetStorage box = GetStorage();
@@ -20,7 +21,7 @@ class UserService {
   void _configureInterceptors() {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token =StorageService.getToken();
+        final token = StorageService.getToken();
         if (token != null) {
           options.headers['x-access-token'] = token;
         }
@@ -71,19 +72,8 @@ class UserService {
     }
   }
 
-  // Guardar datos de sesión
-  /* void saveToken(String token) => box.write('token', token);
-  void saveId(String id) => box.write('_id', id);
-  void saveAdmin(bool isAdmin) => box.write('isAdmin', isAdmin);
-
-  // Obtener datos de sesión
-  String? getToken() => box.read('token');
-  String? getId() => box.read('_id');
-  bool get isAdmin => box.read('isAdmin') ?? false; */
-
-  // Eliminar datos de sesión
   void logout() {
-     StorageService.clearSession(); // Limpia todos los datos almacenados
+    StorageService.clearSession(); // Limpia todos los datos almacenados
   }
 
   // Validar y manejar respuesta
@@ -180,7 +170,8 @@ class UserService {
   // Eliminar Usuario Actual
   Future<int> deleteUser() async {
     try {
-      final response = await dio.delete('$baseUrl/user/${StorageService.getId()}');
+      final response =
+          await dio.delete('$baseUrl/user/${StorageService.getId()}');
       final statusCode = _validateResponse(response);
 
       if (statusCode == 201) {
