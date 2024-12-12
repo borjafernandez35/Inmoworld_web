@@ -47,7 +47,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
   // Función para enviar datos al backend usando dio
   Future<void> sendDataToBackend() async {
     const String baseUrl = 'http://127.0.0.1:3001';
-   // const String baseUrl = 'http://147.83.7.157:3000';
+    //const String baseUrl = 'http://147.83.7.157:3000';
 
     try {
       // Construir el cuerpo de la solicitud
@@ -65,8 +65,6 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
         '$baseUrl/user/google',
         data: requestData,
       );
-
-     
 
       if (response.statusCode == 201) {
         var token = response.data['token'];

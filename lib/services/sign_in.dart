@@ -156,26 +156,6 @@ class SignInService {
     }
   }
 
- /*  void saveId(String id) {
-    final box = GetStorage();
-    box.write('id', id);
-  }
-
-  void saveToken(String token) {
-    final box = GetStorage();
-    box.write('token', token);
-  }
-
-  String? getId() {
-    final box = GetStorage();
-    return box.read('id');
-  }
-
-  String? getToken() {
-    final box = GetStorage();
-    return box.read('token');
-  } */
-
   Future<int> logIn(String email) async {
     try {
       Response response =
@@ -193,12 +173,9 @@ class SignInService {
       if (statusCode == 200 || statusCode == 201) {
         // Verifica si response.data es un Map y contiene el campo 'id'
         if (data is Map<String, dynamic> && data.containsKey('id')) {
-          var token = response.data['token'];
-          var id = response.data['user']['id'];
-          var isAdmin = response.data['user']['isAdmin'];
-          StorageService.saveToken(token);
-          StorageService.saveId(id);
-          StorageService.saveAdmin(isAdmin);
+          StorageService.saveToken(response.data['token']);
+          StorageService.saveId(response.data['user']['_id']);
+          StorageService.saveAdmin(response.data['user']['isAdmin']);
         }
         if (statusCode == 201) {
           return 201;
