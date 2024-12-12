@@ -139,8 +139,7 @@ class UserService {
 
   Future<List<PropertyModel>> getProperties(int page, int limit) async {
     try {
-      print(
-          'Intentando obtener propiedades para la página $page con límite $limit...');
+      print('Intentando obtener propiedades para la página $page con límite $limit...');
       final response = await dio.get('$baseUrl/property/$page/$limit');
       print('Respuesta recibida: ${response.data}');
 
@@ -148,13 +147,10 @@ class UserService {
         throw Exception("Datos de propiedades no encontrados en la respuesta.");
       }
 
-      final List<dynamic> propertiesData =
-          response.data['properties'] as List<dynamic>;
+      final List<dynamic> propertiesData = response.data['properties'] as List<dynamic>;
 
       print('Datos de propiedades procesados correctamente: $propertiesData');
-      return propertiesData
-          .map((data) => PropertyModel.fromJson(data))
-          .toList();
+      return propertiesData.map((data) => PropertyModel.fromJson(data)).toList();
     } catch (e, stackTrace) {
       print('Error al obtener propiedades: $e');
       print('Detalles del error: $stackTrace');

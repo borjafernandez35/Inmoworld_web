@@ -4,10 +4,10 @@ class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
 
   final List<String> routes = [
-    '/usuarios',
-    '/experiencies',
+    '/home', '/usuarios',
+   
     '/properties', // Nueva ruta para propiedades
-    '/perfil'
+    '/perfil', '/map'
   ];
 
   void navigateTo(int index) {

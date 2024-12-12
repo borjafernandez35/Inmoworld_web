@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:inmoworld_web/screen/login.dart';
 import 'package:inmoworld_web/screen/register.dart';
 import 'package:inmoworld_web/widgets/bottomNavigationBar.dart';
-//import 'package:flutter_application_1/screen/experiencies.dart';
 import 'package:inmoworld_web/screen/perfil.dart';
 import 'package:inmoworld_web/screen/user.dart';
 import 'package:inmoworld_web/screen/property.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
+import 'package:inmoworld_web/controllers/propertyController.dart'; // Importa el controlador
+import 'package:google_maps_flutter/google_maps_flutter.dart'; // Importa LatLng
 import 'package:inmoworld_web/screen/title.dart';
-//import 'package:flutter_application_1/controllers/experienceController.dart';
-//import 'package:flutter_application_1/controllers/experienceListController.dart';
+import 'package:inmoworld_web/screen/map.dart'; // Importa la pantalla de mapa
 
 void main() async {
   await GetStorage.init();
@@ -20,6 +20,9 @@ void main() async {
   runApp(
     const MyApp(),
   );
+
+  // Prueba rápida de la función getCoordinatesFromAddress
+  await testGeocoding();
 }
 
 class MyApp extends StatelessWidget {
@@ -31,25 +34,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
       getPages: [
-        // Ruta de inicio de sesión
         GetPage(
           name: '/login',
-          page: () =>  TitleScreen(),
+          page: () => TitleScreen(),
         ),
         GetPage(
           name: '/logearse',
-          page: () =>  LogInScreen(),
+          page: () => LogInScreen(),
         ),
-        // Ruta de registro
         GetPage(
           name: '/register',
           page: () => const RegisterScreen(),
         ),
-        // Ruta de la pantalla principal con BottomNavScaffold
-        /*  GetPage(
-          name: '/registerGoogle',
-          page: () => BottomNavScaffold(child: const Regi()),
-        ), */
         GetPage(
           name: '/usuarios',
           page: () => BottomNavScaffold(child: const UserScreen()),
@@ -63,7 +59,28 @@ class MyApp extends StatelessWidget {
           name: '/perfil',
           page: () => BottomNavScaffold(child: const PerfilScreen()),
         ),
+        GetPage(
+          name: '/map',
+          page: () => BottomNavScaffold(child: MapScreen()), // Nueva pantalla de mapa
+        ),
       ],
     );
   }
 }
+
+// Función de prueba rápida
+Future<void> testGeocoding() async {
+  final PropertyController propertyController = PropertyController();
+  final address = '1600 Amphitheatre Parkway, Mountain View, CA, 94043, USA';
+  try {
+    LatLng location = await propertyController.getCoordinatesFromAddress(address);
+    print('Coordinates for $address: $location');
+  } catch (e) {
+    print('Failed to get coordinates for $address: $e');
+  }
+}
+
+
+
+
+
