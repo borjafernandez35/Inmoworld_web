@@ -113,7 +113,7 @@ class UserService {
 
   // Obtener Usuario Actual
   Future<UserModel> getUser() async {
-    print('GETTTTTUSEEERRRR!!!! me llamaaaaannnn!!!');
+    print('GETTTTTUSEEERRRR!!!! me llamaaaaannnn!!!${StorageService.getId()}');
     try {
       final response = await dio.get('$baseUrl/user/${StorageService.getId()}');
       return UserModel.fromJson(response.data['data']);
