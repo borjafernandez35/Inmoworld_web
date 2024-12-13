@@ -174,7 +174,7 @@ class SignInService {
         // Verifica si response.data es un Map y contiene el campo 'id'
         if (data is Map<String, dynamic> && data.containsKey('id')) {
           StorageService.saveToken(response.data['token']);
-          StorageService.saveId(response.data['user']['_id']);
+          StorageService.saveId(response.data['user']['id']);
           StorageService.saveAdmin(response.data['user']['isAdmin']);
         }
         if (statusCode == 201) {

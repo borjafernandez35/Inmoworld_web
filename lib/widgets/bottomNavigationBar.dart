@@ -23,7 +23,7 @@ class BottomNavScaffold extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.chat),
                 label: 'Usuarios',
               ),
               BottomNavigationBarItem(

@@ -105,7 +105,7 @@ class _TitleScreenState extends State<TitleScreen> {
     if (statusCode == 201 || statusCode == 200) {
       Get.snackbar('Success', 'Login successful',
           snackPosition: SnackPosition.BOTTOM);
-      Get.toNamed('/perfil');
+      Get.toNamed('/properties');
     } else if (statusCode == 400) {
       _showError('Incorrect credentials. Please try again.');
     } else if (statusCode == 500) {

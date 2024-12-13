@@ -13,7 +13,7 @@ class UserScreen extends StatelessWidget {
     final UserListController userListController = Get.put(UserListController());
 
     return Scaffold(
-      appBar: AppBar(title: const Text('User Management')),
+      appBar: AppBar(title: const Text('Chat')),
       body: PagedListView<int, UserModel>(
         pagingController: userListController.pagingController,
         builderDelegate: PagedChildBuilderDelegate<UserModel>(
