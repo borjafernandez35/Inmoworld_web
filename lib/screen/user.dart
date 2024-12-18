@@ -19,17 +19,20 @@ class UserScreen extends StatelessWidget {
         builderDelegate: PagedChildBuilderDelegate<UserModel>(
           itemBuilder: (context, user, index) => UserCard(user: user),
           firstPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Error loading data.'),
+            child: const Text('Error cargando datos.'),
           ),
           newPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Failed to load more data.'),
+            child: const Text('No se pudieron cargar más datos.'),
           ),
           firstPageProgressIndicatorBuilder: (context) =>
               const Center(child: CircularProgressIndicator()),
-          newPageProgressIndicatorBuilder: (context) =>
-              const Center(child: CircularProgressIndicator()),
+          newPageProgressIndicatorBuilder: (context) => Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: const CircularProgressIndicator.adaptive(),
+          ),
         ),
       ),
     );
   }
 }
+

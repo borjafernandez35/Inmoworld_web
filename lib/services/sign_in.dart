@@ -169,14 +169,12 @@ class SignInService {
       print('los datos son:$data');
 
       print('statusCode es:$statusCode');
-      
 
       if (statusCode == 200 || statusCode == 201) {
+        StorageService.saveToken(response.data['token']);
+        StorageService.saveId(response.data['user']['id']);
+        StorageService.saveAdmin(response.data['user']['isAdmin']);
 
-          StorageService.saveToken(response.data['token']);
-          StorageService.saveId(response.data['user']['id']);
-          StorageService.saveAdmin(response.data['user']['isAdmin']);
-        
         if (statusCode == 201) {
           return 201;
         }

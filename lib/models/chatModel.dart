@@ -16,8 +16,8 @@ class Chat {
   // Método para convertir de JSON a objeto Chat
   factory Chat.fromJson(Map<String, dynamic> json) {
     return Chat(
-      receiver: json['receiver'],
-      sender: json['sender'],
+      receiver: json['receiver']?.toString() ?? 'Usuario desconocido',
+      sender: json['sender']?.toString() ?? 'Usuario desconocido',
       message: json['message'],
       date: DateTime.parse(json['date']), // Asegúrate de que el formato de fecha sea compatible
     );
