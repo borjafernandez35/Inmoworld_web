@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/controllers/navigationController.dart';
+import 'package:inmoworld_web/screen/chatbot.dart';  // Asegúrate de importar la pantalla de Chatbot
 
 class BottomNavScaffold extends StatelessWidget {
   final Widget child;
@@ -14,7 +15,7 @@ class BottomNavScaffold extends StatelessWidget {
       body: child,
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             currentIndex: navController.selectedIndex.value,
-            onTap: navController.navigateTo,
+            onTap: navController.navigateTo,  // Esta función navega a la pantalla correspondiente
             selectedItemColor: const Color.fromARGB(255, 92, 14, 105),
             unselectedItemColor: Colors.black,
             items: const [
@@ -34,6 +35,10 @@ class BottomNavScaffold extends StatelessWidget {
                 icon: Icon(Icons.person),
                 label: 'Perfil',
               ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.air),
+                label: 'Chatbot',
+              ),
               BottomNavigationBarItem( 
                 icon: Icon(Icons.location_pin),
                 label: 'Mapa',
@@ -43,3 +48,4 @@ class BottomNavScaffold extends StatelessWidget {
     );
   }
 }
+

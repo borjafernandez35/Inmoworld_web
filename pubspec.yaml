@@ -23,7 +23,8 @@ dependencies:
   intl: ^0.18.0  
   google_maps_flutter: ^2.0.0
   geocoding: ^2.0.0
-  http: ^1.2.2
+  dialogflow_flutter: ^1.0.0
+  http: ^0.13.3
 
 
 
@@ -36,4 +37,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets: 
+    - assets/credenciales.json
     - assets/

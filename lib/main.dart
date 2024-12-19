@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inmoworld_web/screen/chatbot.dart';
 import 'package:inmoworld_web/screen/login.dart';
 import 'package:inmoworld_web/screen/register.dart';
 import 'package:inmoworld_web/widgets/bottomNavigationBar.dart';
@@ -58,6 +59,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/perfil',
           page: () => BottomNavScaffold(child: const PerfilScreen()),
+        ),
+        GetPage(
+          name: '/chatbot',
+          page: () => BottomNavScaffold(child: ChatBotApp()),
         ),
         GetPage(
           name: '/map',

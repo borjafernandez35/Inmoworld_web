@@ -7,6 +7,7 @@ class NavigationController extends GetxController {
     '/usuarios',
     '/properties', // Nueva ruta para propiedades
     '/perfil', 
+    '/chatbot',
     '/map'
   ];
 
