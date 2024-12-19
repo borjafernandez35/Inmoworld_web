@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:geolocator/geolocator.dart';
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
@@ -32,6 +33,38 @@ class UserService {
         handler.next(e); // Pasar el error al flujo siguiente
       },
     ));
+  }
+
+  Future<int> updateLocation(Position? location) async {
+    final json = {
+      'location': {
+        'type': 'Point',
+        'coordinates': [location!.longitude, location.latitude],
+      }
+    };
+    Response response = await dio.put('$baseUrl/user/${StorageService.getId()}', data: json);
+    var data = response.data.toString();
+    var statusCode = response.statusCode;
+    if (statusCode == 201) {
+      // Si el usuario se crea correctamente, retornamos el código 201
+      print('201');
+      return 201;
+    } else if (statusCode == 400) {
+      // Si hay campos faltantes, retornamos el código 400
+      print('400');
+
+      return 400;
+    } else if (statusCode == 500) {
+      // Si hay un error interno del servidor, retornamos el código 500
+      print('500');
+
+      return 500;
+    } else {
+      // Otro caso no manejado
+      print('-1');
+
+      return -1;
+    }
   }
 
   Future<List<UserModel>> getUsers(int page, int limit) async {
@@ -123,7 +156,6 @@ class UserService {
     }
   }
 
-
   // Obtener Lista de Propiedades
   Future<List<PropertyModel>> getData() async {
     try {
@@ -137,9 +169,10 @@ class UserService {
     }
   }
 
-  Future<List<PropertyModel>> getProperties(int page, int limit) async {
+  Future<List<PropertyModel>> getProperties( int page, int limit) async {
     try {
-      print('Intentando obtener propiedades para la página $page con límite $limit...');
+      print(
+          'Intentando obtener propiedades para la página $page con límite $limit...');
       final response = await dio.get('$baseUrl/property/$page/$limit');
       print('Respuesta recibida: ${response.data}');
 
@@ -147,10 +180,38 @@ class UserService {
         throw Exception("Datos de propiedades no encontrados en la respuesta.");
       }
 
-      final List<dynamic> propertiesData = response.data['properties'] as List<dynamic>;
+      final List<dynamic> propertiesData =
+          response.data['properties'] as List<dynamic>;
 
       print('Datos de propiedades procesados correctamente: $propertiesData');
-      return propertiesData.map((data) => PropertyModel.fromJson(data)).toList();
+      return propertiesData
+          .map((data) => PropertyModel.fromJson(data))
+          .toList();
+    } catch (e, stackTrace) {
+      print('Error al obtener propiedades: $e');
+      print('Detalles del error: $stackTrace');
+      rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
+    }
+  }
+
+   Future<List<PropertyModel>> getMapProperties(double selectedDistance, int page, int limit, String search) async {
+    try {
+      print(
+          'Intentando obtener propiedades para la página $page con límite $limit...');
+      final response = await dio.get('$baseUrl/property/$page/$limit/${StorageService.getId()}/$selectedDistance/$search');
+      print('Respuesta recibida: ${response.data}');
+
+      if (response.data == null || response.data['properties'] == null) {
+        throw Exception("Datos de propiedades no encontrados en la respuesta.");
+      }
+
+      final List<dynamic> propertiesData =
+          response.data['properties'] as List<dynamic>;
+
+      print('Datos de propiedades procesados correctamente: $propertiesData');
+      return propertiesData
+          .map((data) => PropertyModel.fromJson(data))
+          .toList();
     } catch (e, stackTrace) {
       print('Error al obtener propiedades: $e');
       print('Detalles del error: $stackTrace');

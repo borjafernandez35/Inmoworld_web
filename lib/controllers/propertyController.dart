@@ -7,9 +7,9 @@ import 'package:inmoworld_web/services/user.dart';
 class PropertyController {
   final UserService _userService = UserService();
 
-  Future<List<PropertyModel>> fetchProperties(int page, int limit) async {
+  Future<List<PropertyModel>> fetchProperties(double selectedDistance, int page, int limit, String search) async {
     print('Fetching properties from backend...');
-    final properties = await _userService.getProperties(page, limit);
+    final properties = await _userService.getMapProperties(selectedDistance,page, limit,search);
     print('Properties received: ${properties.map((p) => p.toJson()).toList()}');
     return properties;
   }

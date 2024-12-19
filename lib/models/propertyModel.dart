@@ -34,7 +34,7 @@ class PropertyModel with ChangeNotifier {
   try {
     return PropertyModel(
       id: json['_id'] ?? 'Sin ID',
-      owner: json['owner'] ?? 'Sin Propietario',
+      owner: _validateObjectId(json['owner']?['_id']),
       address: json['address'] ?? 'Sin Dirección',
       description: json['description'] ?? 'Sin Descripción',
     );
