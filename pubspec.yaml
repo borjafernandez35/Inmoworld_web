@@ -26,7 +26,6 @@ dependencies:
   http: ^1.2.2
 
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -37,3 +36,4 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/
+    - assets/placeholder.jpg

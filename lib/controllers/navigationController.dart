@@ -5,7 +5,8 @@ class NavigationController extends GetxController {
 
   final List<String> routes = ['/chat',
     '/usuarios',
-    '/properties', // Nueva ruta para propiedades
+    '/properties',
+    '/post',
     '/perfil', 
     '/map'
   ];

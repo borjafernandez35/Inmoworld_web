@@ -6,6 +6,7 @@ import 'package:inmoworld_web/widgets/bottomNavigationBar.dart';
 import 'package:inmoworld_web/screen/perfil.dart';
 import 'package:inmoworld_web/screen/user.dart';
 import 'package:inmoworld_web/screen/property.dart';
+import 'package:inmoworld_web/screen/property_creation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
 import 'package:inmoworld_web/controllers/propertyController.dart'; // Importa el controlador
@@ -54,7 +55,10 @@ class MyApp extends StatelessWidget {
           name: '/properties',
           page: () => BottomNavScaffold(child: const PropertyScreen()),
         ),
-
+        GetPage(
+          name: '/post',
+          page: () => BottomNavScaffold(child: const CloudinaryUploaderWeb()),
+        ),
         GetPage(
           name: '/perfil',
           page: () => BottomNavScaffold(child: const PerfilScreen()),

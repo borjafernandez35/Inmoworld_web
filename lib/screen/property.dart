@@ -79,30 +79,53 @@ class _PropertyScreenState extends State<PropertyScreen> {
                 itemBuilder: (context, property, index) {
                   try {
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[850], 
+                        color: Colors.grey[850],
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      child: Column(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            property.address,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                          // Imagen
+                          if (property.picture != null && property.picture!.isNotEmpty)
+                            Image.network(
+                              property.picture!,
+                              height: 100, // Altura fija para la imagen
+                              width: 100,  // Anchura fija para la imagen
+                              fit: BoxFit.cover,
+                            )
+                          else
+                            Image.asset(
+                              'assets/placeholder.jpg', // Imagen de marcador de posición
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Text(
-                            property.description,
-                            style: TextStyle(
-                              color: Colors.white70, 
-                              fontSize: 14.0,
+                          const SizedBox(width: 16.0), // Espaciado entre la imagen y el texto
+                          // Textos
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  property.address,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  property.description,
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -111,7 +134,8 @@ class _PropertyScreenState extends State<PropertyScreen> {
                   } catch (e) {
                     print("Error al renderizar propiedad: $e");
                     return const Center(
-                        child: Text('Error al mostrar propiedad.'));
+                      child: Text('Error al mostrar propiedad.'),
+                    );
                   }
                 },
                 noItemsFoundIndicatorBuilder: (context) => const Center(

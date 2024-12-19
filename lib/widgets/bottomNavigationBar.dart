@@ -31,6 +31,10 @@ class BottomNavScaffold extends StatelessWidget {
                 label: 'Properties',
               ),
               BottomNavigationBarItem(
+                icon: Icon(Icons.image),
+                label: 'Post',
+              ),
+              BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Perfil',
               ),

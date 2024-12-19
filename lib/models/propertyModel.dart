@@ -6,6 +6,7 @@ class PropertyModel with ChangeNotifier {
   final String owner;
   final String address;
   final String description;
+  final String? picture;
 
   UserModel? ownerDetails; // Detalles del propietario
   List<UserModel>? participantsDetails;
@@ -16,6 +17,7 @@ class PropertyModel with ChangeNotifier {
     required this.owner,
     required this.address,
     required this.description,
+    this.picture,
     this.ownerDetails,
     this.participantsDetails,
   });
@@ -37,6 +39,9 @@ class PropertyModel with ChangeNotifier {
       owner: json['owner'] ?? 'Sin Propietario',
       address: json['address'] ?? 'Sin Dirección',
       description: json['description'] ?? 'Sin Descripción',
+      picture: (json['picture'] is List && json['picture'].isNotEmpty)
+          ? json['picture'][0]
+          : null,
     );
   } catch (e) {
     throw Exception('Error al procesar propiedad: $json');
@@ -61,6 +66,7 @@ class PropertyModel with ChangeNotifier {
       'owner': owner, // Solo el ID
       'address': address,
       'description': description,
+      'picture': picture,
     };
   }
 
