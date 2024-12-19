@@ -1,37 +1,36 @@
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:inmoworld_web/models/userModel.dart';
-import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:inmoworld_web/services/user.dart';
 
 class ReviewModel with ChangeNotifier {
   final String id;
-  final owner;
-  final List<String> participants;
+  final String owner;
+  final String property;
+  final DateTime date;
+  final double rating;
   String description;
 
   UserModel? ownerDetails; // Detalles del propietario
-  List<UserModel>? participantsDetails;
 
   // Constructor
   ReviewModel({
     required this.id,
     required this.owner,
-    required List<String?> participants,
+    required this.property,
+    required this.date,
+    required this.rating,
     required this.description,
     this.ownerDetails,
-    this.participantsDetails,
-  }) : participants = participants.whereType<String>().toList();
+  });
 
   // Método para crear una instancia desde un JSON
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(
       id: _validateObjectId(json['_id']),
-      owner: _validateObjectId(json['owner']?['_id']),
-      participants: (json['participants'] as List?)
-              ?.map((p) => _validateObjectId(p['_id']))
-              .where((id) => id.isNotEmpty)
-              .toList() ??
-          [],
+      owner: _validateObjectId(json['user']),
+      property: _validateObjectId(json['property']),
+      date: DateTime.parse(json['date']),
+      rating: (json['rating'] as num).toDouble(),
       description: json['description']?.toString() ?? 'Sin descripción',
     );
   }
@@ -49,60 +48,33 @@ class ReviewModel with ChangeNotifier {
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
-      'owner': owner, // Solo el ID
-      'participants': participants, // IDs de los participantes
+      'user': owner, // Solo el ID
+      'property': property, // Solo el ID de la propiedad
+      'date': date.toIso8601String(),
+      'rating': rating,
       'description': description,
     };
   }
 
-  Future<void> loadDetails(List<ReviewModel> experiences) async {
+  // Método para cargar los detalles del propietario
+  Future<void> loadDetails() async {
     final userService = UserService();
 
     try {
-      // Obtener solo los IDs de los usuarios
-      final usersId = await userService.getUser();
-
-      if (usersId.isEmpty) {
-        print("No se encontraron usuarios.");
-        return;
-      }
-
-      print('GET IDs: $usersId');
-
-      for (var experience in experiences) {
-        print('Procesando experiencia ID: ${experience.id}');
-
-        // Validar y cargar el propietario
-        if (usersId.contains(experience.owner)) {
-          final ownerDetails = await userService.getUser(experience.owner);
-          experience.ownerDetails = ownerDetails;
-          print(
-              'Detalles del propietario cargados: ${ownerDetails.name} para experiencia ${experience.id}');
-        } else {
-          print(
-              'El propietario con ID ${experience.owner} no está en la lista de usuarios.');
-        }
-
-        // Validar y cargar los detalles de los participantes
-        experience.participantsDetails = await Future.wait(
-          experience.participants.map((participantId) async {
-            if (usersId.contains(participantId)) {
-              return await userService.getUser(participantId);
-            }
-            return null; // Ignorar IDs de participantes no válidos
-          }),
-        ).then((list) => list.whereType<UserModel>().toList());
-
-        print(
-            'Detalles de participantes cargados para experiencia ${experience.id}: '
-            '${experience.participantsDetails?.map((e) => e.name).toList()}');
+      // Obtener detalles del propietario utilizando getUser
+      final ownerDetails = await userService.getUser();
+      if (ownerDetails != null) {
+        this.ownerDetails = ownerDetails;
+        print('Detalles del propietario cargados: ${ownerDetails.name}');
+      } else {
+        print('Propietario no encontrado: $owner');
       }
 
       // Notificar cambios
       notifyListeners();
     } catch (e) {
-      print("Error al cargar detalles de las experiencias: $e");
+      print("Error al cargar detalles de la reseña: $e");
     }
   }
 }
- */
+
