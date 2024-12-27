@@ -19,24 +19,20 @@ class BottomNavScaffold extends StatelessWidget {
             unselectedItemColor: Colors.black,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.chat),
                 label: 'Usuarios',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.local_activity),
-                label: 'Properties',
+                icon: Icon(Icons.person),
+                label: 'Perfil',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.image),
                 label: 'Post',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Perfil',
               ),
               BottomNavigationBarItem( 
                 icon: Icon(Icons.location_pin),

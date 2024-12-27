@@ -24,7 +24,7 @@ dependencies:
   google_maps_flutter: ^2.0.0
   geocoding: ^2.0.0
   http: ^1.2.2
-
+  jwt_decode: ^0.3.0
 
 dev_dependencies:
   flutter_test:

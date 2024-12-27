@@ -2,6 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+
+Map<String, dynamic> decodeJwt(String token) {
+  return Jwt.parseJwt(token);  // Devuelve el payload decodificado
+}
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
@@ -23,6 +28,7 @@ class UserService {
       onRequest: (options, handler) async {
         final token = StorageService.getToken();
         if (token != null) {
+          print('Token en las cabeceras: $token');
           options.headers['x-access-token'] = token;
         }
         handler.next(options);
@@ -157,6 +163,68 @@ class UserService {
       rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
     }
   }
+  
+  // Método para obtener el ID del usuario desde el token
+  Future<String?> getUserIdFromToken() async {
+    final token = await StorageService.getToken();
+
+    if (token == null) {
+      print('No token disponible');
+      return null; // Retorna null si no hay token disponible
+    }
+
+    try {
+      // Decodificar el token y obtener el userId
+      final decodedToken = decodeJwt(token);  // Función para decodificar el JWT
+      final userId = decodedToken['id'];  // Extrae el id del payload
+
+      if (userId == null) {
+        print('ID de usuario no encontrado en el token');
+        return null; // Retorna null si el ID no está en el token
+      }
+
+      return userId; // Retorna el ID del usuario
+    } catch (e) {
+      print('Error al decodificar el token: $e');
+      return null; // En caso de error, retorna null
+    }
+  }
+
+  Future<int> createProperty(Map<String, dynamic> propertyData) async {
+    try {
+      final token = await StorageService.getToken();
+      
+      // Verificar si el token es nulo
+      if (token == null) {
+        print('Token no disponible');
+        return -1;  // O manejar el caso según tu lógica
+      }
+      
+      print('Token en UserService: $token');
+      print('Datos enviados al backend: $propertyData');
+
+      // Decodificar el token para obtener el ID del usuario (owner)
+      final decodedToken = decodeJwt(token);  // Función para decodificar el JWT
+      final userId = decodedToken['id'];   // Asegúrate de que el campo sea el correcto
+
+      propertyData['owner'] = userId;
+
+      final response = await dio.post(
+        '$baseUrl/property',
+        data: propertyData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      return response.statusCode ?? -1;  // Devuelve el statusCode
+    } catch (e) {
+      print('Error al crear la propiedad: $e');
+      return -1;  // En caso de error, retorna -1
+    }
+  }
 
   // Login
   Future<int> logIn(Map<String, dynamic> logInData) async {
@@ -170,7 +238,7 @@ class UserService {
         StorageService.saveId(response.data['user']['id']);
         StorageService.saveAdmin(response.data['user']['isAdmin']);
       }
-
+      print('Token en StorageService: ${StorageService.getToken()}');
       return statusCode;
     } catch (e) {
       print('Error en logIn: $e');

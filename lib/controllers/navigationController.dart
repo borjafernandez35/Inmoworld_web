@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
 
-  final List<String> routes = ['/chat',
+  final List<String> routes = [
     '/usuarios',
-    '/properties',
-    '/post',
     '/perfil', 
+    '/home',
+    '/post',
     '/map'
   ];
 

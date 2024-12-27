@@ -41,7 +41,7 @@ Future<void> _fetchAndMarkProperties(int page, int limit) async {
         setState(() {
           _markers.add(
             Marker(
-              markerId: MarkerId(property.id),
+              markerId: MarkerId(property.id ?? 'default_id'),
               position: location,
               infoWindow: InfoWindow(title: address),
             ),

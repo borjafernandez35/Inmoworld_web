@@ -43,7 +43,7 @@ class UserController extends GetxController {
         // Manejo exitoso
         Get.snackbar('Éxito', 'Inicio de sesión exitoso',
             snackPosition: SnackPosition.BOTTOM);
-        Get.toNamed('/properties');
+        Get.toNamed('/home');
       } else if (statusCode == 400) {
         _showError('Credenciales incorrectas. Verifica e intenta nuevamente.');
       } else if (statusCode == 500) {

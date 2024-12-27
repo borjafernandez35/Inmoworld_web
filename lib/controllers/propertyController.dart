@@ -7,6 +7,25 @@ import 'package:inmoworld_web/services/user.dart';
 class PropertyController {
   final UserService _userService = UserService();
 
+  Future<void> createProperty(Map<String, dynamic> propertyData) async {
+    try {
+      print("Intentando crear la propiedad...");
+      final response = await _userService.createProperty(propertyData);  // Esto sería una llamada al servicio de usuario que hace la solicitud HTTP
+
+      if (response == 200) {
+        print('Propiedad creada exitosamente');
+        
+        // Mostrar mensaje de éxito o navegar según el caso
+      } else {
+        print('Error al crear propiedad');
+        // Mostrar mensaje de error
+      }
+    } catch (e) {
+      print('Error al crear propiedad: $e');
+      // Manejar error de la red u otros
+    }
+  }
+
   Future<List<PropertyModel>> fetchProperties(int page, int limit) async {
     print('Fetching properties from backend...');
     final properties = await _userService.getProperties(page, limit);

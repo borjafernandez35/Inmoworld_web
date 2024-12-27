@@ -48,12 +48,12 @@ class MyApp extends StatelessWidget {
           page: () => const RegisterScreen(),
         ),
         GetPage(
+          name: '/home',
+          page: () => BottomNavScaffold(child: const PropertyScreen()),
+        ),
+        GetPage(
           name: '/usuarios',
           page: () => BottomNavScaffold(child: const UserScreen()),
-        ),
-       GetPage(
-          name: '/properties',
-          page: () => BottomNavScaffold(child: const PropertyScreen()),
         ),
         GetPage(
           name: '/post',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inmoworld_web/models/userModel.dart';
 
 class PropertyModel with ChangeNotifier {
-  final String id; 
+  final String? _id; 
   final String owner;
   final String address;
   final String description;
@@ -13,29 +13,21 @@ class PropertyModel with ChangeNotifier {
 
   // Constructor
   PropertyModel({
-    required this.id,
+    String? id,
     required this.owner,
     required this.address,
     required this.description,
     this.picture,
     this.ownerDetails,
     this.participantsDetails,
-  });
-
-  static String _validateObjectId(dynamic id) {
-  if (id == null || id.toString().isEmpty) {
-    print('ObjectId inválido detectado: $id');
-    throw ArgumentError('ID inválido: $id');
-  }
-  return id.toString();
-  }
+  }) : _id = id;
 
 
   // Método para crear una instancia desde un JSON
  factory PropertyModel.fromJson(Map<String, dynamic> json) {
   try {
     return PropertyModel(
-      id: json['_id'] ?? 'Sin ID',
+      id: json['_id'],
       owner: json['owner'] ?? 'Sin Propietario',
       address: json['address'] ?? 'Sin Dirección',
       description: json['description'] ?? 'Sin Descripción',
@@ -47,7 +39,7 @@ class PropertyModel with ChangeNotifier {
     throw Exception('Error al procesar propiedad: $json');
   }
 }
-
+  String? get id => _id;
 
 
   // Helper function to validate ObjectId
@@ -62,7 +54,7 @@ class PropertyModel with ChangeNotifier {
   // Método para convertir el modelo en JSON
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      '_id': _id,
       'owner': owner, // Solo el ID
       'address': address,
       'description': description,

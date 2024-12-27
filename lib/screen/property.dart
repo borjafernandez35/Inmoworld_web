@@ -110,7 +110,7 @@ class _PropertyScreenState extends State<PropertyScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  property.address,
+                                  property.description,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -119,7 +119,7 @@ class _PropertyScreenState extends State<PropertyScreen> {
                                 ),
                                 const SizedBox(height: 8.0),
                                 Text(
-                                  property.description,
+                                  property.address,
                                   style: TextStyle(
                                     color: Colors.white70,
                                     fontSize: 14.0,
