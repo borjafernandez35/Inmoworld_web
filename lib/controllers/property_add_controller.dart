@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
-import 'package:inmoworld_web/controllers/propertyController.dart';
+import 'package:inmoworld_web/controllers/property_controller.dart';
 
 class PropertyAddController extends GetxController {
   final PropertyController propertyController =

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inmoworld_web/controllers/registerController.dart';
+import 'package:inmoworld_web/controllers/register_controller.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class RegisterScreen extends StatelessWidget {

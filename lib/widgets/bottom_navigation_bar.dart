@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inmoworld_web/controllers/navigationController.dart';
+import 'package:inmoworld_web/controllers/navigation_controller.dart';
 
 class BottomNavScaffold extends StatelessWidget {
   final Widget child;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:inmoworld_web/controllers/propertyController.dart';
+import 'package:inmoworld_web/controllers/property_controller.dart';
 //import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';

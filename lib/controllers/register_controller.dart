@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/services/user.dart';
-import 'package:inmoworld_web/models/userModel.dart';
+import 'package:inmoworld_web/models/user_model.dart';
 
 class RegisterController extends GetxController {
   final UserService userService = UserService();

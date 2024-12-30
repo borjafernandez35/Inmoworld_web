@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:inmoworld_web/models/userModel.dart';
+import 'package:inmoworld_web/models/user_model.dart';
 import 'package:inmoworld_web/services/user.dart';
 
 class UserModelController extends GetxController {

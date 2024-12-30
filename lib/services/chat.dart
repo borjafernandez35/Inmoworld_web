@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import './user.dart';
-import '../models/chatModel.dart';
+import '../models/chat_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 

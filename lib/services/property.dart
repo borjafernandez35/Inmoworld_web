@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:inmoworld_web/services/storage.dart';
-import 'package:inmoworld_web/models/userModel.dart';
+import 'package:inmoworld_web/models/user_model.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:geolocator/geolocator.dart';
 

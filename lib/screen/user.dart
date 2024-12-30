@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:inmoworld_web/controllers/userListController.dart';
-import 'package:inmoworld_web/widgets/userCard.dart';
-import 'package:inmoworld_web/models/userModel.dart';
+import 'package:inmoworld_web/controllers/user_list_controller.dart';
+import 'package:inmoworld_web/widgets/user_card.dart';
+import 'package:inmoworld_web/models/user_model.dart';
 
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});

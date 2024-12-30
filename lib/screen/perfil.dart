@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inmoworld_web/controllers/userModelController.dart';
-import 'package:inmoworld_web/widgets/userCard.dart';
+import 'package:inmoworld_web/controllers/user_model_controller.dart';
+import 'package:inmoworld_web/widgets/user_card.dart';
 
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});

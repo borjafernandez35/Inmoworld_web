@@ -8,7 +8,7 @@ import 'package:inmoworld_web/screen/user.dart';
 import 'package:inmoworld_web/screen/property.dart';
 import 'package:inmoworld_web/screen/property_creation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:inmoworld_web/controllers/userModelController.dart';
+import 'package:inmoworld_web/controllers/user_model_controller.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/screen/title.dart';

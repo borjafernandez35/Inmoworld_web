@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:inmoworld_web/services/user.dart';
-import 'package:inmoworld_web/models/userModel.dart';
+import 'package:inmoworld_web/models/user_model.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class UserListController extends GetxController {

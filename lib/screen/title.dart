@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/src/sign_in_button.dart';
 import 'package:inmoworld_web/services/sign_in.dart';
-import 'package:inmoworld_web/controllers/userModelController.dart';
+import 'package:inmoworld_web/controllers/user_model_controller.dart';
 import 'package:google_identity_services_web/id.dart' as gis_id;
 import 'package:inmoworld_web/screen/register_google.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inmoworld_web/controllers/userController.dart';
+import 'package:inmoworld_web/controllers/user_controller.dart';
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});

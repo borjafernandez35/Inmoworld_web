@@ -4,7 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:inmoworld_web/widgets/property_list.dart';
 import 'package:inmoworld_web/widgets/search_bar.dart' as custom;
-import 'package:inmoworld_web/controllers/propertyController.dart';
+import 'package:inmoworld_web/controllers/property_controller.dart';
 
 class PropertyScreen extends StatefulWidget {
   const PropertyScreen({Key? key}) : super(key: key);

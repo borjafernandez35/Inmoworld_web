@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/services/user.dart';
-import 'package:inmoworld_web/controllers/userModelController.dart';
+import 'package:inmoworld_web/controllers/user_model_controller.dart';
 
 
 class UserController extends GetxController {
