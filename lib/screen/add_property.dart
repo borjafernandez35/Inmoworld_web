@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
-import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:inmoworld_web/models/property_model.dart';
 import 'package:inmoworld_web/controllers/property_controller.dart';
 import 'package:inmoworld_web/services/storage.dart';
 

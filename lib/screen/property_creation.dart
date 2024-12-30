@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:html' as html;
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:inmoworld_web/services/user.dart';
-import 'package:inmoworld_web/services/property.dart';
 
 class CloudinaryUploaderWeb extends StatefulWidget {
   const CloudinaryUploaderWeb({Key? key}) : super(key: key);

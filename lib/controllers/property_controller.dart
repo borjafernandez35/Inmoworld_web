@@ -1,6 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:inmoworld_web/models/property_model.dart';
 import 'package:inmoworld_web/services/property.dart';
 
 // Controlador separado para manejar la lógica de propiedades

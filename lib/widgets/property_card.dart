@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:inmoworld_web/models/property_model.dart';
 import 'package:http/http.dart' as http;
 
 class PropertyCard extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:inmoworld_web/models/property_model.dart';
 import 'package:inmoworld_web/widgets/property_list.dart';
 import 'package:inmoworld_web/widgets/search_bar.dart' as custom;
 import 'package:inmoworld_web/controllers/property_controller.dart';

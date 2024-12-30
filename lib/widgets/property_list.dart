@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:inmoworld_web/models/propertyModel.dart';
+import 'package:inmoworld_web/models/property_model.dart';
 import 'propertycard.dart';
 
 class PropertyList extends StatelessWidget {
