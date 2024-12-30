@@ -1,46 +1,84 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
-import 'package:inmoworld_web/services/user.dart';
+import 'package:inmoworld_web/services/property.dart';
 
-class PropertyController {
-  final UserService _userService = UserService();
+// Controlador separado para manejar la lógica de propiedades
+class PropertyController extends GetxController {
+  final PropertyService _propertyService = PropertyService();
+  final RxList<PropertyModel> properties = <PropertyModel>[].obs;
+  final RxList<PropertyModel> mapProperties = <PropertyModel>[].obs;
+  final RxBool isLoading = false.obs;
 
-  Future<List<PropertyModel>> fetchProperties(double selectedDistance, int page, int limit, String search) async {
-    print('Fetching properties from backend...');
-    final properties = await _userService.getMapProperties(selectedDistance,page, limit,search);
-    print('Properties received: ${properties.map((p) => p.toJson()).toList()}');
-    return properties;
+  /// Obtener lista de propiedades (listado general)
+  Future<void> fetchProperties({
+    required int page,
+    required int limit,
+    required double distance,
+    required String sort,
+  }) async {
+    isLoading.value = true;
+    try {
+     Position  position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      await _propertyService.updateLocation(position);
+       final fetchedProperties = await _propertyService.getProperties(
+        page,
+        limit,
+        distance,
+        sort.isEmpty ? '' : sort, // Pasar cadena vacía si no hay búsqueda
+      );
+      properties.assignAll(fetchedProperties);
+    } catch (e) {
+      print('Error al obtener propiedades: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-   final String apiKey = 'AIzaSyDr6kIiCCTq-jp2JeIzaxDpJgtQBlaUPYI';
-
-  Future<LatLng> getCoordinatesFromAddress(String address) async {
-    print('Getting coordinates for address: $address');
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$apiKey');
-
+  /// Obtener propiedades para marcadores en el mapa
+  Future<void> fetchMapProperties({
+    required double distance,
+    required int page,
+    required int limit,
+    required String search,
+  }) async {
+    isLoading.value = true;
     try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-          final location = data['results'][0]['geometry']['location'];
-          final lat = location['lat'];
-          final lng = location['lng'];
-          print('Coordinates for $address: $lat, $lng');
-          return LatLng(lat, lng);
-        } else {
-          throw Exception('No coordinates found for address: $address');
-        }
-      } else {
-        throw Exception('Failed to fetch coordinates: ${response.reasonPhrase}');
+     Position  position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      await _propertyService.updateLocation(position);
+      final fetchedMapProperties = await _propertyService.getMapProperties(
+          distance, page, limit, search);
+      mapProperties.assignAll(fetchedMapProperties);
+    } catch (e) {
+      print('Error al obtener propiedades para el mapa: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> createProperty(PropertyModel property) async {
+    try {
+      print('ESTOY EN EL CREATE PORPERTYYYYYYYYYYY$property');
+      await _propertyService.createProperty(property);
+      properties.add(property);
+    } catch (e) {
+      print('Error creating property: $e');
+    }
+  }
+
+  Future<void> updateProperty(PropertyModel property) async {
+    try {
+      await _propertyService.updateProperty(property);
+      int index = properties.indexWhere((p) => p.id == property.id);
+      if (index != -1) {
+        properties[index] = property;
       }
     } catch (e) {
-      print('Failed to get coordinates for $address: $e');
-      throw e;
+      print('Error updating property: $e');
     }
   }
 }
-

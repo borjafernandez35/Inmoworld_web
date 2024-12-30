@@ -4,8 +4,8 @@ class StorageService {
   static final GetStorage _box = GetStorage();
 
   // Métodos de lectura
-  static String? getToken() => _box.read('token');
-  static String? getId() => _box.read('id');
+  static String getToken() => _box.read('token');
+  static String getId() => _box.read('id');
   static bool get isAdmin => _box.read('isAdmin') ?? false;
 
   // Métodos de escritura

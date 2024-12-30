@@ -89,7 +89,7 @@ class ChatService {
       chats.sort((a, b) => a.date.compareTo(b.date));
 
       return chats;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response?.statusCode == 403) {
         print('Error 403: Acceso denegado. Verifica el token.');
       } else {
@@ -105,12 +105,10 @@ class ChatService {
       onRequest: (options, handler) async {
         // Obtener token del usuario
         final token = StorageService.getToken();
-        if (token != null) {
-          options.headers['x-access-token'] = token;
-        }
-        handler.next(options); // Continuar con la solicitud
+        options.headers['x-access-token'] = token;
+              handler.next(options); // Continuar con la solicitud
       },
-      onError: (DioError e, handler) {
+      onError: (DioException e, handler) {
         print('Error en petición: ${e.response?.statusCode}');
         handler.next(e); // Pasar el error al flujo siguiente
       },

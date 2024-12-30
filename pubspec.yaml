@@ -22,9 +22,11 @@ dependencies:
   socket_io_client: ^2.0.0
   intl: ^0.18.0  
   google_maps_flutter: ^2.0.0
-  geocoding: ^2.0.0
+  geocoding: ^3.0.0
   http: ^1.2.2
   geolocator: ^13.0.2
+  latlong2: ^0.9.1
+  google_maps_flutter_web: ^0.5.10
 
 
 

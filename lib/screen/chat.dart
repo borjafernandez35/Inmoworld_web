@@ -59,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final userId = StorageService.getId();
 
       // Llama al método de ChatService para obtener los chats
-      final chatList = await chatService.chatStartup(userId!);
+      final chatList = await chatService.chatStartup(userId);
 
       // Convierte los datos a Map<String, dynamic>
       final convertedChats = chatList.map<Map<String, dynamic>>((chat) {

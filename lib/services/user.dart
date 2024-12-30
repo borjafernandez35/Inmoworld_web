@@ -23,10 +23,8 @@ class UserService {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = StorageService.getToken();
-        if (token != null) {
-          options.headers['x-access-token'] = token;
-        }
-        handler.next(options);
+        options.headers['x-access-token'] = token;
+              handler.next(options);
       },
       onError: (DioException e, handler) {
         print('Error en petición: ${e.response?.statusCode}');
@@ -44,6 +42,7 @@ class UserService {
     };
     Response response = await dio.put('$baseUrl/user/${StorageService.getId()}', data: json);
     var data = response.data.toString();
+    print('Los datos son...!!!!:$data');
     var statusCode = response.statusCode;
     if (statusCode == 201) {
       // Si el usuario se crea correctamente, retornamos el código 201
@@ -156,19 +155,6 @@ class UserService {
     }
   }
 
-  // Obtener Lista de Propiedades
-  Future<List<PropertyModel>> getData() async {
-    try {
-      final response = await dio.get('$baseUrl/property');
-      return (response.data as List)
-          .map((data) => PropertyModel.fromJson(data))
-          .toList();
-    } catch (e) {
-      print('Error en getData: $e');
-      rethrow;
-    }
-  }
-
   Future<List<PropertyModel>> getProperties( int page, int limit) async {
     try {
       print(
@@ -222,6 +208,7 @@ class UserService {
   // Login
   Future<int> logIn(Map<String, dynamic> logInData) async {
     try {
+      print('estoy en el logiiinnnn!!!');
       final response = await dio.post('$baseUrl/auth/signin', data: logInData);
       final statusCode = _validateResponse(response);
 

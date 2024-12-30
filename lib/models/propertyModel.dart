@@ -1,116 +1,49 @@
-import 'package:flutter/material.dart';
-import 'package:inmoworld_web/models/userModel.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart'; // Importa LatLng
 
-class PropertyModel with ChangeNotifier {
-  final String id; 
+class PropertyModel {
+  final String id;
   final String owner;
-  final String address;
   final String description;
+  final double price;
+  final LatLng location; // Usa LatLng en lugar de GeoCoord
+  final String? imageUrl;
 
-  UserModel? ownerDetails; // Detalles del propietario
-  List<UserModel>? participantsDetails;
-
-  // Constructor
   PropertyModel({
     required this.id,
     required this.owner,
-    required this.address,
+    required this.price,
     required this.description,
-    this.ownerDetails,
-    this.participantsDetails,
+    required this.location,
+    this.imageUrl,
   });
 
-  static String _validateObjectId(dynamic id) {
-  if (id == null || id.toString().isEmpty) {
-    print('ObjectId inválido detectado: $id');
-    throw ArgumentError('ID inválido: $id');
-  }
-  return id.toString();
-  }
-
-
   // Método para crear una instancia desde un JSON
- factory PropertyModel.fromJson(Map<String, dynamic> json) {
-  try {
+  factory PropertyModel.fromJson(Map<String, dynamic> json) {
     return PropertyModel(
       id: json['_id'] ?? 'Sin ID',
-      owner: _validateObjectId(json['owner']?['_id']),
-      address: json['address'] ?? 'Sin Dirección',
-      description: json['description'] ?? 'Sin Descripción',
+      owner: json['owner'] ?? 'No hay propietario',
+      price: (json['price'] as num).toDouble(),
+      description: json['description'] ?? 'Sin descripción',
+      imageUrl: json['imageUrl'],
+      location: LatLng(
+        json['location']['coordinates'][1], // Latitud
+        json['location']['coordinates'][0], // Longitud
+      ),
     );
-  } catch (e) {
-    throw Exception('Error al procesar propiedad: $json');
   }
-}
 
-
-
-  // Helper function to validate ObjectId
-  /* static String _validateObjectId(dynamic id) {
-    if (id is String && id.isNotEmpty) {
-      return id;
-    }
-    print("Invalid ObjectId: $id");
-    return ''; // Return an empty string if id is invalid
-  } */
-
-  // Método para convertir el modelo en JSON
+  // Método para convertir a JSON
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
-      'owner': owner, // Solo el ID
-      'address': address,
+      'owner': owner,
+      'price': price,
       'description': description,
+      'imageUrl': imageUrl,
+      'location': {
+        'type': 'Point',
+        'coordinates': [location.longitude, location.latitude], // LatLng usa longitude y latitude
+      },
     };
   }
-
-  /* Future<void> loadDetails(List<PropertyModel> experiences) async {
-    final userService = UserService();
-
-    try {
-      // Obtener solo los IDs de los usuarios
-      final usersId = await userService.getUsersId();
-
-      if (usersId.isEmpty) {
-        print("No se encontraron usuarios.");
-        return;
-      }
-
-      print('GET IDs: $usersId');
-
-      for (var experience in experiences) {
-        print('Procesando experiencia ID: ${experience.id}');
-
-        // Validar y cargar el propietario
-        if (usersId.contains(experience.owner)) {
-          final ownerDetails = await userService.getUser(experience.owner);
-          experience.ownerDetails = ownerDetails;
-          print(
-              'Detalles del propietario cargados: ${ownerDetails.name} para experiencia ${experience.id}');
-                } else {
-          print(
-              'El propietario con ID ${experience.owner} no está en la lista de usuarios.');
-        }
-
-        // Validar y cargar los detalles de los participantes
-         experience.participantsDetails = await Future.wait(
-        experience.participants.map((participantId) async {
-          if (usersId.contains(participantId)) {
-            return await userService.getUser(participantId);
-          }
-          return null; // Ignorar IDs de participantes no válidos
-        }),
-      ).then((list) => list.whereType<UserModel>().toList());
-
-        print(
-            'Detalles de participantes cargados para experiencia ${experience.id}: '
-            '${experience.participantsDetails?.map((e) => e.name).toList()}');
-      }
-
-      // Notificar cambios
-      notifyListeners();
-    } catch (e) {
-      print("Error al cargar detalles de las experiencias: $e");
-    }
-  } */
 }

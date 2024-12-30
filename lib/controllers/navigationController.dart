@@ -4,8 +4,8 @@ class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
 
   final List<String> routes = ['/chat',
-    '/usuarios',
-    '/properties', // Nueva ruta para propiedades
+    '/properties',
+    '/property', // Nueva ruta para propiedades
     '/perfil', 
     '/map'
   ];

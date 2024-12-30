@@ -49,7 +49,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   Future<List<Chat>> _loadChats() async {
     try {
       final userId = StorageService.getId(); // Obtén el ID del usuario actual
-      final chatList = await chatService.chatStartup(userId!);
+      final chatList = await chatService.chatStartup(userId);
 
       setState(() {
         messages = chatList; // Actualizar la lista local de mensajes

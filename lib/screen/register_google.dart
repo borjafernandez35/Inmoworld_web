@@ -33,7 +33,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
     clientId:
         '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com',
   );
-  //String _selectedPrefix = '+34';
+ 
 
 // Función para generar una contraseña aleatoria
   String generateRandomPassword({int length = 8}) {
