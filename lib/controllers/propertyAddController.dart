@@ -15,6 +15,7 @@ class PropertyAddController extends GetxController {
     required String description,
     required double price,
     required LatLng location,
+     String? imageUrl, // Se incluye imageUrl
   }) async {
     isLoading.value = true;
 
@@ -24,6 +25,7 @@ class PropertyAddController extends GetxController {
       description: description,
       price: price,
       location: location,
+       imageUrl: imageUrl,
     );
 
     try {

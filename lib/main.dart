@@ -6,10 +6,9 @@ import 'package:inmoworld_web/widgets/bottom_navigation_bar.dart';
 import 'package:inmoworld_web/screen/perfil.dart';
 import 'package:inmoworld_web/screen/user.dart';
 import 'package:inmoworld_web/screen/property.dart';
+import 'package:inmoworld_web/screen/property_creation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inmoworld_web/controllers/userModelController.dart';
-// Importa el controlador
-// Importa LatLng
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/screen/title.dart';
@@ -99,6 +98,10 @@ class MyApp extends StatelessWidget {
                 name: '/usuarios',
                 page: () => BottomNavScaffold(child: const UserScreen()),
               ),
+              /* GetPage(
+               name: '/post',
+              page: () => BottomNavScaffold(child: const CloudinaryUploaderWeb()),
+             ), */
               GetPage(
                 name: '/properties',
                 page: () => BottomNavScaffold(child: const PropertyScreen()),

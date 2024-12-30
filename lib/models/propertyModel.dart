@@ -9,7 +9,7 @@ class PropertyModel {
   final String? imageUrl;
 
   PropertyModel({
-    required this.id,
+      required this.id,
     required this.owner,
     required this.price,
     required this.description,
@@ -24,11 +24,14 @@ class PropertyModel {
       owner: json['owner'] ?? 'No hay propietario',
       price: (json['price'] as num).toDouble(),
       description: json['description'] ?? 'Sin descripción',
-      imageUrl: json['imageUrl'],
+      imageUrl: (json['imageUrl'] is List && json['imageUrl'].isNotEmpty)
+          ? json['imageUrl'][0]
+          : null,
       location: LatLng(
         json['location']['coordinates'][1], // Latitud
         json['location']['coordinates'][0], // Longitud
       ),
+      
     );
   }
 
