@@ -116,10 +116,8 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> _fetchProperties() async {
     try {
-      await _propertyController.fetchProperties(
-        distance: _selectedDistance * 1000,
-        page: 1,
-        limit: _pageSize,
+      await _propertyController.fetchPropertiesMarkers(
+        distance: _selectedDistance * 1000,        
         sort: _searchQuery,
       );
 
@@ -134,7 +132,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
             infoWindow: InfoWindow(
               title: property.description,
-              snippet: 'Precio: \$${property.price}',
+              snippet: 'Precio: \€${property.price}',
               onTap: () => _showPropertyDetails(property),
             ),
           );
@@ -146,32 +144,50 @@ class _MapScreenState extends State<MapScreen> {
   }
 
    void _showPropertyDetails(dynamic property) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(property.description),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Descripción: ${property.description}'),
-              const SizedBox(height: 10),
-              Text('Precio: \$${property.price}'),
-              property.imageUrl != null
-                  ? Image.network(property.imageUrl!)
-                  : const Text('Sin imagen disponible'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cerrar'),
+  print('Descripción: ${property.description}');
+  print('URL de la imagen: ${property.imageUrl}');
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(property.description),
+        content: Row(
+          children: [
+            property.imageUrl != null && property.imageUrl!.isNotEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      property.imageUrl!,
+                      height: 50, // Tamaño pequeño
+                      width: 50,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.broken_image, size: 50);
+                      },
+                    ),
+                  )
+                : const Icon(Icons.image_not_supported, size: 50),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Precio: \€${property.price}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
   void _onDistanceChanged(double? newDistance) {
   if (newDistance != null && _validDistances.contains(newDistance)) {

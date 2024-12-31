@@ -150,6 +150,33 @@ class PropertyService {
     }
   }
 
+   Future<List<PropertyModel>> getPropertiesMarkers(
+       double selectedDistance, String sort) async {
+    try {
+      
+          print('los parametros pasados para la funcion son, page. distance:$selectedDistance, sort:$sort');
+      final response = await dio
+          .get('$baseUrl/property/markers/$selectedDistance/$sort');
+      print('Respuesta recibida: ${response.data}');
+
+      if (response.data == null || response.data['properties'] == null) {
+        throw Exception("Datos de propiedades no encontrados en la respuesta.");
+      }
+
+      final List<dynamic> propertiesData =
+          response.data['properties'] as List<dynamic>;
+
+      print('Datos de propiedades procesados correctamente: $propertiesData');
+      return propertiesData
+          .map((data) => PropertyModel.fromJson(data))
+          .toList();
+    } catch (e, stackTrace) {
+      print('Error al obtener propiedades: $e');
+      print('Detalles del error: $stackTrace');
+      rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
+    }
+  }
+
   Future<List<PropertyModel>> getMapProperties(
       double selectedDistance, int page, int limit, String search) async {
     try {

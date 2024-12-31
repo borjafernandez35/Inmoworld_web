@@ -109,24 +109,26 @@ class _PropertyCardState extends State<PropertyCard> {
             ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.network(
-                widget.property.imageUrl!,
-                height: 150,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  height: 150,
-                  color: Colors.grey[300],
-                  child: const Center(child: Icon(Icons.image, size: 50)),
+              child: AspectRatio(
+                aspectRatio: 16 / 9, // Relación de aspecto (16:9)
+                child: Image.network(
+                  widget.property.imageUrl!,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    color: Colors.grey[300],
+                    child: const Center(child: Icon(Icons.image, size: 50)),
+                  ),
                 ),
               ),
             )
           else
-            Container(
-              height: 150,
-              width: double.infinity,
-              color: Colors.grey[300],
-              child: const Center(child: Icon(Icons.image_not_supported)),
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Container(
+                color: Colors.grey[300],
+                child: const Center(child: Icon(Icons.image_not_supported)),
+              ),
             ),
           Padding(
             padding: const EdgeInsets.all(12.0),

@@ -37,6 +37,28 @@ class PropertyController extends GetxController {
     }
   }
 
+  Future<void> fetchPropertiesMarkers({    
+    required double distance,
+    required String sort,
+  }) async {
+    isLoading.value = true;
+    try {
+     Position  position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      await _propertyService.updateLocation(position);
+       final fetchedProperties = await _propertyService.getPropertiesMarkers(
+        distance,
+        sort.isEmpty ? '' : sort, // Pasar cadena vacía si no hay búsqueda
+      );
+      properties.assignAll(fetchedProperties);
+    } catch (e) {
+      print('Error al obtener propiedades: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   /// Obtener propiedades para marcadores en el mapa
   Future<void> fetchMapProperties({
     required double distance,
