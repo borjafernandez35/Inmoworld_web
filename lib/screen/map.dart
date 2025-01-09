@@ -16,6 +16,7 @@ class _MapScreenState extends State<MapScreen> {
   bool _isLoading = true;
   final PropertyController _propertyController = PropertyController();
   static const int _pageSize = 10;
+  LatLng? _firstLocation; // Guardar la primera ubicación temporalmente
 
   @override
   void initState() {
@@ -23,74 +24,72 @@ class _MapScreenState extends State<MapScreen> {
     _fetchAndMarkProperties(1, _pageSize);
   }
 
-  LatLng? _firstLocation; // Guardar la primera ubicación temporalmente
+  Future<void> _fetchAndMarkProperties(int page, int limit) async {
+    try {
+      final properties = await _propertyController.fetchProperties(page, limit);
+      print('Properties for map: ${properties.map((p) => p.toJson()).toList()}');
 
-Future<void> _fetchAndMarkProperties(int page, int limit) async {
-  try {
-    final properties = await _propertyController.fetchProperties(page, limit);
-    print('Properties for map: ${properties.map((p) => p.toJson()).toList()}');
+      for (var i = 0; i < properties.length; i++) {
+        final property = properties[i];
+        final address = property.address;
 
-    for (var i = 0; i < properties.length; i++) {
-      final property = properties[i];
-      final address = property.address;
+        try {
+          LatLng location =
+              await _propertyController.getCoordinatesFromAddress(address);
+          print('Coordinates for $address: $location');
 
-      try {
-        LatLng location = await _propertyController.getCoordinatesFromAddress(address);
-        print('Coordinates for $address: $location');
+          setState(() {
+            _markers.add(
+              Marker(
+                markerId: MarkerId(property.id),
+                position: location,
+                infoWindow: InfoWindow(title: address),
+              ),
+            );
+          });
 
-        setState(() {
-          _markers.add(
-            Marker(
-              markerId: MarkerId(property.id),
-              position: location,
-              infoWindow: InfoWindow(title: address),
-            ),
-          );
-        });
-
-        // Guardar la primera ubicación para mover la cámara después de que el mapa se cree
-        if (i == 0) {
-          _firstLocation = location;
+          // Guardar la primera ubicación para mover la cámara después de que el mapa se cree
+          if (i == 0) {
+            _firstLocation = location;
+          }
+        } catch (e) {
+          print('Failed to get coordinates for $address: $e');
         }
-      } catch (e) {
-        print('Failed to get coordinates for $address: $e');
       }
+    } catch (e) {
+      print('Error occurred: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-  } catch (e) {
-    print('Error occurred: $e');
-  } finally {
-    setState(() {
-      _isLoading = false;
-    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Properties Map'),
+      ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(40.748817, -73.985428), // Ubicación inicial fusionada
+                zoom: 14.0,
+              ),
+              markers: _markers,
+              onMapCreated: (GoogleMapController controller) {
+                _controller = controller;
+                // Mover la cámara a la primera ubicación si está disponible
+                if (_firstLocation != null) {
+                  _controller.animateCamera(
+                    CameraUpdate.newLatLngZoom(_firstLocation!, 14.0),
+                  );
+                }
+              },
+              mapType: MapType.normal,
+            ),
+    );
   }
 }
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Properties Map'),
-    ),
-    body: _isLoading
-        ? Center(child: CircularProgressIndicator())
-        : GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(40.748817, -73.985428),
-              zoom: 14.0,
-            ),
-            markers: _markers,
-            onMapCreated: (GoogleMapController controller) {
-              _controller = controller;
-              // Mover la cámara a la primera ubicación si está disponible
-              if (_firstLocation != null) {
-                _controller.animateCamera(
-                  CameraUpdate.newLatLngZoom(_firstLocation!, 14.0),
-                );
-              }
-            },
-            mapType: MapType.normal,
-          ),
-  );
-}
-}
-

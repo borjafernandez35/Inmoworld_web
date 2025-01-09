@@ -62,11 +62,18 @@ class PerfilScreen extends StatelessWidget {
                             foregroundColor: const Color(0xFF6200EE),
                           ),
                           onPressed: () async {
-                            // Acción para actualizar datos del usuario
-                            await userController.updateUser(
-                              name: 'Nuevo Nombre',
-                              email: 'nuevoemail@example.com',
-                            );
+                            if (user.name.isNotEmpty && user.email.isNotEmpty) {
+                              // Actualizar datos solo si son válidos
+                              await userController.updateUser(
+                                name: user.name,
+                                email: user.email,
+                              );
+                              Get.snackbar(
+                                  'Actualización', 'Usuario actualizado correctamente');
+                            } else {
+                              Get.snackbar(
+                                  'Error', 'Por favor, ingresa datos válidos');
+                            }
                           },
                           child: const Text('Actualizar Usuario'),
                         ),
@@ -75,8 +82,10 @@ class PerfilScreen extends StatelessWidget {
                             foregroundColor: const Color(0xFF6200EE),
                           ),
                           onPressed: () async {
-                            // Acción para eliminar el usuario
+                            // Eliminar usuario y mostrar mensaje de confirmación
                             await userController.deleteUser();
+                            Get.snackbar(
+                                'Usuario Eliminado', 'El usuario fue eliminado correctamente');
                           },
                           child: const Text('Eliminar Usuario'),
                         ),

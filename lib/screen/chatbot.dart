@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dialogflow_flutter/dialogflowFlutter.dart';
@@ -149,3 +150,4 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+*/

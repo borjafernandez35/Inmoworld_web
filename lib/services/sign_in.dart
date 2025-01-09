@@ -172,10 +172,12 @@ class SignInService {
 
       if (statusCode == 200 || statusCode == 201) {
         // Verifica si response.data es un Map y contiene el campo 'id'
-        if (data is Map<String, dynamic> && data.containsKey('id')) {
-          StorageService.saveToken(response.data['token']);
-          StorageService.saveId(response.data['user']['id']);
-          StorageService.saveAdmin(response.data['user']['isAdmin']);
+        if (data is Map<String, dynamic> &&
+            data.containsKey('token') &&
+            data.containsKey('user')) {
+          StorageService.saveToken(data['token']);
+          StorageService.saveId(data['user']['id']);
+          StorageService.saveAdmin(data['user']['isAdmin']);
         }
         if (statusCode == 201) {
           return 201;
@@ -183,20 +185,14 @@ class SignInService {
         return 200;
       }
       if (statusCode == 400) {
-        // Si hay campos faltantes, retornamos el código 400
         print('400');
-
         return 400;
       } else if (statusCode == 500) {
-        // Si hay un error interno del servidor, retornamos el código 500
         print('500');
-
         return 500;
       } else {
-        // En caso de otros códigos de estado no manejados explícitamente, puedes lanzar una excepción o devolver un valor adecuado.
-        return -1; // O cualquier otro valor que refleje un estado no manejado
+        return -1;
       }
-      // ignore: deprecated_member_use
     } on DioError catch (e) {
       if (e.response != null) {
         print('Error en la solicitud: ${e.response?.statusCode}');

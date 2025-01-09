@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/controllers/navigationController.dart';
-import 'package:inmoworld_web/screen/chatbot.dart';  // Asegúrate de importar la pantalla de Chatbot
+import 'package:inmoworld_web/screen/chatbot.dart'; // Importar la pantalla de Chatbot
 
 class BottomNavScaffold extends StatelessWidget {
   final Widget child;
@@ -15,37 +15,54 @@ class BottomNavScaffold extends StatelessWidget {
       body: child,
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             currentIndex: navController.selectedIndex.value,
-            onTap: navController.navigateTo,  // Esta función navega a la pantalla correspondiente
+            onTap: navController.navigateTo, // Navega a la pantalla correspondiente
             selectedItemColor: const Color.fromARGB(255, 92, 14, 105),
             unselectedItemColor: Colors.black,
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'Usuarios',
+                icon: Stack(
+                  children: [
+                    const Icon(Icons.chat),
+                    Positioned(
+                      right: 0,
+                      child: Obx(() {
+                        final unreadCount = navController.unreadMessages.value;
+                        if (unreadCount > 0) {
+                          return Badge(
+                            label: Text(unreadCount.toString()),
+                            backgroundColor: Colors.red,
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
+                    ),
+                  ],
+                ),
+                label: 'Mensajes',
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.local_activity),
                 label: 'Properties',
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Perfil',
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.air),
                 label: 'Chatbot',
               ),
-              BottomNavigationBarItem( 
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.location_pin),
                 label: 'Mapa',
-              ),  
+              ),
             ],
           )),
     );
   }
 }
-

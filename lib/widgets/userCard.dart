@@ -13,32 +13,71 @@ class UserCard extends StatelessWidget {
         ? "${user.lastMessageTime!.hour.toString().padLeft(2, '0')}:${user.lastMessageTime!.minute.toString().padLeft(2, '0')}"
         : "";
 
-    return ListTile(
-      leading: CircleAvatar(
-        child: Text(user.name[0]), // Inicial del nombre
-      ),
-      title: Text(user.name),
-      subtitle: Text(
-        user.lastMessage ?? 'Sin mensajes',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Text(
-        lastMessageTime,
-        style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
-      ),
-      onTap: () {
-        // Navegar a la pantalla de chat
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatScreen(
-              userId: user.id ?? '',  // Aquí pasas el ID del usuario
-              userName: user.name,     // Aquí pasas el nombre del usuario
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 4,
+      child: Column(
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              child: Text(user.name[0]), // Inicial del nombre
+            ),
+            title: Text(user.name),
+            subtitle: Text(
+              user.lastMessage ?? 'Sin mensajes',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: Text(
+              lastMessageTime,
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                    userId: user.id ?? '',
+                    userName: user.name,
+                  ),
+                ),
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              'Información adicional o detalles relevantes sobre el usuario.',
+              style: TextStyle(color: Colors.black.withOpacity(0.6)),
             ),
           ),
-        );
-      },
+          OverflowBar(
+            alignment: MainAxisAlignment.start,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(
+                        userId: user.id ?? '',
+                        userName: user.name,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Abrir Chat'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Otra acción personalizada
+                },
+                child: const Text('Otra Acción'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

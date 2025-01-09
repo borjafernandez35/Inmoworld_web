@@ -18,7 +18,6 @@ class ChatWidget extends StatefulWidget {
 class _ChatWidgetState extends State<ChatWidget> {
   late ChatService chatService; // Servicio de chat
   late UserService userService; // Servicio de usuario
-  late Future<List<Chat>> chats; // Lista de chats
   TextEditingController _controller = TextEditingController();
   List<Chat> messages = []; // Lista local de mensajes
 
@@ -34,11 +33,12 @@ class _ChatWidgetState extends State<ChatWidget> {
     chatService.connect();
 
     // Cargar mensajes iniciales desde el backend
-    chats = _loadChats();
+    _loadChats();
 
     // Escuchar mensajes en tiempo real
     chatService.socket?.on('message', (data) {
-      final messageData = Chat.fromJson(data); // Convertir el mensaje a objeto Chat
+      final messageData = Chat.fromJson(jsonDecode(data)); // Convertir el mensaje a objeto Chat
+      print("Mensaje recibido: $messageData");
       setState(() {
         messages.add(messageData);
       });
@@ -46,19 +46,20 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 
   // Carga los mensajes iniciales desde el backend
-  Future<List<Chat>> _loadChats() async {
+  void _loadChats() async {
     try {
       final userId = StorageService.getId(); // Obtén el ID del usuario actual
-      final chatList = await chatService.chatStartup(userId!);
+      if (userId == null) {
+        throw Exception("El ID del usuario es nulo. Asegúrate de estar autenticado.");
+      }
+
+      final chatList = await chatService.chatStartup(userId);
 
       setState(() {
         messages = chatList; // Actualizar la lista local de mensajes
       });
-
-      return chatList;
     } catch (error) {
       print("Error al cargar los chats: $error");
-      return [];
     }
   }
 
@@ -77,7 +78,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       );
 
       // Envía el mensaje al servidor
-      chatService.sendMessage(jsonEncode(chatMessage.toJson()));
+      chatService.sendMessage(chatMessage.toJson()); // Pasa el objeto JSON directamente
 
       // Agrega el mensaje localmente
       setState(() {
@@ -103,67 +104,55 @@ class _ChatWidgetState extends State<ChatWidget> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: FutureBuilder<List<Chat>>(
-              future: chats,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator()); // Indicador de carga
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error al cargar los mensajes'));
-                } else {
-                  final loadedMessages = snapshot.data ?? [];
-                  return ListView.builder(
-                    reverse: true, // Mostrar mensajes recientes primero
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[messages.length - 1 - index];
-                      final isMe = message.sender == StorageService.getId();
+            child: ListView.builder(
+              reverse: true, // Mostrar mensajes recientes primero
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final message = messages[messages.length - 1 - index];
+                final isMe = message.sender == StorageService.getId();
 
-                      final formattedTime =
-                          DateFormat('HH:mm').format(message.date);
+                final formattedTime =
+                    DateFormat('HH:mm').format(message.date);
 
-                      return Align(
-                        alignment: isMe
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Column(
-                          crossAxisAlignment: isMe
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: isMe
-                                    ? Colors.blue
-                                    : Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                message.message,
-                                style: TextStyle(
-                                  color: isMe ? Colors.white : Colors.black,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              child: Text(
-                                formattedTime,
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ],
+                return Align(
+                  alignment: isMe
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: isMe
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: isMe
+                              ? Colors.blue
+                              : Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      );
-                    },
-                  );
-                }
+                        child: Text(
+                          message.message,
+                          style: TextStyle(
+                            color: isMe ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: Text(
+                          formattedTime,
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
             ),
           ),

@@ -5,10 +5,7 @@ import 'package:inmoworld_web/models/propertyModel.dart';
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
-  //final String baseUrl = 'http://147.83.7.157:3000';
-  //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
-  //final GetStorage box = GetStorage();
   int totalPages = 1;
   int totalUsers = 1;
 
@@ -36,7 +33,6 @@ class UserService {
 
   Future<List<UserModel>> getUsers(int page, int limit) async {
     print('Fetching all users...');
-    //_configureInterceptors();
     try {
       // Realizar la solicitud GET al endpoint `/user`
       final response = await dio.get('$baseUrl/user/$page/$limit');
@@ -53,18 +49,14 @@ class UserService {
       // Extraer la lista de usuarios
       final List<dynamic> usersData = responseData['users'];
 
-      print('aquiii etnras???:$usersData');
       // Almacenar los valores adicionales como totalPages y totalUsers
-      totalPages = responseData['totalPages'] ?? 1; // Usar 0 si es null
-      totalUsers = responseData['totalUsers'] ?? 1; // Usar 0 si es null
+      totalPages = responseData['totalPages'] ?? 1;
+      totalUsers = responseData['totalUsers'] ?? 1;
 
       // Convertir los datos recibidos a una lista de UserModel
       final List<UserModel> users =
           usersData.map((data) => UserModel.fromJson(data)).toList();
-      print('los usuarios son:$users');
-
       print('Usuarios obtenidos: ${users.length}');
-      print('los total users son:$totalUsers,y las paginas son:$totalPages');
       return users;
     } catch (e) {
       print('Error en getUsers: $e');
@@ -113,7 +105,6 @@ class UserService {
 
   // Obtener Usuario Actual
   Future<UserModel> getUser() async {
-    print('GETTTTTUSEEERRRR!!!! me llamaaaaannnn!!!');
     try {
       final response = await dio.get('$baseUrl/user/${StorageService.getId()}');
       return UserModel.fromJson(response.data['data']);
@@ -123,6 +114,16 @@ class UserService {
     }
   }
 
+  // Obtener Otro Usuario por ID
+  Future<UserModel> getAnotherUser(String userId) async {
+    try {
+      final response = await dio.get('$baseUrl/user/$userId');
+      return UserModel.fromJson(response.data['data']);
+    } catch (e) {
+      print('Error en getAnotherUser: $e');
+      rethrow; // Propaga el error
+    }
+  }
 
   // Obtener Lista de Propiedades
   Future<List<PropertyModel>> getData() async {
@@ -149,12 +150,11 @@ class UserService {
 
       final List<dynamic> propertiesData = response.data['properties'] as List<dynamic>;
 
-      print('Datos de propiedades procesados correctamente: $propertiesData');
       return propertiesData.map((data) => PropertyModel.fromJson(data)).toList();
     } catch (e, stackTrace) {
       print('Error al obtener propiedades: $e');
       print('Detalles del error: $stackTrace');
-      rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
+      rethrow;
     }
   }
 

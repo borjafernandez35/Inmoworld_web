@@ -11,6 +11,10 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserListController userListController = Get.put(UserListController());
+    
+    // Suponiendo que el idioma se pueda verificar de alguna manera
+    // Por ejemplo, se puede obtener el idioma actual del contexto o de la configuración
+    String language = 'es';  // Puedes hacer esta asignación dinámicamente según el idioma actual
 
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
@@ -19,15 +23,15 @@ class UserScreen extends StatelessWidget {
         builderDelegate: PagedChildBuilderDelegate<UserModel>(
           itemBuilder: (context, user, index) => UserCard(user: user),
           firstPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Error loading data.'),
+            child: Text(language == 'es' ? 'Error cargando datos.' : 'Error loading data.'),
           ),
           newPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Failed to load more data.'),
+            child: Text(language == 'es' 
+                ? 'No se pudieron cargar más datos.' 
+                : 'Failed to load more data.'),
           ),
-          firstPageProgressIndicatorBuilder: (context) =>
-              const Center(child: CircularProgressIndicator()),
-          newPageProgressIndicatorBuilder: (context) =>
-              const Center(child: CircularProgressIndicator()),
+          firstPageProgressIndicatorBuilder: (context) => const Center(child: CircularProgressIndicator()),
+          newPageProgressIndicatorBuilder: (context) => const Center(child: CircularProgressIndicator()),
         ),
       ),
     );

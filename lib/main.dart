@@ -60,10 +60,10 @@ class MyApp extends StatelessWidget {
           name: '/perfil',
           page: () => BottomNavScaffold(child: const PerfilScreen()),
         ),
-        GetPage(
+        /*GetPage(
           name: '/chatbot',
           page: () => BottomNavScaffold(child: ChatBotApp()),
-        ),
+        ),*/
         GetPage(
           name: '/map',
           page: () => BottomNavScaffold(child: MapScreen()), // Nueva pantalla de mapa
