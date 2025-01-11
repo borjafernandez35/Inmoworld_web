@@ -38,23 +38,35 @@ class _ChatScreenState extends State<ChatScreen> {
     print("Socket conectado: ${chatService.socket?.connected}");
 
     // Cargar mensajes iniciales
-    _loadChats();
+    // _loadChats();
+
+    chatService.loadMessages(StorageService.getId()!);
 
     // Marcar mensajes como leídos al entrar
     WidgetsBinding.instance.addPostFrameCallback((_) {
       navController.markMessagesAsRead();
     });
 
-    // Listeners de mensajes y eventos
+    // Listener para mensajes y eventos
     chatService.socket?.on('load-messages-response', (data) {
-      final messages = (data as List).map((item) => Chat(
-            receiver: item['receiver'],
-            sender: item['sender'],
-            message: item['message'],
-            date: DateTime.parse(item['date']),
-          ));
-      chatController.chatMessages.addAll(messages);
+      // Parsear los mensajes recibidos
+      List<Chat> messages = (data as List).map((item) {
+        return Chat(
+          receiver: item['receiver'],
+          sender: item['sender'],
+          message: item['message'],
+          date: DateTime.parse(item['date']),
+        );
+      }).toList();
+
+      // Filtrar mensajes duplicados
+      final existingMessages = chatController.chatMessages.map((m) => m.message).toSet();
+      final newMessages = messages.where((m) => !existingMessages.contains(m.message)).toList();
+
+      // Añadir solo los nuevos mensajes
+      chatController.chatMessages.addAll(newMessages);
     });
+
 
     chatService.socket?.on('message-receive', (data) {
       print("Mensaje recibido: $data");
@@ -67,16 +79,6 @@ class _ChatScreenState extends State<ChatScreen> {
       chatController.chatMessages.insert(0, message);
     });
 
-    // Simula un mensaje recibido después de 5 segundos
-    Future.delayed(const Duration(seconds: 5), () {
-      chatService.socket?.emit('message-receive', {
-        'receiver': StorageService.getId(),
-        'sender': 'user123',
-        'message': '¡Hola! Este es un mensaje de prueba.',
-        'timestamp': DateTime.now().toIso8601String(),
-      });
-    });
-
     chatService.socket?.on('typing', (_) {
       chatController.isTyping.value = true;
     });
@@ -84,18 +86,6 @@ class _ChatScreenState extends State<ChatScreen> {
     chatService.socket?.on('stop-typing', (_) {
       chatController.isTyping.value = false;
     });
-  }
-
-  Future<void> _loadChats() async {
-    try {
-      final userId = StorageService.getId();
-      if (userId != null) {
-        final chats = await chatService.chatStartup(userId);
-        chatController.chatMessages.addAll(chats);
-      }
-    } catch (e) {
-      print("Error al cargar mensajes: $e");
-    }
   }
 
   void _sendMessage() {
@@ -109,8 +99,12 @@ class _ChatScreenState extends State<ChatScreen> {
       date: timestamp,
     );
 
-    // Agregar el mensaje localmente
-    chatController.chatMessages.insert(0, chatMessage);
+    // Agregar el mensaje localmente si no existe ya
+    /*final existingMessages = chatController.chatMessages.map((m) => m.message).toSet();
+    if (!existingMessages.contains(chatMessage.message)) {
+      chatController.chatMessages.insert(0, chatMessage);
+    }
+    */ chatController.chatMessages.insert(0, chatMessage);
 
     // Enviar el mensaje al servidor
     chatService.sendMessage(chatMessage.toJson());
@@ -121,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // Detener el evento "typing"
     chatService.sendStopTypingEvent(widget.userId);
   }
-}
+  }
 
 
   @override
