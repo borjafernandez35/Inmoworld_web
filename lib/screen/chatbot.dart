@@ -1,4 +1,5 @@
-/*
+
+import 'package:dialogflow_flutter/language.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dialogflow_flutter/dialogflowFlutter.dart';
@@ -24,74 +25,27 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  List<Map<String, String>> _messages = [];
-  late DialogFlow _dialogflow;  // Declaramos la instancia de Dialogflow
+  List<Map<String, dynamic>> messages = [];
 
-  // Este método se llama cuando el widget se inicializa
   @override
   void initState() {
     super.initState();
-    _initializeDialogflow();
   }
 
-  // Inicialización de Dialogflow usando las credenciales
-  Future<void> _initializeDialogflow() async {
+  void response(String query) async {
     try {
-      // Autenticación con el archivo JSON de credenciales
-      AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/credenciales.json").build();  // Asegúrate de que el archivo .json esté correctamente ubicado
-      _dialogflow = DialogFlow(authGoogle: authGoogle, language: 'es');
-      print('Dialogflow inicializado correctamente');
+      AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/credenciales.json").build();
+      DialogFlow dialogflow = DialogFlow(authGoogle: authGoogle, language: Language.spanish);
+      AIResponse aiResponse = await dialogflow.detectIntent(query);
+      String botMessage = aiResponse.getListMessage()![0]["text"]["text"][0].toString();
+      setState(() {
+        messages.insert(0, {"data": 0, "message": botMessage});
+      });
+      print(botMessage);
     } catch (e) {
-      print('Error al inicializar Dialogflow: $e');
+      print("Error: $e");
     }
   }
-
-  // Función para enviar el mensaje al chatbot y obtener la respuesta
-  void _sendMessage(String text) async {
-    setState(() {
-      _messages.add({'sender': 'Usuario', 'text': text});
-    });
-
-    _messageController.clear();
-
-    // Conectar a Dialogflow para obtener la respuesta
-    String response = await _getBotResponse(text);
-
-    setState(() {
-      _messages.add({'sender': 'Bot', 'text': response});
-    });
-  }
-
-  // Función para obtener la respuesta del bot utilizando Dialogflow
-  Future<String> _getBotResponse(String message) async {
-  try {
-    // Detectar la intención del mensaje
-
-     Map<String, dynamic> jsonObject = {
-    "queryInput": {
-    "text": {
-      "text": message
-    },
-    "languageCode": "es"
-    },
-    "queryParams": {
-    "timeZone": "Spain/Madrid"
-    }
-    };
-    String query = jsonEncode(jsonObject);
-    AIResponse response = await _dialogflow.detectIntent(query);
-
-    // Verificar que la respuesta no sea null y que contenga el mensaje
-    if (response != null && response.getMessage() != null) {
-      return response.getMessage() ?? "No entendí eso. ¿Puedes repetirlo?";
-    } else {
-      return "No obtuve una respuesta válida.";
-    }
-  } catch (e) {
-    return "Ocurrió un error: $e";
-  }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,25 +55,12 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _messages.length,
+              reverse: true,
+              itemCount: messages.length,
               itemBuilder: (context, index) {
-                var message = _messages[index];
-                bool isUser = message['sender'] == 'Usuario';
-
-                return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isUser ? Colors.blue[100] : Colors.green[100],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      message['text']!,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
+                return ListTile(
+                  title: Text(messages[index]["message"]),
+                  subtitle: Text(messages[index]["data"] == 0 ? "Bot" : "Usuario"),
                 );
               },
             ),
@@ -137,8 +78,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    if (_messageController.text.isNotEmpty) {
-                      _sendMessage(_messageController.text);
+                    String userMessage = _messageController.text;
+                    if (userMessage.isNotEmpty) {
+                      setState(() {
+                        messages.insert(0, {"data": 1, "message": userMessage});
+                      });
+                      _messageController.clear();
+                      response(userMessage);
                     }
                   },
                 ),
@@ -150,4 +96,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-*/
