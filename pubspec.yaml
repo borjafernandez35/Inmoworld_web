@@ -27,6 +27,7 @@ dependencies:
   googleapis_auth: ^1.4.1
   http: ^0.13.6
   uuid: ^3.0.6
+  bubble: ^1.2.1
 
 
 
