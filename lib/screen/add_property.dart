@@ -3,6 +3,7 @@ import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/models/property_model.dart';
@@ -20,9 +21,8 @@ class PropertyAddScreen extends StatefulWidget {
 }
 
 class _PropertyAddScreenState extends State<PropertyAddScreen> {
- GoogleMapController? _controller;
+  GoogleMapController? _controller;
   final PropertyController _propertyController = Get.put(PropertyController());
-
 
   Uint8List? _selectedImage;
   String? _uploadedPicture;
@@ -39,7 +39,7 @@ class _PropertyAddScreenState extends State<PropertyAddScreen> {
     );
   }
 
-    Future<Uint8List?> pickImageForWeb() async {
+  Future<Uint8List?> pickImageForWeb() async {
     final html.FileUploadInputElement uploadInput =
         html.FileUploadInputElement();
     uploadInput.accept = 'image/*';
@@ -56,7 +56,7 @@ class _PropertyAddScreenState extends State<PropertyAddScreen> {
   Future<String?> uploadImageToCloudinary(Uint8List imageBytes) async {
     const String cloudName = 'dlbj2oozx';
     const String uploadPreset = 'InmoWorld';
-    final String url =
+    const String url =
         'https://api.cloudinary.com/v1_1/$cloudName/image/upload';
 
     final request = http.MultipartRequest('POST', Uri.parse(url));
@@ -89,60 +89,60 @@ class _PropertyAddScreenState extends State<PropertyAddScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Crear nueva propiedad'),
+          title: Text(S.current.NuevaPropiedad),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Descripción'),
+                decoration: InputDecoration(labelText: S.current.Descripcion ),
               ),
               TextField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Precio'),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () async {
-                    final imageBytes = await pickImageForWeb();
-                    if (imageBytes != null) {
-                      setState(() {
-                        _selectedImage = imageBytes;
-                        _isUploading = true;
-                      });
+                decoration: InputDecoration(labelText: S.current.Price),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () async {
+                  final imageBytes = await pickImageForWeb();
+                  if (imageBytes != null) {
+                    setState(() {
+                      _selectedImage = imageBytes;
+                      _isUploading = true;
+                    });
 
-                      final picture = await uploadImageToCloudinary(imageBytes);
-                      setState(() {
-                        _uploadedPicture = picture;
-                        _isUploading = false;
-                      });
-                    }
-                  },
-                  child: Text(
-                    _isUploading ? 'Subiendo...' : 'Subir Imagen',
+                    final picture = await uploadImageToCloudinary(imageBytes);
+                    setState(() {
+                      _uploadedPicture = picture;
+                      _isUploading = false;
+                    });
+                  }
+                },
+                child: Text(
+                  _isUploading ? 'Subiendo...' : 'Subir Imagen',
+                ),
+              ),
+              if (_uploadedPicture != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.network(
+                    _uploadedPicture!,
+                    height: 100,
                   ),
                 ),
-                if (_uploadedPicture != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Image.network(
-                      _uploadedPicture!,
-                      height: 100,
-                    ),
-                  ),
-              ],
-            ),
+            ],
+          ),
           actions: [
-           TextButton(
-        child: const Text('Cancelar'),
-         onPressed: () {
-           Navigator.of(context).pop(); // Cierra el diálogo
-          Get.toNamed('/map'); // Navega a la ruta '/map'
-        },
-        ),
             TextButton(
-              child: const Text('Guardar'),
+              child: Text(S.current.Cancelar),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+                Get.toNamed('/map'); // Navega a la ruta '/map'
+              },
+            ),
+            TextButton(
+              child: Text(S.current.Guardar),
               onPressed: () async {
                 final description = descriptionController.text.trim();
                 final priceText = priceController.text.trim();
@@ -181,18 +181,20 @@ class _PropertyAddScreenState extends State<PropertyAddScreen> {
                   ),
                 );
 
-              try {
-                  await _propertyController.createProperty(newProperty); // Espera a que termine la operación
+                try {
+                  await _propertyController.createProperty(
+                      newProperty); // Espera a que termine la operación
                   Navigator.of(context).pop();
                   Get.toNamed('/map');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error al crear la propiedad: ${e.toString()}'),
+                      content:
+                          Text('Error al crear la propiedad: ${e.toString()}'),
                     ),
                   );
                 }
-                },
+              },
             ),
           ],
         );
@@ -203,7 +205,7 @@ class _PropertyAddScreenState extends State<PropertyAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Agregar Propiedad')),
+      appBar: AppBar(title: Text(S.current.NuevaPropiedad)),
       body: Stack(
         children: [
           Obx(() => GoogleMap(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/controllers/register_controller.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
@@ -13,7 +14,7 @@ class RegisterScreen extends StatelessWidget {
     final GlobalKey<FlutterPwValidatorState> validatorKey = GlobalKey<FlutterPwValidatorState>();
 
      return Scaffold(
-      appBar: AppBar(title: const Text('Registrarse')),
+      appBar: AppBar(title: Text(S.current.Registrarse)),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -39,18 +40,18 @@ class RegisterScreen extends StatelessWidget {
                       // Campos de texto reutilizables
                       _buildTextField(
                         controller: registerController.nameController,
-                        label: 'Usuario',
+                        label: S.current.Usuario,
                       ),
                       _buildTextField(
                         controller: registerController.mailController,
-                        label: 'Correo Electrónico',
+                        label: S.current.CorreoElectronico,
                       ),
                       // Campo de cumpleaños
                       _buildBirthdayField(registerController, context),
 
                       _buildTextField(
                         controller: registerController.passwordController,
-                        label: 'Contraseña',
+                        label:S.current.Contrasena,
                         obscureText: true,
                         onChanged: (value) {
                           // Actualiza el validador en tiempo real
@@ -59,7 +60,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       _buildTextField(
                         controller: registerController.password2Controller,
-                        label: 'Reescribe contraseña',
+                        label: S.current.ReescribeContrasena,
                         obscureText: true,
                       ),
 
@@ -80,11 +81,11 @@ class RegisterScreen extends StatelessWidget {
                         successColor: Colors.green, // Color cuando la regla es válida
                         failureColor: Colors.red, // Color cuando la regla no es válida
                         onSuccess: () {
-                          print("Contraseña válida");
+                          print(S.current.ContrasenaValida);
                           registerController.isPasswordValid.value = true; // Habilita el botón
                         },
                         onFail: () {
-                          print("Contraseña no válida");
+                          print(S.current.ContrasenaNoValida);
                           registerController.isPasswordValid.value = false; // Deshabilita el botón
                         },
                       ),
@@ -96,7 +97,7 @@ class RegisterScreen extends StatelessWidget {
                           onPressed: registerController.isPasswordValid.value
                               ? registerController.signUp
                               : null, // Solo habilitado si las reglas están cumplidas
-                          child: const Text('Registrarse'),
+                          child: Text(S.current.Registrarse),
                         );
                       }),
 
@@ -121,7 +122,7 @@ class RegisterScreen extends StatelessWidget {
                       // Botón para volver al login
                       ElevatedButton(
                         onPressed: () => Get.toNamed('/logearse'),
-                        child: const Text('Volver'),
+                        child: Text(S.current.Volver),
                       ),
                     ],
                   ),
@@ -166,7 +167,7 @@ class RegisterScreen extends StatelessWidget {
               Text(
                 controller.birthday.value.isNotEmpty
                     ? controller.birthday.value
-                    : 'Selecciona tu cumpleaños',
+                    : S.current.SeleccionaTuCumpleanos,
                 style: TextStyle(
                   color: controller.birthday.value.isNotEmpty
                       ? Colors.black

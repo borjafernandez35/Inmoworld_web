@@ -1,10 +1,132 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:inmoworld_web/services/storage.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:inmoworld_web/controllers/user_model_controller.dart';
 import 'package:inmoworld_web/widgets/user_card.dart';
 
-class PerfilScreen extends StatelessWidget {
+class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
+
+  @override
+  _PerfilScreenState createState() => _PerfilScreenState();
+}
+
+class _PerfilScreenState extends State<PerfilScreen> {
+  Locale currentLocale = Get.deviceLocale ?? const Locale('en');
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Guarda la ruta actual al abrir la pantalla
+    final box = GetStorage();
+    box.write('lastRoute', Get.currentRoute);
+  }
+
+  void _changeLanguage(Locale locale) {
+    print('Cambiando idioma a: ${locale.languageCode}');
+    // Guarda la ruta actual antes de actualizar el idioma
+    final box = GetStorage();
+    box.write('lastRoute', Get.currentRoute);
+    S.load(locale);
+    setState(() {
+      currentLocale = locale;
+    });
+    StorageService.saveLocale(
+        locale.languageCode); // Guarda el idioma en GetStorage
+    Get.updateLocale(locale); // Cambia el idioma global
+    print('Idioma actual: ${Get.locale}');
+  }
+
+  Widget _buildLanguageSelector() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: PopupMenuButton<Locale>(
+          onSelected: (Locale locale) {
+            _changeLanguage(locale);
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<Locale>>[
+            PopupMenuItem<Locale>(
+              value: const Locale('en'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/us.png', // Bandera de EE. UU.
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.English),
+                ],
+              ),
+            ),
+            PopupMenuItem<Locale>(
+              value: Locale('es', 'ES'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/es.png', // Bandera de España
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.Espanol),
+                ],
+              ),
+            ),
+             PopupMenuItem<Locale>(
+              value: Locale('ca', 'CA'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/cat.png', // Bandera de España
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.Catalan),
+                ],
+              ),
+            ),
+            PopupMenuItem<Locale>(
+              value: Locale('ro', 'RO'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/ru.png', // Bandera de España
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.Rumanno),
+                ],
+              ),
+            ),
+          ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Cambiamos el Icon por la imagen personalizada
+              Image.asset(
+                S.of(context).flag, // Bandera de España
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                S.current.EN,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +136,12 @@ class PerfilScreen extends StatelessWidget {
     userController.fetchUser();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil de Usuario')),
+      appBar: AppBar(
+        title: Text(S.current.PerfilUsuario),
+        actions: [
+          _buildLanguageSelector(), // Aquí se incluye el selector de idioma
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {

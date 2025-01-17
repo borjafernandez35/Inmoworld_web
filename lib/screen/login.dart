@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/controllers/user_controller.dart';
 
@@ -11,7 +12,7 @@ class LogInScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Iniciar Sesión'),
+        title: Text(S.current.LogIn),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -28,14 +29,14 @@ class LogInScreen extends StatelessWidget {
             // Campo de Correo Electrónico
             _buildTextField(
               controller: userController.emailController,
-              label: 'Correo Electrónico',
+              label: S.current.CorreoElectronico,
               obscureText: false,
             ),
 
             // Campo de Contraseña
             _buildTextField(
               controller: userController.passwordController,
-              label: 'Contraseña',
+              label: S.current.Contrasena,
               obscureText: true,
             ),
 
@@ -46,11 +47,10 @@ class LogInScreen extends StatelessWidget {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: userController.logIn,
-                    child: const Text('Iniciar Sesión'),
+                    child: Text(S.current.LogIn),
                   )),
 
             const SizedBox(height: 16),
-
 
             // Mostrar mensaje de error si existe
             Obx(() => userController.errorMessage.isNotEmpty
@@ -64,9 +64,9 @@ class LogInScreen extends StatelessWidget {
 
             // Botón para Navegar a Registrarse
             ElevatedButton(
-                        onPressed: () => Get.toNamed('/login'),
-                        child: const Text('Volver'),
-                      ),
+              onPressed: () => Get.toNamed('/login'),
+              child: Text(S.current.Volver),
+            ),
           ],
         ),
       ),
@@ -85,6 +85,4 @@ class LogInScreen extends StatelessWidget {
       obscureText: obscureText,
     );
   }
-
-  
 }

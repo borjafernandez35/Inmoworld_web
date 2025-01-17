@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:inmoworld_web/controllers/user_list_controller.dart';
 import 'package:inmoworld_web/widgets/user_card.dart';
@@ -19,10 +20,10 @@ class UserScreen extends StatelessWidget {
         builderDelegate: PagedChildBuilderDelegate<UserModel>(
           itemBuilder: (context, user, index) => UserCard(user: user),
           firstPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Error loading data.'),
+            child: Text(S.current.ErrorLoadingData),
           ),
           newPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Failed to load more data.'),
+            child: Text(S.current.FailedToLoadMoreData),
           ),
           firstPageProgressIndicatorBuilder: (context) =>
               const Center(child: CircularProgressIndicator()),

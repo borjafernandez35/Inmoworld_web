@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart'; // Para formatear timestamps
 import '../services/chat.dart';
@@ -19,7 +19,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<Map<String, dynamic>> _messages = []; // Lista de mensajes locales
-  late final ChatService chatService;
+ // late final ChatService chatService;
   late final UserService userService;
   late Future<List<Map<String, dynamic>>>
       chats; // Lista futura para los chats iniciales
@@ -223,3 +223,4 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+ */

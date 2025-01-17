@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:inmoworld_web/screen/chat.dart';
 import 'package:inmoworld_web/models/user_model.dart';
 
@@ -19,7 +20,7 @@ class UserCard extends StatelessWidget {
       ),
       title: Text(user.name),
       subtitle: Text(
-        user.lastMessage ?? 'Sin mensajes',
+        user.lastMessage ?? S.current.SinMensajes,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -27,18 +28,18 @@ class UserCard extends StatelessWidget {
         lastMessageTime,
         style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
       ),
-      onTap: () {
+      /* onTap: () {
         // Navegar a la pantalla de chat
         Navigator.push(
           context,
-          MaterialPageRoute(
+          /* MaterialPageRoute(
             builder: (context) => ChatScreen(
               userId: user.id ?? '',  // Aquí pasas el ID del usuario
               userName: user.name,     // Aquí pasas el nombre del usuario
             ),
-          ),
+          ), */
         );
-      },
+      }, */
     );
   }
 }

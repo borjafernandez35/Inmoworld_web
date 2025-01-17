@@ -72,20 +72,18 @@ class PropertyAddController extends GetxController {
       // Actualizar marcadores
       markers.clear();
       for (var property in propertyController.mapProperties) {
-        if (property.location != null) {
-          markers.add(
-            Marker(
-              markerId: MarkerId(property.id),
-              position: LatLng(
-                  property.location.latitude, property.location.longitude),
-              infoWindow: InfoWindow(
-                title: property.description,
-                snippet: '\$${property.price.toStringAsFixed(2)}',
-              ),
+        markers.add(
+          Marker(
+            markerId: MarkerId(property.id),
+            position: LatLng(
+                property.location.latitude, property.location.longitude),
+            infoWindow: InfoWindow(
+              title: property.description,
+              snippet: '\$${property.price.toStringAsFixed(2)}',
             ),
-          );
-        }
-      }
+          ),
+        );
+            }
     } catch (e) {
       print('Error al cargar propiedades para el mapa: $e');
        throw Exception('No se pudieron cargar las propiedades en el mapa.');

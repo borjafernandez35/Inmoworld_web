@@ -19,24 +19,18 @@ class _PropertyCardState extends State<PropertyCard> {
   @override
   void initState() {
     super.initState();
-    if (widget.property.location != null) {
-      final latitude = widget.property.location.latitude;
-      final longitude = widget.property.location.longitude;
+    final latitude = widget.property.location.latitude;
+    final longitude = widget.property.location.longitude;
 
-      // Validar si las coordenadas son válidas
-      if (latitude != 0.0 && longitude != 0.0) {
-        _fetchAddress(longitude, latitude);
-      } else {
-        setState(() {
-          _address = 'Coordenadas no válidas';
-        });
-      }
+    // Validar si las coordenadas son válidas
+    if (latitude != 0.0 && longitude != 0.0) {
+      _fetchAddress(longitude, latitude);
     } else {
       setState(() {
-        _address = 'Ubicación no disponible';
+        _address = 'Coordenadas no válidas';
       });
     }
-  }
+    }
 
   Future<void> _fetchAddress(double longitude, double latitude) async {
     if (latitude < -90 ||
@@ -150,38 +144,22 @@ class _PropertyCardState extends State<PropertyCard> {
                       .copyWith(color: Colors.green),
                 ),
                 const SizedBox(height: 8),
-                if (widget.property.location != null)
-                  Row(
-                    children: [
-                      Icon(Icons.location_on, color: Colors.red[300]),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: _isLoadingAddress
-                            ? const Text('Cargando dirección...')
-                            : Text(
-                                _address ?? 'No disponible',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                      ),
-                    ],
-                  )
-                else
-                  Row(
-                    children: [
-                      Icon(Icons.location_off, color: Colors.grey),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          'Ubicación no disponible',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, color: Colors.red[300]),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: _isLoadingAddress
+                          ? const Text('Cargando dirección...')
+                          : Text(
+                              _address ?? 'No disponible',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

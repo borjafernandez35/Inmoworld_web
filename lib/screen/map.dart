@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/controllers/property_controller.dart';
@@ -22,7 +23,15 @@ class _MapScreenState extends State<MapScreen> {
   bool _isLoading = true;
   final PropertyController _propertyController = PropertyController();
   double _selectedDistance = 5.0;
-  final List<double> _validDistances = [5.0, 10.0, 20.0, 50.0, 100.0, 500.0, 1000.0];
+  final List<double> _validDistances = [
+    5.0,
+    10.0,
+    20.0,
+    50.0,
+    100.0,
+    500.0,
+    1000.0
+  ];
   static const int _pageSize = 10;
   String _searchQuery = "Price";
   String sortOption = "Price"; // Opciones: "Date", "Price", etc.
@@ -31,14 +40,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-     _selectedDistance = box.read('distance') ?? 5.0;
-  if (!_validDistances.contains(_selectedDistance)) {
-    _selectedDistance = 5.0;
-  }
+    _selectedDistance = box.read('distance') ?? 5.0;
+    if (!_validDistances.contains(_selectedDistance)) {
+      _selectedDistance = 5.0;
+    }
     _initializeLocationAndProperties();
   }
 
-   Future<void> _initializeLocationAndProperties() async {
+  Future<void> _initializeLocationAndProperties() async {
     await _determinePosition();
     await _fetchProperties();
     setState(() {
@@ -109,7 +118,9 @@ class _MapScreenState extends State<MapScreen> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al obtener la ubicación: soy tu errrrrooooorrrrrrr $e')),
+        SnackBar(
+            content: Text(
+                'Error al obtener la ubicación: soy tu errrrrooooorrrrrrr $e')),
       );
     }
   }
@@ -117,7 +128,7 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _fetchProperties() async {
     try {
       await _propertyController.fetchPropertiesMarkers(
-        distance: _selectedDistance * 1000,        
+        distance: _selectedDistance * 1000,
         sort: _searchQuery,
       );
 
@@ -132,7 +143,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
             infoWindow: InfoWindow(
               title: property.description,
-              snippet: 'Precio: \€${property.price}',
+              snippet: S.current.PrecioPropiedad(': €${property.price}'),
               onTap: () => _showPropertyDetails(property),
             ),
           );
@@ -143,63 +154,62 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-   void _showPropertyDetails(dynamic property) {
-  print('Descripción: ${property.description}');
-  print('URL de la imagen: ${property.imageUrl}');
+  void _showPropertyDetails(dynamic property) {
+    print('Descripción: ${property.description}');
+    print('URL de la imagen: ${property.imageUrl}');
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(property.description),
-        content: Row(
-          children: [
-            property.imageUrl != null && property.imageUrl!.isNotEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      property.imageUrl!,
-                      height: 50, // Tamaño pequeño
-                      width: 50,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons.broken_image, size: 50);
-                      },
-                    ),
-                  )
-                : const Icon(Icons.image_not_supported, size: 50),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                'Precio: \€${property.price}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(property.description),
+          content: Row(
+            children: [
+              property.imageUrl != null && property.imageUrl!.isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        property.imageUrl!,
+                        height: 50, // Tamaño pequeño
+                        width: 50,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.broken_image, size: 50);
+                        },
+                      ),
+                    )
+                  : const Icon(Icons.image_not_supported, size: 50),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  S.current.PrecioPropiedad(': €${property.price}'),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.current.Close),
             ),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cerrar'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 
   void _onDistanceChanged(double? newDistance) {
-  if (newDistance != null && _validDistances.contains(newDistance)) {
-    setState(() {
-      _selectedDistance = newDistance;
-      box.write('distance', _selectedDistance);
-      _fetchProperties();
-    });
-  } else {
-    _showSnackbar('Distancia seleccionada no es válida.');
+    if (newDistance != null && _validDistances.contains(newDistance)) {
+      setState(() {
+        _selectedDistance = newDistance;
+        box.write('distance', _selectedDistance);
+        _fetchProperties();
+      });
+    } else {
+      _showSnackbar(S.current.DistanciaNoValida);
+    }
   }
-}
 
   void _onSearchQueryChanged(String query) {
     setState(() {
@@ -208,7 +218,7 @@ class _MapScreenState extends State<MapScreen> {
     _fetchProperties();
   }
 
-   void _showSnackbar(String message) {
+  void _showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
@@ -219,7 +229,7 @@ class _MapScreenState extends State<MapScreen> {
     print("Marcadores pasados al GoogleMap: $_markers");
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mapa de Propiedades'),
+        title: Text(S.current.MapaPropiedades),
         actions: [
           // Filtro de distancia
           DropdownButton<double>(
@@ -227,10 +237,10 @@ class _MapScreenState extends State<MapScreen> {
             onChanged: _onDistanceChanged,
             dropdownColor: Colors.white,
             style: const TextStyle(color: Colors.black),
-            items:  _validDistances.map((double value) {
+            items: _validDistances.map((double value) {
               return DropdownMenuItem<double>(
                 value: value,
-                child: Text('Hasta $value km'),
+                child: Text(S.current.Hasta('$value km')),
               );
             }).toList(),
           ),
@@ -239,41 +249,41 @@ class _MapScreenState extends State<MapScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Stack(
-        children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: widget.defaultLocation,
-              zoom: 14,
-            ),
-            markers: _markers,
-            onMapCreated: (controller) => _controller = controller,
-          ),
-          // Barra de búsqueda
-          Positioned(
-            top: 10,
-            left: 10,
-            right: 10,
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: _onSearchQueryChanged,
-                  decoration: const InputDecoration(
-                    labelText: 'Buscar propiedades...',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
+              children: [
+                GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: widget.defaultLocation,
+                    zoom: 14,
+                  ),
+                  markers: _markers,
+                  onMapCreated: (controller) => _controller = controller,
+                ),
+                // Barra de búsqueda
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                  child: Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        onChanged: _onSearchQueryChanged,
+                        decoration: const InputDecoration(
+                          labelText: 'Buscar propiedades...',
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed('/property'),
+        tooltip: S.current.AnadirPropiedad,
         child: const Icon(Icons.add),
-        tooltip: 'Añadir Propiedad',
       ),
     );
   }

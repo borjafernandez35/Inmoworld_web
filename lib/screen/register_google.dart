@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -100,13 +101,13 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
 
   void _handleLoginResponse(int statusCode) {
     if (statusCode == 201 || statusCode == 200) {
-      Get.snackbar('Success', 'Login successful',
+      Get.snackbar(S.current.Success, S.current.LoginSuccessful,
           snackPosition: SnackPosition.BOTTOM);
       Get.toNamed('/perfil');
     } else if (statusCode == 400) {
-      _showError('Incorrect credentials. Please try again.');
+      _showError(S.current.IncorrectCredentials);
     } else if (statusCode == 500) {
-      _showError('Server error. Please try later.');
+      _showError(S.current.ServerError);
     } else {
       _showError('Unknown error. Contact support.');
     }
@@ -158,7 +159,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Sign Up'),
+      title: Text(S.current.Registrarse),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -166,7 +167,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: S.current.Name),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please, fill in your name';
@@ -176,7 +177,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
               ),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(labelText: S.current.CorreoElectronico),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please, fill in your email';
@@ -187,7 +188,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
               TextFormField(
                 controller: _birthdayController,
                 decoration: InputDecoration(
-                  labelText: 'Birthday',
+                  labelText: S.current.Birthday,
                   suffixIcon: IconButton(
                     icon: Icon(Icons.calendar_today),
                     onPressed: () => _selectDate(context),
@@ -209,7 +210,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
                     sendDataToBackend(); // Llama a la función para enviar los datos al backend
                   }
                 },
-                child: Text('Sign Up'),
+                child: Text(S.current.Registrarse),
               ),
             ],
           ),
@@ -217,7 +218,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('Close'),
+          child: Text(S.current.Close),
           onPressed: () {
             Navigator.of(context).pop();
           },

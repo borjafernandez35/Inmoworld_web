@@ -1,8 +1,11 @@
 import 'package:flutter/gestures.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:google_identity_services_web/oauth2.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/src/sign_in_button.dart';
 import 'package:inmoworld_web/services/sign_in.dart';
 import 'package:inmoworld_web/controllers/user_model_controller.dart';
@@ -36,9 +39,21 @@ class _TitleScreenState extends State<TitleScreen> {
   String idClient =
       '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com';
 
+  Locale currentLocale = Get.deviceLocale ?? const Locale('en');
+
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final box = GetStorage();
+      final lastRoute = box.read('lastRoute') ?? '/login';
+
+      // Solo navega si no estamos en la página esperada
+      if (Get.currentRoute != lastRoute) {
+        Get.toNamed(lastRoute);
+      }
+    });
 
     _signInService = SignInService(
       clientId: idClient,
@@ -103,13 +118,13 @@ class _TitleScreenState extends State<TitleScreen> {
 
   void _handleLoginResponse(int statusCode) {
     if (statusCode == 201 || statusCode == 200) {
-      Get.snackbar('Success', 'Login successful',
+      Get.snackbar(S.current.Success, S.current.LoginSuccessful,
           snackPosition: SnackPosition.BOTTOM);
       Get.toNamed('/properties');
     } else if (statusCode == 400) {
-      _showError('Incorrect credentials. Please try again.');
+      _showError(S.current.IncorrectCredentials);
     } else if (statusCode == 500) {
-      _showError('Server error. Please try later.');
+      _showError(S.current.ServerError);
     } else {
       _showError('Unknown error. Contact support.');
     }
@@ -125,13 +140,112 @@ class _TitleScreenState extends State<TitleScreen> {
     Get.snackbar('Error', message, snackPosition: SnackPosition.BOTTOM);
   }
 
+  void _changeLanguage(Locale locale) {
+    print('Cambiando idioma a: ${locale.languageCode}');
+    setState(() {
+      currentLocale = locale;
+    });
+    StorageService.saveLocale(
+        locale.languageCode); // Guarda el idioma en GetStorage
+    Get.updateLocale(locale); // Cambia el idioma global
+    print('Idioma actual: ${Get.locale}');
+  }
+
+  Widget _buildLanguageSelector() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: PopupMenuButton<Locale>(
+          onSelected: (Locale locale) {
+            _changeLanguage(locale);
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<Locale>>[
+            PopupMenuItem<Locale>(
+              value: const Locale('en'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/us.png', // Bandera de EE. UU.
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.English),
+                ],
+              ),
+            ),
+            PopupMenuItem<Locale>(
+              value: Locale('es', 'ES'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/es.png', // Bandera de España
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.Espanol),
+                ],
+              ),
+            ),
+            PopupMenuItem<Locale>(
+              value: Locale('ca', 'CA'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/cat.png', // Bandera de España
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.Catalan),
+                ],
+              ),
+            ),
+            PopupMenuItem<Locale>(
+              value: Locale('ro', 'RO'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/ru.png', // Bandera de España
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(S.current.Rumanno),
+                ],
+              ),
+            ),
+          ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Cambiamos el Icon por la imagen personalizada
+              Image.asset(
+                S.of(context).flag, // Bandera
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                S.current.EN,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBody() {
     final GoogleSignInAccount? user = _currentUser;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const Text(
-          'Google sign in.',
+        Text(
+          S.current.GoogleSignIn,
           style: TextStyle(color: Colors.black),
         ),
         buildSignInButton(
@@ -153,6 +267,9 @@ class _TitleScreenState extends State<TitleScreen> {
             fit: BoxFit.cover,
           ), */
           // Contenido de la pantalla
+
+          _buildLanguageSelector(),
+
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -175,8 +292,8 @@ class _TitleScreenState extends State<TitleScreen> {
                     backgroundColor:
                         Colors.green, // Cambia el color del botón a salmón
                   ),
-                  child: const Text(
-                    'Log in',
+                  child: Text(
+                    S.current.LogIn,
                     style: TextStyle(
                       fontSize: 26, // Ajusta el tamaño del texto aquí
                       color: Color.fromARGB(
@@ -192,11 +309,11 @@ class _TitleScreenState extends State<TitleScreen> {
                     color: Colors.black,
                   ),
                   children: [
-                    const TextSpan(
-                      text: "No tienes cuenta? ",
+                    TextSpan(
+                      text: S.current.NoTienesCuenta,
                     ),
                     TextSpan(
-                      text: "Registrarse",
+                      text: S.current.Registrarse,
                       style: TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,
@@ -212,6 +329,7 @@ class _TitleScreenState extends State<TitleScreen> {
                 ),
               ),
               const SizedBox(height: 40),
+
               _buildBody(),
             ],
           ),
