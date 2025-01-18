@@ -32,7 +32,7 @@ class ReviewService {
     // Obtener todas las reseñas
     Future<List<ReviewModel>> getReviews() async {
     try {
-      final response = await dio.get('$baseUrl/api/reviews/');
+      final response = await dio.get('$baseUrl/reviews/');
       // Validar la respuesta
       final statusCode = _validateResponse(response);
       if (statusCode == -1) {
@@ -57,7 +57,7 @@ class ReviewService {
   // Obtener una reseña por ID
   Future<ReviewModel> getReview(String id) async {
     try {
-      final response = await dio.get('$baseUrl/api/reviews/$id');
+      final response = await dio.get('$baseUrl/reviews/$id');
       return ReviewModel.fromJson(response.data['data']);
     } catch (e) {
       print('Error en getReview: $e');
@@ -68,7 +68,7 @@ class ReviewService {
   // Crear una nueva reseña
   Future<ReviewModel> createReview(ReviewModel review) async {
     try {
-      final response = await dio.post('$baseUrl/api/reviews',
+      final response = await dio.post('$baseUrl/reviews',
           options: Options(headers: {
             "Content-Type": "application/json",
             "x-access-token": StorageService.getToken()
@@ -84,7 +84,7 @@ class ReviewService {
   // Actualizar una reseña
   Future<ReviewModel> updateReview(String id, ReviewModel review) async {
     try {
-      final response = await dio.put('$baseUrl/api/reviews/$id',
+      final response = await dio.put('$baseUrl/reviews/$id',
           options: Options(headers: {
             "Content-Type": "application/json",
             "x-access-token": StorageService.getToken()
@@ -100,7 +100,7 @@ class ReviewService {
   // Eliminar una reseña
   Future<void> deleteReview(String id) async {
     try {
-      final response = await dio.delete('$baseUrl/api/reviews/$id', options: Options(
+      final response = await dio.delete('$baseUrl/reviews/$id', options: Options(
         headers: {"x-access-token": StorageService.getToken()},
       ));
       _validateResponse(response);
