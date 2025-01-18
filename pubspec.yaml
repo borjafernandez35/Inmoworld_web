@@ -24,12 +24,11 @@ dependencies:
   google_maps_flutter: ^2.0.0
   geocoding: ^2.0.0
   
-  dialogflow_flutter_plus: ^0.0.1
+  dialog_flowtter: ^0.3.1
   googleapis_auth: ^1.4.1
-  http: ^1.1.0
+  http: ^0.13.1
   uuid: ^3.0.6
   bubble: ^1.2.1
-  dialog_flowtter: 
 
 
 

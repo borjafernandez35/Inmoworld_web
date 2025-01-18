@@ -211,7 +211,6 @@ class _UserCardState extends State<UserCard> {
           DateTime lastMessageTime = DateTime.parse(messageData['timestamp']);
           // print("Last Message: $lastMessage");
           List<UserModel> userss = StorageService.getUserList();
-          print("Lista Users: $userss");
           // Buscar usuario en la lista y actualizar su último mensaje
           final usery = StorageService.getUserList().firstWhere(
             (user) => user.id == senderId,
@@ -223,11 +222,9 @@ class _UserCardState extends State<UserCard> {
               isAdmin: false,
             ),
           );
-          print("Usery: ${usery.name}");
 
           // Si el usuario es un objeto válido, actualizamos su mensaje
           if (usery != null && usery.id != null && widget.user.name == usery.name) {
-            print("Seteamos el user");
              setState(() {
               widget.user.setUser(
                 name: usery.name,
@@ -243,8 +240,6 @@ class _UserCardState extends State<UserCard> {
             // print(user);
             // print("User last message: ${user.lastMessage}");
           }
-          print(usery);
-          print("User last message: ${usery.lastMessage}");
         }
         
         userService.notifyListeners();  // Notificar a los listeners para que la UI se actualice

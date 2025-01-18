@@ -54,7 +54,7 @@ class BottomNavScaffold extends StatelessWidget {
                 label: 'Perfil',
               ),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.bolt),
+                icon: Icon(Icons.smart_toy),
                 label: 'Chatbot',
               ),
               const BottomNavigationBarItem(

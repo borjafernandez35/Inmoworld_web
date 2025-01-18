@@ -1,14 +1,8 @@
 // Seguda Versión ###############################################################
 import 'package:bubble/bubble.dart';
-import 'package:dialogflow_flutter_plus/language.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:dialogflow_flutter_plus/dialogflowFlutter.dart';
-import 'package:dialogflow_flutter_plus/googleAuth.dart';
 import 'package:intl/intl.dart';
-import 'package:dialogflow_flutter_plus/dialogflowFlutter.dart';
 import 'package:dialog_flowtter/dialog_flowtter.dart';
-
 void main() => runApp(ChatBotApp());
 
 class ChatBotApp extends StatelessWidget {
@@ -34,27 +28,40 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    // DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
+    initializeDialogFlowtter();
+  }
+
+  Future<void> initializeDialogFlowtter() async {
+    dialogFlowtter = await DialogFlowtter.fromFile(
+      path: "assets/credenciales.json",
+    );
   }
 
   void response(String query) async {
+    if (query.isEmpty) return;
+
+    setState(() {
+      messages.insert(0, {"data": 1, "message": query});
+    });
+    _messageController.clear();
+
     try {
-      print(query);
-      AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/credenciales.json").build();
-      print("AuthGoogle: $authGoogle");
-      DialogFlow dialogflow = DialogFlow(authGoogle: authGoogle, language: Language.spanish);
-      print("DialogFlow: $dialogflow");
-      AIResponse aiResponse = await dialogflow.detectIntent(query);
-      print("AIResponse: $aiResponse");
-      String botMessage = aiResponse.getMessage() ?? '';
-      setState(() {
-        messages.insert(0, {"data": 0, "message": botMessage});
-      });
+      DetectIntentResponse response = await dialogFlowtter.detectIntent(
+        queryInput: QueryInput(
+          text: TextInput(text: query, languageCode: "es"),
+        ),
+      );
+
+      String botMessage = response.text ?? '';
+      if (botMessage.isNotEmpty) {
+        setState(() {
+          messages.insert(0, {"data": 0, "message": botMessage});
+        });
+      }
     } catch (e) {
       print("Error: $e");
     }
   }
-
 
   Widget buildMessage(String message, int data) {
     return Padding(
@@ -151,15 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 IconButton(
                   icon: Icon(Icons.send, color: Colors.greenAccent),
                   onPressed: () {
-                    String userMessage = _messageController.text;
-                    if (userMessage.isNotEmpty) {
-                      setState(() {
-                        messages.insert(
-                            0, {"data": 1, "message": userMessage});
-                      });
-                      _messageController.clear();
-                      response(userMessage);
-                    }
+                    response(_messageController.text);
                     FocusScope.of(context).unfocus();
                   },
                 ),
@@ -171,7 +170,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
 
 
 

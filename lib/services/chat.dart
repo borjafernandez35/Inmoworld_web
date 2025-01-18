@@ -108,7 +108,6 @@ class ChatService {
 
   // Obtener el último mensaje de cada chat
   void getLastMessage(String? userId) {
-    print('Quiero los últimos mensajes :)');
     socket?.emit('last-message', userId);
   }
 
