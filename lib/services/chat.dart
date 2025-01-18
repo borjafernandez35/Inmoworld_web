@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import './user.dart';
 import '../models/chatModel.dart';
+import '../models/userModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
@@ -10,7 +11,7 @@ class ChatService {
   IO.Socket? socket; // Socket nullable
   final Dio dio = Dio();
   late final UserService userService; // Aseguramos inicialización
-
+  late Future<List<UserModel>> users;
   ChatService(UserService userService) {
     this.userService = userService;
     _configureInterceptors();
@@ -33,12 +34,51 @@ class ChatService {
       socket!.on('message', (data) => print('Mensaje recibido: $data'));
 
       // Eventos personalizados
-      socket!.on('load-messages-response', (data) {
-        print('Mensajes históricos: $data');
-      });
-      socket!.on('unread-count-response', (data) {
-        print('Mensajes no leídos: ${data['unreadCount']}');
-      });
+    socket!.on('last-message-response', (data) {
+      try {
+        if (data != null) {
+          List<dynamic> messages = data;
+
+          for (var messageData in messages) {
+            String senderId = messageData['sender'];
+            String lastMessage = messageData['message'];
+            DateTime lastMessageTime = DateTime.parse(messageData['timestamp']);
+
+            // Buscar usuario en la lista y actualizar su último mensaje
+            final user = StorageService.getUserList().firstWhere(
+              (user) => user.id == senderId,
+              orElse: () => UserModel( // Devolver un UserModel vacío si no se encuentra el usuario
+                name: 'Desconocido', 
+                email: 'No especificado',
+                password: '',
+                birthday: '',
+                isAdmin: false,
+              ),
+            );
+
+            // Si el usuario es un objeto válido, actualizamos su mensaje
+            if (user != null && user.id != null) {
+              user.setUser(
+                name: user.name, 
+                email: user.email, 
+                password: user.password, 
+                birthday: user.birthday, 
+                isAdmin: user.isAdmin, 
+                id: user.id,
+                lastMessage: lastMessage, 
+                lastMessageTime: lastMessageTime,
+              );
+            }
+          }
+
+          userService.notifyListeners();
+        } else {
+          print('No se recibieron mensajes en la respuesta.');
+        }
+      } catch (e) {
+        print('Error al procesar last-message-response: $e');
+      }
+    });
 
       socket!.connect();
     } catch (e) {
@@ -64,6 +104,12 @@ class ChatService {
   // Obtener el conteo de mensajes no leídos
   void getUnreadCount(String userId) {
     socket?.emit('unread-count', userId);
+  }
+
+  // Obtener el último mensaje de cada chat
+  void getLastMessage(String? userId) {
+    print('Quiero los últimos mensajes :)');
+    socket?.emit('last-message', userId);
   }
 
   // Enviar mensaje

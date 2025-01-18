@@ -1,18 +1,24 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/models/userModel.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 
-class UserService {
+class UserService extends ChangeNotifier {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
   final Dio dio = Dio();
   int totalPages = 1;
   int totalUsers = 1;
+  final List<UserModel> _usersList = [];
 
   UserService() {
     // Configurar Interceptor para manejar tokens
     _configureInterceptors();
   }
+
+  List<UserModel> getUsersList(){
+    return _usersList;
+  } 
 
   // Configurar Interceptores
   void _configureInterceptors() {
@@ -29,6 +35,17 @@ class UserService {
         handler.next(e); // Pasar el error al flujo siguiente
       },
     ));
+  }
+  
+  // Método para agregar o actualizar usuarios en la lista
+  void addOrUpdateUser(UserModel user) {
+    final index = _usersList.indexWhere((u) => u.id == user.id);
+    if (index != -1) {
+      _usersList[index] = user;
+    } else {
+      _usersList.add(user);
+    }
+    notifyListeners(); // Notifica a los listeners sobre los cambios
   }
 
   Future<List<UserModel>> getUsers(int page, int limit) async {
@@ -57,6 +74,13 @@ class UserService {
       final List<UserModel> users =
           usersData.map((data) => UserModel.fromJson(data)).toList();
       print('Usuarios obtenidos: ${users.length}');
+      
+      // Actualizar la lista interna y notificar cambios
+      _usersList.clear();
+      _usersList.addAll(users);
+      print("Lista de usuarios: $_usersList");
+      StorageService.saveUserList(_usersList);
+      notifyListeners();
       return users;
     } catch (e) {
       print('Error en getUsers: $e');
@@ -65,7 +89,7 @@ class UserService {
   }
 
   void logout() {
-    StorageService.clearSession(); // Limpia todos los datos almacenados
+    // StorageService.clearSession(); // Limpia todos los datos almacenados
   }
 
   // Validar y manejar respuesta

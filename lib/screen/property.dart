@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:inmoworld_web/services/user.dart';
+import '../services/chat.dart';
+import '../controllers/chatController.dart';
+import 'package:get/get.dart';
+import '../services/storage.dart';
 
 class PropertyScreen extends StatefulWidget {
   const PropertyScreen({Key? key}) : super(key: key);
@@ -15,10 +19,19 @@ class _PropertyScreenState extends State<PropertyScreen> {
       PagingController(firstPageKey: 1);
   final UserService _userService = UserService();
   static const int _pageSize = 10;
+  late UserService userService;
+    late final ChatService chatService;
+  final ChatController chatController = Get.put(ChatController());
 
   @override
   void initState() {
     super.initState();
+    // Inicializar servicios
+    userService = UserService();
+    chatService = ChatService(userService);
+    chatService.connect();
+    chatService.registerUser(StorageService.getId());
+    print("Socket conectado: ${chatService.socket?.connected}");
     _pagingController.addPageRequestListener(_fetchProperties);
   }
 

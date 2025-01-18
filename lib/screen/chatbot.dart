@@ -1,11 +1,13 @@
 // Seguda Versión ###############################################################
 import 'package:bubble/bubble.dart';
-import 'package:dialogflow_flutter/language.dart';
+import 'package:dialogflow_flutter_plus/language.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:dialogflow_flutter/dialogflowFlutter.dart';
-import 'package:dialogflow_flutter/googleAuth.dart';
+import 'package:dialogflow_flutter_plus/dialogflowFlutter.dart';
+import 'package:dialogflow_flutter_plus/googleAuth.dart';
 import 'package:intl/intl.dart';
+import 'package:dialogflow_flutter_plus/dialogflowFlutter.dart';
+import 'package:dialog_flowtter/dialog_flowtter.dart';
 
 void main() => runApp(ChatBotApp());
 
@@ -27,29 +29,32 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   List<Map<String, dynamic>> messages = [];
+  late DialogFlowtter dialogFlowtter;
 
   @override
   void initState() {
     super.initState();
+    // DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
   }
 
   void response(String query) async {
     try {
-      AuthGoogle authGoogle =
-          await AuthGoogle(fileJson: "assets/credenciales.json").build();
-      DialogFlow dialogflow =
-          DialogFlow(authGoogle: authGoogle, language: Language.spanish);
+      print(query);
+      AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/credenciales.json").build();
+      print("AuthGoogle: $authGoogle");
+      DialogFlow dialogflow = DialogFlow(authGoogle: authGoogle, language: Language.spanish);
+      print("DialogFlow: $dialogflow");
       AIResponse aiResponse = await dialogflow.detectIntent(query);
-      String botMessage =
-          aiResponse.getListMessage()![0]["text"]["text"][0].toString();
+      print("AIResponse: $aiResponse");
+      String botMessage = aiResponse.getMessage() ?? '';
       setState(() {
         messages.insert(0, {"data": 0, "message": botMessage});
       });
-      print(botMessage);
     } catch (e) {
       print("Error: $e");
     }
   }
+
 
   Widget buildMessage(String message, int data) {
     return Padding(

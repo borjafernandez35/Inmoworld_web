@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
     userService = UserService();
     chatService = ChatService(userService);
     chatService.connect();
-    chatService.registerUser(StorageService.getId());
+    chatService.registerUser(StorageService.getId()); 
     print("Socket conectado: ${chatService.socket?.connected}");
 
     // Cargar mensajes iniciales
@@ -122,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           if (!isMe)
             CircleAvatar(
-              backgroundImage: AssetImage("assets/receiver_avatar.jpg"),
+              backgroundImage: AssetImage("assets/default.png"),
               radius: 20,
             ),
           if (!isMe) const SizedBox(width: 10),
@@ -167,7 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
           if (isMe) const SizedBox(width: 10),
           if (isMe)
             CircleAvatar(
-              backgroundImage: AssetImage("assets/user_avatar.jpg"),
+              backgroundImage: AssetImage("assets/default.png"),
               radius: 20,
             ),
         ],

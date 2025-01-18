@@ -23,11 +23,13 @@ dependencies:
   intl: ^0.18.0  
   google_maps_flutter: ^2.0.0
   geocoding: ^2.0.0
-  dialogflow_flutter: ^1.0.0
+  
+  dialogflow_flutter_plus: ^0.0.1
   googleapis_auth: ^1.4.1
-  http: ^0.13.6
+  http: ^1.1.0
   uuid: ^3.0.6
   bubble: ^1.2.1
+  dialog_flowtter: 
 
 
 
@@ -41,4 +43,6 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/credenciales.json
-    - assets/
+    - assets/default.png
+    - assets/logo.png
+    - assets/robot.jpg
