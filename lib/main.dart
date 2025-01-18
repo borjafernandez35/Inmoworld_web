@@ -17,7 +17,7 @@ import 'package:inmoworld_web/screen/title.dart';
 import 'package:inmoworld_web/screen/map.dart'; // Importa la pantalla de mapa
 import 'package:inmoworld_web/screen/add_property.dart';
 
-void main() async {
+/* void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inicializar GetStorage
@@ -38,7 +38,7 @@ void main() async {
   // Determina si es la primera ejecución
   final bool isFirstLaunch = StorageService.isFirstLaunch();
   if (isFirstLaunch) {
-    StorageService.setFirstLaunch(false);
+    StorageService.setFirstLaunch(true);
   }
 
   // Carga la configuración inicial
@@ -52,14 +52,25 @@ void main() async {
       initialRoute: initialRoute,
     ),
   );
+} */
+
+void main() async {
+  await GetStorage.init();
+  Get.put(UserModelController());
+
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  final Locale savedLocale;
-  final String initialRoute;
+  //final Locale savedLocale;
+  //final String initialRoute;
 
-  const MyApp({required this.savedLocale, required this.initialRoute, Key? key})
-      : super(key: key);
+  /*  const MyApp({required this.savedLocale, required this.initialRoute, Key? key})
+      : super(key: key); */
+
+  const MyApp({super.key});
 
   static Future<LatLng> getDefaultLocation() async {
     try {
@@ -114,7 +125,7 @@ class MyApp extends StatelessWidget {
               snapshot.data ?? LatLng(41.27552212202214, 1.9863014220734023);
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: initialRoute,
+            initialRoute: '/login',
             getPages: [
               GetPage(
                 name: '/login',
@@ -173,14 +184,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppWrapper extends StatefulWidget {
+/* class MyAppWrapper extends StatefulWidget {
   const MyAppWrapper({Key? key}) : super(key: key);
 
   @override
   State<MyAppWrapper> createState() => _MyAppWrapperState();
 }
-
-class _MyAppWrapperState extends State<MyAppWrapper>
+ */
+/* class _MyAppWrapperState extends State<MyAppWrapper>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -202,4 +213,4 @@ class _MyAppWrapperState extends State<MyAppWrapper>
         savedLocale: Locale(StorageService.getLocale()),
         initialRoute: '/login');
   }
-}
+} */

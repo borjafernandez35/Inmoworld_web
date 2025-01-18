@@ -11,9 +11,10 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final RegisterController registerController = Get.put(RegisterController());
 
-    final GlobalKey<FlutterPwValidatorState> validatorKey = GlobalKey<FlutterPwValidatorState>();
+    final GlobalKey<FlutterPwValidatorState> validatorKey =
+        GlobalKey<FlutterPwValidatorState>();
 
-     return Scaffold(
+    return Scaffold(
       appBar: AppBar(title: Text(S.current.Registrarse)),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -51,7 +52,7 @@ class RegisterScreen extends StatelessWidget {
 
                       _buildTextField(
                         controller: registerController.passwordController,
-                        label:S.current.Contrasena,
+                        label: S.current.Contrasena,
                         obscureText: true,
                         onChanged: (value) {
                           // Actualiza el validador en tiempo real
@@ -78,15 +79,20 @@ class RegisterScreen extends StatelessWidget {
                         normalCharCount: 1,
                         width: 300,
                         height: 150,
-                        successColor: Colors.green, // Color cuando la regla es válida
-                        failureColor: Colors.red, // Color cuando la regla no es válida
+                        successColor:
+                            Colors.green, // Color cuando la regla es válida
+                        failureColor:
+                            Colors.red, // Color cuando la regla no es válida
                         onSuccess: () {
                           print(S.current.ContrasenaValida);
-                          registerController.isPasswordValid.value = true; // Habilita el botón
+                          registerController.isPasswordValid.value =
+                              true; // Habilita el botón
+                          print('El valor es....${registerController.isPasswordValid.value}');
                         },
                         onFail: () {
                           print(S.current.ContrasenaNoValida);
-                          registerController.isPasswordValid.value = false; // Deshabilita el botón
+                          registerController.isPasswordValid.value =
+                              false; // Deshabilita el botón
                         },
                       ),
                       const SizedBox(height: 8),

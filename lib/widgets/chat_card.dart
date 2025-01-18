@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Para formatear fechas
 import 'dart:convert';
-import '../services/chat.dart';
 import '../services/user.dart';
 import '../models/chat_model.dart'; // Importamos el modelo Chat
 import 'package:inmoworld_web/services/storage.dart';

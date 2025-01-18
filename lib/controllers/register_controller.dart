@@ -18,9 +18,9 @@ class RegisterController extends GetxController {
   var isLoading = false.obs;
   var errorMessage = ''.obs;
   var isPasswordValid = false.obs;
-   var birthday = ''.obs;
+  var birthday = ''.obs;
 
-   void selectDate(BuildContext context) async {
+  void selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -38,6 +38,7 @@ class RegisterController extends GetxController {
 
   // Lógica de registro de usuario
   void signUp() async {
+    print('ESTOYYYYYYY EN EL SIGN UP!!!!!!!');
     // Validar entradas
     if (!_validateInputs()) return;
 
@@ -46,8 +47,11 @@ class RegisterController extends GetxController {
     errorMessage.value = '';
 
     try {
+      print('ESTOOOYYY EN EL TRYYYYYY!!!!!!');
       // Crear el modelo del usuario desde los campos
       UserModel newUser = _buildUserModel();
+
+      print('el new uuuussseeeeerrr eesss....${newUser}');
 
       // Llamar al servicio para registrar el usuario
       final statusCode = await userService.createUser(newUser);

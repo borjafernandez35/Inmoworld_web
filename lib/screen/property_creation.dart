@@ -57,7 +57,7 @@ class _CloudinaryUploaderWebState extends State<CloudinaryUploaderWeb> {
   Future<String?> uploadImageToCloudinary(Uint8List imageBytes) async {
     const String cloudName = 'dlbj2oozx';
     const String uploadPreset = 'InmoWorld';
-    final String url =
+    const String url =
         'https://api.cloudinary.com/v1_1/$cloudName/image/upload';
 
     final request = http.MultipartRequest('POST', Uri.parse(url));

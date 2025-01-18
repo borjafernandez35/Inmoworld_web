@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inmoworld_web/generated/l10n.dart';
-import 'package:inmoworld_web/screen/chat.dart';
 import 'package:inmoworld_web/models/user_model.dart';
 
 class UserCard extends StatelessWidget {
