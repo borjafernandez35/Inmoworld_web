@@ -64,8 +64,8 @@ class ReviewModel with ChangeNotifier {
     final userService = UserService();
 
     try {
-      // Obtener detalles del propietario utilizando getUser
-      final ownerDetails = await userService.getUser();
+      // Obtener detalles del propietario utilizando el ID del propietario
+      final ownerDetails = await userService.getUserById(owner);
       if (ownerDetails != null) {
         this.ownerDetails = ownerDetails;
         print('Detalles del propietario cargados: ${ownerDetails.name}');

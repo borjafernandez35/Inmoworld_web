@@ -123,6 +123,16 @@ class UserService {
     }
   }
 
+  // Obtener Usuario por su ID
+  Future<UserModel?> getUserById(String userId) async {
+    try {
+      final response = await dio.get('$baseUrl/user/$userId');
+      return UserModel.fromJson(response.data['data']);
+    } catch (e) {
+      print('Error en getUserById: $e');
+      return null;
+    }
+  }
 
   // Obtener Lista de Propiedades
   Future<List<PropertyModel>> getData() async {
