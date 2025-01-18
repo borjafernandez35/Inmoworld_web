@@ -21,7 +21,10 @@ class ReviewModel with ChangeNotifier {
     required this.rating,
     required this.description,
     this.ownerDetails,
-  });
+  }) {
+    // Cargar detalles del propietario al crear una instancia
+    loadDetails();
+  }
 
   // Método para crear una instancia desde un JSON
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
@@ -77,4 +80,3 @@ class ReviewModel with ChangeNotifier {
     }
   }
 }
-

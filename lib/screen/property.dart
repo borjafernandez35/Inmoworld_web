@@ -6,6 +6,7 @@ import 'package:inmoworld_web/controllers/userModelController.dart';
 import 'package:inmoworld_web/models/propertyModel.dart';
 import 'package:inmoworld_web/models/reviewModel.dart';
 import 'package:inmoworld_web/services/user.dart';
+import 'package:inmoworld_web/widgets/reviewCard.dart';
 
 class PropertyScreen extends StatefulWidget {
   const PropertyScreen({Key? key}) : super(key: key);
@@ -19,19 +20,18 @@ class _PropertyScreenState extends State<PropertyScreen> {
   final UserService _userService = UserService();
   static const int _pageSize = 10;
   final reviewController = Get.put(ReviewController());
-  final userController = Get.find<UserModelController>(); // Añadir UserModelController
+  final userController = Get.find<UserModelController>();
 
   @override
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener(_fetchProperties);
-    userController.fetchUser(); // Cargar usuario al abrir la pantalla
+    userController.fetchUser();
   }
 
   Future<void> _fetchProperties(int pageKey) async {
     try {
       final properties = await _userService.getProperties(pageKey, _pageSize);
-      print("Propiedades obtenidas: ${properties.map((e) => e.toJson()).toList()}");
       final isLastPage = properties.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(properties);
@@ -39,7 +39,6 @@ class _PropertyScreenState extends State<PropertyScreen> {
         _pagingController.appendPage(properties, pageKey + 1);
       }
     } catch (error) {
-      print("Error al obtener propiedades: $error");
       _pagingController.error = error;
     }
   }
@@ -47,7 +46,7 @@ class _PropertyScreenState extends State<PropertyScreen> {
   Future<void> _showCreateReviewDialog(String propertyId) async {
     final TextEditingController _descriptionController = TextEditingController();
     final TextEditingController _ratingController = TextEditingController();
-    final user = userController.user.value; // Obtener el usuario actual
+    final user = userController.user.value;
 
     if (user == null || user.id == null) {
       Get.snackbar("Error", "No se ha encontrado el usuario.");
@@ -81,8 +80,8 @@ class _PropertyScreenState extends State<PropertyScreen> {
             TextButton(
               onPressed: () async {
                 final newReview = ReviewModel(
-                  id: '', // Se generará en el backend
-                  owner: user.id!, // Usar el ID del usuario actual (no nulo)
+                  id: '',
+                  owner: user.id!,
                   property: propertyId,
                   date: DateTime.now(),
                   rating: double.parse(_ratingController.text),
@@ -90,7 +89,7 @@ class _PropertyScreenState extends State<PropertyScreen> {
                 );
                 await reviewController.createReview(newReview);
                 Navigator.of(context).pop();
-                setState(() {}); // Refresca la pantalla después de crear una reseña
+                setState(() {});
               },
               child: Text('Crear'),
             ),
@@ -111,7 +110,6 @@ class _PropertyScreenState extends State<PropertyScreen> {
     return Scaffold(
       body: Column(
         children: [
-          // Logo con tamaño duplicado
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Image.asset(
@@ -119,7 +117,6 @@ class _PropertyScreenState extends State<PropertyScreen> {
               height: 110,
             ),
           ),
-          // Barra de búsqueda
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: TextField(
@@ -132,84 +129,65 @@ class _PropertyScreenState extends State<PropertyScreen> {
               ),
             ),
           ),
-          // Lista de propiedades
           Expanded(
             child: PagedListView<int, PropertyModel>(
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<PropertyModel>(
                 itemBuilder: (context, property, index) {
-                  try {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[850],
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            property.address,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[850],
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          property.address,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
                           ),
-                          const SizedBox(height: 8.0),
-                          Text(
-                            property.description,
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 14.0,
-                            ),
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          property.description,
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14.0,
                           ),
-                          const SizedBox(height: 16.0),
-                          FutureBuilder<List<ReviewModel>>(
-                            future: reviewController.fetchReviews(property.id),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white));
-                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                return Text('No reviews found', style: TextStyle(color: Colors.white70));
-                              } else {
-                                final reviews = snapshot.data!;
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: reviews.map((review) {
-                                    return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          review.description,
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        Text(
-                                          'Rating: ${review.rating}',
-                                          style: TextStyle(color: Colors.amber),
-                                        ),
-                                        const Divider(color: Colors.white70),
-                                      ],
-                                    );
-                                  }).toList(),
-                                );
-                              }
-                            },
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _showCreateReviewDialog(property.id),
-                            child: Text('Agregar Reseña'),
-                          ),
-                        ],
-                      ),
-                    );
-                  } catch (e) {
-                    print("Error al renderizar propiedad: $e");
-                    return const Center(child: Text('Error al mostrar propiedad.'));
-                  }
+                        ),
+                        const SizedBox(height: 16.0),
+                        FutureBuilder<List<ReviewModel>>(
+                          future: reviewController.fetchReviews(property.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white));
+                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return Text('No reviews found', style: TextStyle(color: Colors.white70));
+                            } else {
+                              final reviews = snapshot.data!;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: reviews.map((review) {
+                                  return ReviewCard(review: review); // Usa el ReviewCard aquí
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                        ElevatedButton(
+                          onPressed: () => _showCreateReviewDialog(property.id),
+                          child: Text('Agregar Reseña'),
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 noItemsFoundIndicatorBuilder: (context) => const Center(
                   child: Text('No properties found', style: TextStyle(color: Colors.white)),
@@ -226,6 +204,7 @@ class _PropertyScreenState extends State<PropertyScreen> {
     );
   }
 }
+
 
 
 
