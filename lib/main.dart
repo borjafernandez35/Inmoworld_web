@@ -17,43 +17,6 @@ import 'package:inmoworld_web/screen/title.dart';
 import 'package:inmoworld_web/screen/map.dart'; // Importa la pantalla de mapa
 import 'package:inmoworld_web/screen/add_property.dart';
 
-/* void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Inicializar GetStorage
-  await GetStorage.init();
-
-  // Verificar si la aplicación fue cerrada previamente
-  if (StorageService.wasAppClosed()) {
-    // Limpiar sesión si la app fue cerrada
-    StorageService.clearSession();
-  }
-
-  // Marcar que la aplicación está abierta
-  StorageService.markAppClosed(true);
-
-  // Inicializa el controlador global
-  Get.put(UserModelController());
-
-  // Determina si es la primera ejecución
-  final bool isFirstLaunch = StorageService.isFirstLaunch();
-  if (isFirstLaunch) {
-    StorageService.setFirstLaunch(true);
-  }
-
-  // Carga la configuración inicial
-  final String initialRoute =
-      isFirstLaunch ? '/login' : StorageService.getLastRoute();
-  final Locale savedLocale = Locale(StorageService.getLocale());
-
-  runApp(
-    MyApp(
-      savedLocale: savedLocale,
-      initialRoute: initialRoute,
-    ),
-  );
-} */
-
 void main() async {
   await GetStorage.init();
   Get.put(UserModelController());
@@ -61,15 +24,10 @@ void main() async {
   runApp(
     const MyApp(),
   );
+
 }
 
 class MyApp extends StatelessWidget {
-  //final Locale savedLocale;
-  //final String initialRoute;
-
-  /*  const MyApp({required this.savedLocale, required this.initialRoute, Key? key})
-      : super(key: key); */
-
   const MyApp({super.key});
 
   static Future<LatLng> getDefaultLocation() async {
@@ -125,7 +83,7 @@ class MyApp extends StatelessWidget {
               snapshot.data ?? LatLng(41.27552212202214, 1.9863014220734023);
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: '/login',
+            initialRoute:'/login',
             getPages: [
               GetPage(
                 name: '/login',
@@ -148,7 +106,7 @@ class MyApp extends StatelessWidget {
               page: () => BottomNavScaffold(child: const CloudinaryUploaderWeb()),
              ), */
               GetPage(
-                name: '/properties',
+                name: '/home',
                 page: () => BottomNavScaffold(child: const PropertyScreen()),
               ),
               GetPage(
@@ -183,34 +141,3 @@ class MyApp extends StatelessWidget {
         });
   }
 }
-
-/* class MyAppWrapper extends StatefulWidget {
-  const MyAppWrapper({Key? key}) : super(key: key);
-
-  @override
-  State<MyAppWrapper> createState() => _MyAppWrapperState();
-}
- */
-/* class _MyAppWrapperState extends State<MyAppWrapper>
-    with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    // Marcar la app como cerrada al salir
-    StorageService.markAppClosed(true);
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MyApp(
-        savedLocale: Locale(StorageService.getLocale()),
-        initialRoute: '/login');
-  }
-} */

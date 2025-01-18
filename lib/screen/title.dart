@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:google_identity_services_web/oauth2.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -45,15 +44,7 @@ class _TitleScreenState extends State<TitleScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final box = GetStorage();
-      final lastRoute = box.read('lastRoute') ?? '/login';
-
-      // Solo navega si no estamos en la página esperada
-      if (Get.currentRoute != lastRoute) {
-        Get.toNamed(lastRoute);
-      }
-    });
+   
 
     _signInService = SignInService(
       clientId: idClient,
@@ -120,7 +111,7 @@ class _TitleScreenState extends State<TitleScreen> {
     if (statusCode == 201 || statusCode == 200) {
       Get.snackbar(S.current.Success, S.current.LoginSuccessful,
           snackPosition: SnackPosition.BOTTOM);
-      Get.toNamed('/properties');
+      Get.toNamed('/home');
     } else if (statusCode == 400) {
       _showError(S.current.IncorrectCredentials);
     } else if (statusCode == 500) {
@@ -140,7 +131,7 @@ class _TitleScreenState extends State<TitleScreen> {
     Get.snackbar('Error', message, snackPosition: SnackPosition.BOTTOM);
   }
 
-  void _changeLanguage(Locale locale) {
+   void _changeLanguage(Locale locale) {
     print('Cambiando idioma a: ${locale.languageCode}');
     setState(() {
       currentLocale = locale;
@@ -150,6 +141,15 @@ class _TitleScreenState extends State<TitleScreen> {
     Get.updateLocale(locale); // Cambia el idioma global
     print('Idioma actual: ${Get.locale}');
   }
+ 
+ /*  void _changeLanguage(Locale locale) {
+  setState(() {
+    currentLocale = locale;
+  });
+
+  StorageService.saveLocale(locale.languageCode); // Guarda el idioma
+  Get.updateLocale(locale); // Cambia globalmente
+} */
 
   Widget _buildLanguageSelector() {
     return Align(

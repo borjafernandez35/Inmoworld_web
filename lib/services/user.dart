@@ -24,7 +24,7 @@ class UserService {
       onRequest: (options, handler) async {
         final token = StorageService.getToken();
         options.headers['x-access-token'] = token;
-        handler.next(options);
+              handler.next(options);
       },
       onError: (DioException e, handler) {
         print('Error en petición: ${e.response?.statusCode}');
@@ -40,8 +40,7 @@ class UserService {
         'coordinates': [location!.longitude, location.latitude],
       }
     };
-    Response response =
-        await dio.put('$baseUrl/user/${StorageService.getId()}', data: json);
+    Response response = await dio.put('$baseUrl/user/${StorageService.getId()}', data: json);
     var data = response.data.toString();
     print('Los datos son...!!!!:$data');
     var statusCode = response.statusCode;
@@ -123,7 +122,6 @@ class UserService {
   // Crear Usuario
   Future<int> createUser(UserModel newUser) async {
     try {
-      print('UUUUSSSSEEERRRRRR EEESSSSS ${newUser}');
       final response =
           await dio.post('$baseUrl/user/register', data: newUser.toJson());
       return _validateResponse(response);
@@ -157,7 +155,7 @@ class UserService {
     }
   }
 
-  Future<List<PropertyModel>> getProperties(int page, int limit) async {
+  Future<List<PropertyModel>> getProperties( int page, int limit) async {
     try {
       print(
           'Intentando obtener propiedades para la página $page con límite $limit...');
@@ -182,13 +180,11 @@ class UserService {
     }
   }
 
-  Future<List<PropertyModel>> getMapProperties(
-      double selectedDistance, int page, int limit, String search) async {
+   Future<List<PropertyModel>> getMapProperties(double selectedDistance, int page, int limit, String search) async {
     try {
       print(
           'Intentando obtener propiedades para la página $page con límite $limit...');
-      final response = await dio.get(
-          '$baseUrl/property/$page/$limit/${StorageService.getId()}/$selectedDistance/$search');
+      final response = await dio.get('$baseUrl/property/$page/$limit/${StorageService.getId()}/$selectedDistance/$search');
       print('Respuesta recibida: ${response.data}');
 
       if (response.data == null || response.data['properties'] == null) {
@@ -208,9 +204,9 @@ class UserService {
       rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
     }
   }
-
+  
   // Método para obtener el ID del usuario desde el token
-  /*  Future<String?> getUserIdFromToken() async {
+ /*  Future<String?> getUserIdFromToken() async {
     final token = await StorageService.getToken();
 
     if (token == null) {
@@ -235,7 +231,7 @@ class UserService {
     }
   } */
 
-  /*  Future<int> createProperty(Map<String, dynamic> propertyData) async {
+ /*  Future<int> createProperty(Map<String, dynamic> propertyData) async {
     try {
       final token = await StorageService.getToken();
       
