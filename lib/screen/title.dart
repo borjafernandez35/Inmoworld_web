@@ -136,8 +136,8 @@ class _TitleScreenState extends State<TitleScreen> {
     setState(() {
       currentLocale = locale;
     });
-    StorageService.saveLocale(
-        locale.languageCode); // Guarda el idioma en GetStorage
+    //StorageService.saveLocale(
+      //  locale.languageCode); // Guarda el idioma en GetStorage
     Get.updateLocale(locale); // Cambia el idioma global
     print('Idioma actual: ${Get.locale}');
   }

@@ -4,7 +4,7 @@ class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
 
   final List<String> routes = [
-    '/properties',
+    '/usuarios',
     '/perfil', 
     '/home',
    // '/post',

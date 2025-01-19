@@ -65,9 +65,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final savedLocaleCode =
-        StorageService.getLocale(); // Carga el idioma guardado
-    final Locale savedLocale = Locale(savedLocaleCode);
+    //final savedLocaleCode =
+      //  StorageService.getLocale(); // Carga el idioma guardado
+    //final Locale savedLocale = Locale(savedLocaleCode);
     return FutureBuilder<LatLng>(
         future: getDefaultLocation(),
         builder: (context, snapshot) {
@@ -132,12 +132,12 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: S.delegate.supportedLocales,
-            locale:
-                savedLocale, // Idioma predeterminado basado en el dispositivo
-            fallbackLocale: const Locale(
-                'es', 'ES'), // Idioma por defecto si no está soportado
-          );
+            supportedLocales: S.delegate.supportedLocales
+            //locale:
+                //savedLocale, // Idioma predeterminado basado en el dispositivo
+            //fallbackLocale: const Locale(
+                //'es', 'ES'), // Idioma por defecto si no está soportado
+         );
         });
   }
 }
