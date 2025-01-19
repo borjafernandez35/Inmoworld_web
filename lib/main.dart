@@ -16,6 +16,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/screen/title.dart';
 import 'package:inmoworld_web/screen/map.dart'; // Importa la pantalla de mapa
 import 'package:inmoworld_web/screen/add_property.dart';
+import 'package:inmoworld_web/screen/chat_bot.dart';
+import 'package:inmoworld_web/controllers/property_controller.dart'; // Importa el controlador
 
 void main() async {
   await GetStorage.init();
@@ -108,6 +110,10 @@ class MyApp extends StatelessWidget {
               GetPage(
                 name: '/home',
                 page: () => BottomNavScaffold(child: const PropertyScreen()),
+              ),
+              GetPage(
+                name: '/chatbot',
+                page: () => BottomNavScaffold(child: ChatBotApp()),
               ),
               GetPage(
                 name: '/perfil',

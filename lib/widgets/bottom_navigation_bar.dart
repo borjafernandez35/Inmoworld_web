@@ -20,7 +20,25 @@ class BottomNavScaffold extends StatelessWidget {
             unselectedItemColor: Colors.black,
             items: [
               BottomNavigationBarItem(
-                icon: const Icon(Icons.chat),
+                icon: Stack(
+                  children: [
+                    const Icon(Icons.chat),
+                    Positioned(
+                      right: 0,
+                      child: Obx(() {
+                        final unreadCount = navController.unreadMessages.value;
+                        if (unreadCount > 0) {
+                          return Badge(
+                            label: Text(unreadCount.toString()),
+                            backgroundColor: Colors.red,
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
+                    ),
+                  ],
+                ),
                 label: S.current.Usuarios,
               ),
               BottomNavigationBarItem(
@@ -35,6 +53,11 @@ class BottomNavScaffold extends StatelessWidget {
                 icon: Icon(Icons.image),
                 label: 'Post',
               ), */
+              // Const ?
+              BottomNavigationBarItem(
+                icon: Icon(Icons.smart_toy),
+                label: 'Chatbot',
+              ),
               BottomNavigationBarItem( 
                 icon: const Icon(Icons.location_pin),
                 label: S.current.Mapa,

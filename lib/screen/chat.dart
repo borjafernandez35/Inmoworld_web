@@ -1,9 +1,13 @@
-/* import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:intl/intl.dart'; // Para formatear timestamps
+import 'package:bubble/bubble.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import '../models/chat_model.dart';
 import '../services/chat.dart';
 import '../services/user.dart';
-import 'package:inmoworld_web/services/storage.dart';
+import '../services/storage.dart';
+import '../controllers/chat_controller.dart';
+import '../controllers/navigation_controller.dart';
 
 class ChatScreen extends StatefulWidget {
   final String userId;
@@ -18,209 +22,227 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, dynamic>> _messages = []; // Lista de mensajes locales
- // late final ChatService chatService;
-  late final UserService userService;
-  late Future<List<Map<String, dynamic>>>
-      chats; // Lista futura para los chats iniciales
+  late final ChatService chatService;
+  late UserService userService;
+  final ChatController chatController = Get.put(ChatController());
+  final NavigationController navController = Get.put(NavigationController());
 
   @override
   void initState() {
     super.initState();
 
-    // Inicializa los servicios
+    // Inicializar servicios
     userService = UserService();
     chatService = ChatService(userService);
-
-    // Conecta al servidor de Socket.IO
     chatService.connect();
+    chatService.registerUser(StorageService.getId()); 
+    print("Socket conectado: ${chatService.socket?.connected}");
 
-    // Cargar mensajes iniciales desde el backend
-    chats = _loadChats();
+    // Cargar mensajes iniciales
+    chatService.loadMessages(StorageService.getId()!);
 
-    // Escuchar mensajes entrantes en tiempo real
-    chatService.socket?.on('message', (data) {
-      final messageData = jsonDecode(data); // Decodificar JSON
-      setState(() {
-        _messages.add({
-          "receiver": messageData['receiver'],
-          "sender": messageData['sender'],
-          "message": messageData['message'],
-          "timestamp": DateTime.parse(messageData['timestamp']),
-        });
-      });
+    // Marcar mensajes como leídos al entrar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      navController.markMessagesAsRead();
     });
-  }
 
-  // Función para cargar mensajes desde el backend
-  Future<List<Map<String, dynamic>>> _loadChats() async {
-    try {
-      // Obtén el ID del usuario desde UserService
-      final userId = StorageService.getId();
-
-      // Llama al método de ChatService para obtener los chats
-      final chatList = await chatService.chatStartup(userId);
-
-      // Convierte los datos a Map<String, dynamic>
-      final convertedChats = chatList.map<Map<String, dynamic>>((chat) {
-        return {
-          "receiver": chat.receiver, // Acceso directo a las propiedades
-          "sender": chat.sender,
-          "message": chat.message,
-          "date": chat.date,
-        };
+    // Listener para mensajes y eventos
+    chatService.socket?.on('load-messages-response', (data) {
+      List<Chat> messages = (data as List).map((item) {
+        return Chat(
+          receiver: item['receiver'],
+          sender: item['sender'],
+          message: item['message'],
+          date: DateTime.parse(item['date']),
+        );
       }).toList();
 
-      // Actualiza la lista de mensajes locales
-      setState(() {
-        _messages.clear();
-        _messages.addAll(convertedChats.map((chat) => {
-              "receiver": chat['receiver'],
-              "sender": chat['sender'],
-              "message": chat['message'],
-              "timestamp": DateTime.parse(chat['timestamp']),
-            }));
-      });
+      // Filtrar mensajes duplicados
+      final existingMessages =
+          chatController.chatMessages.map((m) => m.message).toSet();
+      final newMessages =
+          messages.where((m) => !existingMessages.contains(m.message)).toList();
 
-      return convertedChats;
-    } catch (error) {
-      print("Error al cargar los chats: $error");
-      return []; // Devuelve una lista vacía en caso de error
-    }
-  }
+      chatController.chatMessages.addAll(newMessages);
+    });
 
-  @override
-  void dispose() {
-    chatService.disconnect(); // Desconectar el socket al salir
-    super.dispose();
+    chatService.socket?.on('message-receive', (data) {
+      final message = Chat(
+        receiver: data['receiver'],
+        sender: data['sender'],
+        message: data['message'],
+        date: DateTime.parse(data['timestamp']),
+      );
+      chatController.chatMessages.insert(0, message);
+    });
+
+    chatService.socket?.on('typing', (_) {
+      chatController.isTyping.value = true;
+    });
+
+    chatService.socket?.on('stop-typing', (_) {
+      chatController.isTyping.value = false;
+    });
   }
 
   void _sendMessage() {
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final timestamp = DateTime.now();
+      final chatMessage = Chat(
+        receiver: widget.userId,
+        sender: StorageService.getId(),
+        message: text,
+        date: timestamp,
+      );
 
-      // Crear el mensaje
-      final chatMessage = {
-        "receiver": widget.userId,
-        "sender": StorageService.getId(),
-        "message": text,
-        "timestamp": timestamp.toIso8601String(),
-      };
+      // Agregar el mensaje localmente
+      chatController.chatMessages.insert(0, chatMessage);
 
-      // Enviar mensaje al servidor
-      chatService.sendMessage(jsonEncode(chatMessage));
+      // Enviar el mensaje al servidor
+      chatService.sendMessage(chatMessage.toJson());
 
-      // Añadir mensaje localmente
-      setState(() {
-        _messages.add({
-          "sender": "me",
-          "message": text,
-          "timestamp": timestamp,
-        });
-      });
+      // Limpiar el campo de texto
+      _messageController.clear();
 
-      _messageController.clear(); // Limpia el campo de texto
+      // Detener el evento "typing"
+      chatService.sendStopTypingEvent(widget.userId);
     }
+  }
+
+  Widget buildMessage(Chat message, bool isMe) {
+    final formattedTime = DateFormat('HH:mm').format(message.date);
+
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          if (!isMe)
+            CircleAvatar(
+              backgroundImage: AssetImage("assets/default.png"),
+              radius: 20,
+            ),
+          if (!isMe) const SizedBox(width: 10),
+          Flexible(
+            child: Bubble(
+              radius: Radius.circular(15.0),
+              color: isMe ? Colors.blueAccent : Colors.grey.shade200,
+              elevation: 0.0,
+              alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isMe ? "Tú" : widget.userName,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isMe ? Colors.white : Colors.black87),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      message.message,
+                      style: TextStyle(
+                        color: isMe ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        formattedTime,
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: isMe ? Colors.white70 : Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if (isMe) const SizedBox(width: 10),
+          if (isMe)
+            CircleAvatar(
+              backgroundImage: AssetImage("assets/default.png"),
+              radius: 20,
+            ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    chatService.disconnect();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userName), // Nombre del usuario en la cabecera
+        title: Text(widget.userName),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: chats, // Future que contiene los chats cargados
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error al cargar los mensajes'));
-          } else {
-            return Column(
+      body: Column(
+        children: [
+          Expanded(
+            child: Obx(() => ListView.builder(
+                  reverse: true,
+                  itemCount: chatController.chatMessages.length,
+                  itemBuilder: (context, index) {
+                    final message = chatController.chatMessages[index];
+                    final isMe = message.sender == StorageService.getId();
+                    return buildMessage(message, isMe);
+                  },
+                )),
+          ),
+          Obx(() => chatController.isTyping.value
+              ? const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Escribiendo...",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                )
+              : const SizedBox.shrink()),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    reverse:
-                        true, // Mostrar los mensajes más recientes al final
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) {
-                      final message = _messages[_messages.length - 1 - index];
-                      final isMe = message['sender'] == 'me';
-
-                      final timestamp = message['timestamp'] as DateTime;
-                      final formattedTime =
-                          DateFormat('HH:mm').format(timestamp);
-
-                      return Align(
-                        alignment:
-                            isMe ? Alignment.centerRight : Alignment.centerLeft,
-                        child: Column(
-                          crossAxisAlignment: isMe
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color:
-                                    isMe ? Colors.blue : Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                message['message'] ?? '',
-                                style: TextStyle(
-                                  color: isMe ? Colors.white : Colors.black,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              child: Text(
-                                formattedTime,
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                  child: TextField(
+                    controller: _messageController,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        chatService.sendTypingEvent(widget.userId);
+                      } else {
+                        chatService.sendStopTypingEvent(widget.userId);
+                      }
                     },
+                    decoration: InputDecoration(
+                      hintText: 'Escribe un mensaje...',
+                      filled: true,
+                      fillColor: Color.fromRGBO(220, 220, 220, 1),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none),
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _messageController,
-                          decoration: InputDecoration(
-                            hintText: 'Escribe un mensaje...',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: _sendMessage,
-                      ),
-                    ],
-                  ),
+                IconButton(
+                  icon: Icon(Icons.send, color: Colors.blueAccent),
+                  onPressed: _sendMessage,
                 ),
               ],
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }
 }
- */

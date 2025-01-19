@@ -45,9 +45,27 @@ class UserModel with ChangeNotifier {
   String get birthday => _birthday;
   bool get isAdmin => _isAdmin;
 
+  // Setters para actualizar las nuevas propiedades (opcional)
+  set lastMessage(String? message) {
+    _lastMessage = message;
+    notifyListeners();
+  }
+
+  set lastMessageTime(DateTime? time) {
+    _lastMessageTime = time;
+    notifyListeners();
+  }
   // Método para actualizar el usuario (extendido con nuevos campos)
-  void setUser(String name, String email, String password, bool isAdmin,
-      {String? id, String? lastMessage, DateTime? lastMessageTime}) {
+  void setUser({
+    String? id,
+    required String name,
+    required String email,
+    required String password,
+    required String birthday,
+    required bool isAdmin,
+    String? lastMessage,
+    DateTime? lastMessageTime,
+  }) {
     _id = id;
     _name = name;
     _email = email;
@@ -57,6 +75,29 @@ class UserModel with ChangeNotifier {
     _lastMessage = lastMessage;
     _lastMessageTime = lastMessageTime;
     notifyListeners();
+  }
+
+  // Método copyWith para crear copias modificadas
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? password,
+    String? birthday,
+    bool? isAdmin,
+    String? lastMessage,
+    DateTime? lastMessageTime,
+  }) {
+    return UserModel(
+      id: id ?? this._id,
+      name: name ?? this._name,
+      email: email ?? this._email,
+      password: password ?? this._password,
+      birthday: birthday ?? this._birthday,
+      isAdmin: isAdmin ?? this._isAdmin,
+      lastMessage: lastMessage ?? this._lastMessage,
+      lastMessageTime: lastMessageTime ?? this._lastMessageTime,
+    );
   }
 
   // Método fromJson para incluir los nuevos campos

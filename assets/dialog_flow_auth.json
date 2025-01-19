@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "inmoworld-445216",
+  "private_key_id": "859e4f7fb6b84a780ea03eca1218aa47771a1380",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC+9Q5mBn5Gu0tU\nalSi6ojvik7EPp8MkoVXaJO+CfmySrT67gOpKWzFRxXxeuQPzh0GqnFTIvGy3Mv8\nVMgaS68w+Oa2bLZJphSBXfqLikgcE+scx9u4SBTbyqjebX2uEuxLyoxvEb9i8RGG\nLQcDNMN9u5NE8PGv8gdxDtswnuSKe7ListuANmvAzJJkopR9rnbgUgSxknt83W+E\nAlQj8VATwCido5MKfNqcJM7GR3CsfC28zBmTn9gsIJPws22FvLPTQPLd49qaw/Ei\nm6QmuNiTG3CfSP9tEBC7AqDqqyNqShrd31hkSZ3usak7rmsZ02+lUpUtYujZXL7y\nfkqboHc7AgMBAAECggEAHVb+sttdjJWbcelyfqOljZSFHK74dhCPL0pwpNrYhDXp\nT8LBSj0Eqt0MuJEmuGz1VcBbcCgm1dIJ/4exRSUK0m3z2OSkL3W2odfkNot1H+dJ\nkR7+GfbtSYX+Y0qUbGoY515ELI6gBt4+UIzbjnkNbmSjMI0KvXtk/FCJihNnzwUF\nmAzN1cpnaf3myuTPRKIQVp1ku3f/oXMzIHiCCmlfDA7AjsFuqXQ8mrmYXJEkGbka\n1MdBSifxH8BWqj4T9ea5kN6VqyhDIYviseanIJeGfHVQdJfdWKCXH8lgilBA1jEi\nEIHJ0iyDY6huzIkHc350b6pqudmE2bGrW0ZKNAreqQKBgQDgrwNZ3XAYat8t1F2F\ne14wEcVuw3W5CIYBLHtPl9WiNESHrjBOQPZvFjis4Tn7dNfkCvSPBcT/waci/4fu\nYb0ViikibuGBaKLIF2zTvEP6vNWuO3szMxSpTQ2HSadL5cPK92kDxVhi42MbDLmT\n75wErH58brDKdCp/kV9C11+uOQKBgQDZkqTrpgxZTNFX+/XV4mLcm/AsMrYVxJgx\n6AeykmcStCDqVQ4FwMTyeJUx+IoapngtU0PbAikd2tIobsfBfviaMKHJF8VWfjvZ\nQhAdYPG+bUrB2HndP2LYVmpYFtT1HJ7QTA645C/YvZeiw6/n0Qvu3XOKrDTxJivg\ntFP2VJrREwKBgGKaS7Uvadc9Z448SYKf3njoA6YVX1+BrxVqyP7oGlgh6gVFW2us\nNLoRnXO5L/H7mBc6+5KcrJS1Dr1cOPJTsGB4jo7O7GYXXoDDTv4o/AhYwMnCztFs\nVF/sMciyeRnkzqUPKOX/wEc9lSu0zOhwWh7u+F9xUGK40kHDsXOrAxF5AoGBAIH7\nYv3JcN000GiBBahnHGrx2nV9Ql0U21wNY/PiFSQOaw+0CrGTLdYyBegZtOAhDfD+\nKq6/xrKoVR+Et2A5K+pqHW2W/vUiazzrg9cZYLNEdgIDAyMTyEi4r8W6tjVNiO+m\nULFS2ebhtaKux/t1X2yv7mQtZ1+eT15qPTMP7oHzAoGBANdq4VZyndEb8gU/ixQY\neb/3ySANYVBjUqUSQAzMLgOU24X/yDbbYP41SWU8SGqCrJg93dYHQNIEyIiyhEXt\neSoZkF47Q9FFhzPxYKcsgtrd4zL6BfoEA0JKtbmNsvizPmv0jQLKigVUtk0h8psT\nJ93gkufpdkEcToHylVd6NwqJ\n-----END PRIVATE KEY-----\n",
+  "client_email": "chatbot@inmoworld-445216.iam.gserviceaccount.com",
+  "client_id": "108412400327093252138",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chatbot%40inmoworld-445216.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

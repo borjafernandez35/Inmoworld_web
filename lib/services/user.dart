@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/models/user_model.dart';
 import 'package:inmoworld_web/models/property_model.dart';
 import 'package:geolocator/geolocator.dart';
 
-class UserService {
+class UserService extends ChangeNotifier {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
   //final String baseUrl = 'http://147.83.7.157:3000';
   //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
@@ -13,18 +14,27 @@ class UserService {
   int totalPages = 1;
   int totalUsers = 1;
 
+  final List<UserModel> _usersList = [];
+
+
   UserService() {
     // Configurar Interceptor para manejar tokens
     _configureInterceptors();
   }
+
+  List<UserModel> getUsersList(){
+    return _usersList;
+  } 
 
   // Configurar Interceptores
   void _configureInterceptors() {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = StorageService.getToken();
-        options.headers['x-access-token'] = token;
-              handler.next(options);
+        if (token != null) {
+          options.headers['x-access-token'] = token;
+        }
+        handler.next(options);
       },
       onError: (DioException e, handler) {
         print('Error en petición: ${e.response?.statusCode}');
@@ -68,7 +78,6 @@ class UserService {
 
   Future<List<UserModel>> getUsers(int page, int limit) async {
     print('Fetching all users...');
-    //_configureInterceptors();
     try {
       // Realizar la solicitud GET al endpoint `/user`
       final response = await dio.get('$baseUrl/user/$page/$limit');
@@ -85,18 +94,21 @@ class UserService {
       // Extraer la lista de usuarios
       final List<dynamic> usersData = responseData['users'];
 
-      print('aquiii etnras???:$usersData');
       // Almacenar los valores adicionales como totalPages y totalUsers
-      totalPages = responseData['totalPages'] ?? 1; // Usar 0 si es null
-      totalUsers = responseData['totalUsers'] ?? 1; // Usar 0 si es null
+      totalPages = responseData['totalPages'] ?? 1;
+      totalUsers = responseData['totalUsers'] ?? 1;
 
       // Convertir los datos recibidos a una lista de UserModel
       final List<UserModel> users =
           usersData.map((data) => UserModel.fromJson(data)).toList();
-      print('los usuarios son:$users');
-
       print('Usuarios obtenidos: ${users.length}');
-      print('los total users son:$totalUsers,y las paginas son:$totalPages');
+      
+      // Actualizar la lista interna y notificar cambios
+      _usersList.clear();
+      _usersList.addAll(users);
+      print("Lista de usuarios: $_usersList");
+      StorageService.saveUserList(_usersList);
+      notifyListeners();
       return users;
     } catch (e) {
       print('Error en getUsers: $e');

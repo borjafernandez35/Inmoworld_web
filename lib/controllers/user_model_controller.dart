@@ -29,6 +29,7 @@ class UserModelController extends GetxController {
     String? name,
     String? email,
     String? password,
+    String? birthday,
     bool? isAdmin,
   }) async {
     if (user.value == null) {
@@ -41,12 +42,13 @@ class UserModelController extends GetxController {
       user.update((currentUser) {
         if (currentUser != null) {
           currentUser.setUser(
-            name ?? currentUser.name,
-            email ?? currentUser.email,
-            password ?? currentUser.password,
-            isAdmin ?? currentUser.isAdmin,
-            id: currentUser.id,
-          );
+          name: name ?? currentUser.name, // Si no hay un nombre nuevo, mantenemos el antiguo
+          email: email ?? currentUser.email, // Lo mismo con el email
+          password: password ?? currentUser.password, // Lo mismo con la contraseña
+          birthday: birthday ?? currentUser.birthday, // Lo mismo con el cumpleaños
+          isAdmin: isAdmin ?? currentUser.isAdmin, // Lo mismo con el rol de admin
+          id: currentUser.id, // El id no se cambia
+        );
         }
       });
 

@@ -21,12 +21,17 @@ dependencies:
   google_sign_in: ^6.2.2
   google_sign_in_web: ^0.12.4+3
   infinite_scroll_pagination: ^4.1.0
-  socket_io_client: ^2.0.0
+  socket_io_client: ^3.0.0
   intl: ^0.19.0
   google_maps_flutter: ^2.0.0
-  geocoding: ^3.0.0
-  http: ^1.2.2
+  geocoding: ^2.0.0
+  http: ^0.13.1
+  uuid: ^4.0.0
+  bubble: ^1.2.1
+  dialog_flowtter: ^0.3.1
+  googleapis_auth: ^1.4.1
   geolocator: ^13.0.2
+  geolocator_android: ^4.6.0
   latlong2: ^0.9.1
   google_maps_flutter_web: ^0.5.10
 
@@ -41,5 +46,7 @@ flutter:
   assets:
     - assets/
     - assets/placeholder.jpg
+    - assets/dialog_flow_auth.json
+    - assets/robot.jpg
 flutter_intl:
   enabled: true

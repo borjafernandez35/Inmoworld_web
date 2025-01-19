@@ -15,10 +15,10 @@ class Chat {
   // Método para convertir de JSON a objeto Chat
   factory Chat.fromJson(Map<String, dynamic> json) {
     return Chat(
-      receiver: json['receiver'],
-      sender: json['sender'],
+      receiver: json['receiver']?.toString() ?? 'Usuario desconocido',  // Valor por defecto si es null
+      sender: json['sender']?.toString(),  // Se mantiene nullable, no hay valor por defecto
       message: json['message'],
-      date: DateTime.parse(json['date']), // Asegúrate de que el formato de fecha sea compatible
+      date: DateTime.parse(json['date']),  // Asegúrate de que el formato de fecha sea compatible
     );
   }
 
