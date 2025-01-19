@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:inmoworld_web/generated/l10n.dart';
+import 'package:inmoworld_web/screen/chat_bot.dart';
 import 'package:inmoworld_web/screen/login.dart';
 import 'package:inmoworld_web/screen/register.dart';
 import 'package:inmoworld_web/widgets/bottom_navigation_bar.dart';
@@ -15,8 +16,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/screen/title.dart';
 import 'package:inmoworld_web/screen/map.dart'; // Importa la pantalla de mapa
 import 'package:inmoworld_web/screen/add_property.dart';
-import 'package:inmoworld_web/screen/chat_bot.dart';
-import 'package:inmoworld_web/controllers/property_controller.dart'; // Importa el controlador
+// Importa el controlador
 
 void main() async {
   await GetStorage.init();
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
               snapshot.data ?? LatLng(41.27552212202214, 1.9863014220734023);
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute:'/chatbot',
+            initialRoute:'/login',
             getPages: [
               GetPage(
                 name: '/login',

@@ -12,6 +12,10 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserListController userListController = Get.put(UserListController());
+    
+    // Suponiendo que el idioma se pueda verificar de alguna manera
+    // Por ejemplo, se puede obtener el idioma actual del contexto o de la configuración
+    String language = 'es';  // Puedes hacer esta asignación dinámicamente según el idioma actual
 
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
@@ -25,10 +29,8 @@ class UserScreen extends StatelessWidget {
           newPageErrorIndicatorBuilder: (context) => Center(
             child: Text(S.current.FailedToLoadMoreData),
           ),
-          firstPageProgressIndicatorBuilder: (context) =>
-              const Center(child: CircularProgressIndicator()),
-          newPageProgressIndicatorBuilder: (context) =>
-              const Center(child: CircularProgressIndicator()),
+          firstPageProgressIndicatorBuilder: (context) => const Center(child: CircularProgressIndicator()),
+          newPageProgressIndicatorBuilder: (context) => const Center(child: CircularProgressIndicator()),
         ),
       ),
     );

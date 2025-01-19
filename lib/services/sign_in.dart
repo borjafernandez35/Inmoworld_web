@@ -188,20 +188,14 @@ class SignInService {
         return 200;
       }
       if (statusCode == 400) {
-        // Si hay campos faltantes, retornamos el código 400
         print('400');
-
         return 400;
       } else if (statusCode == 500) {
-        // Si hay un error interno del servidor, retornamos el código 500
         print('500');
-
         return 500;
       } else {
-        // En caso de otros códigos de estado no manejados explícitamente, puedes lanzar una excepción o devolver un valor adecuado.
-        return -1; // O cualquier otro valor que refleje un estado no manejado
+        return -1;
       }
-      // ignore: deprecated_member_use
     } on DioError catch (e) {
       if (e.response != null) {
         print('Error en la solicitud: ${e.response?.statusCode}');

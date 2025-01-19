@@ -28,7 +28,7 @@ class Chat {
       'receiver': receiver,
       'sender': sender,
       'message': message,
-      'date': date.toIso8601String(), // Asegúrate de usar este formato en el backend también
+      'date': date.toIso8601String(),  // Asegúrate de usar este formato en el backend también
     };
   }
 }

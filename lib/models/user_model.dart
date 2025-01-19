@@ -9,8 +9,8 @@ class UserModel with ChangeNotifier {
   bool _isAdmin;
 
   // Nuevas propiedades
-  String? _lastMessage; // Último mensaje enviado o recibido
-  DateTime? _lastMessageTime; // Hora del último mensaje
+  String? _lastMessage;
+  DateTime? _lastMessageTime;
 
   // Constructor actualizado
   UserModel({
@@ -19,31 +19,27 @@ class UserModel with ChangeNotifier {
     required String password,
     required String birthday,
     bool isAdmin = false,
-    String? id, 
+    String? id,
     String? lastMessage,
     DateTime? lastMessageTime,
-
   })  : _id = id,
         _name = name,
         _email = email,
         _password = password,
-
         _birthday = birthday,
-
         _isAdmin = isAdmin,
         _lastMessage = lastMessage,
         _lastMessageTime = lastMessageTime;
 
-
-  // Getters para las nuevas propiedades
-  String? get lastMessage => _lastMessage;
-  DateTime? get lastMessageTime => _lastMessageTime;
+  // Getters
   String? get id => _id;
   String get name => _name;
   String get email => _email;
   String get password => _password;
   String get birthday => _birthday;
   bool get isAdmin => _isAdmin;
+  String? get lastMessage => _lastMessage;
+  DateTime? get lastMessageTime => _lastMessageTime;
 
   // Setters para actualizar las nuevas propiedades (opcional)
   set lastMessage(String? message) {
@@ -55,7 +51,8 @@ class UserModel with ChangeNotifier {
     _lastMessageTime = time;
     notifyListeners();
   }
-  // Método para actualizar el usuario (extendido con nuevos campos)
+
+  // Método para actualizar el usuario completo
   void setUser({
     String? id,
     required String name,
@@ -103,12 +100,12 @@ class UserModel with ChangeNotifier {
   // Método fromJson para incluir los nuevos campos
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['_id']?.toString(), // Convertir a String si es int
+      id: json['_id']?.toString(),
       name: json['name']?.toString() ?? 'Usuario desconocido',
       email: json['email']?.toString() ?? 'No especificado',
       password: json['password']?.toString() ?? 'Sin contraseña',
       birthday: json['birthday']?.toString() ?? 'Sin edad',
-      isAdmin: json['isAdmin'] ?? false, // Manejar el campo isAdmin
+      isAdmin: json['isAdmin'] ?? false,
       lastMessage: json['lastMessage']?.toString(),
       lastMessageTime: json['lastMessageTime'] != null
           ? DateTime.parse(json['lastMessageTime'])

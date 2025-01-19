@@ -7,14 +7,11 @@ import 'package:geolocator/geolocator.dart';
 
 class UserService extends ChangeNotifier {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
-  //final String baseUrl = 'http://147.83.7.157:3000';
-  //final String baseUrl = "http://10.0.2.2:3001"; // URL de tu backend Android
   final Dio dio = Dio();
-  //final GetStorage box = GetStorage();
   int totalPages = 1;
   int totalUsers = 1;
-
   final List<UserModel> _usersList = [];
+
 
 
   UserService() {
@@ -41,6 +38,17 @@ class UserService extends ChangeNotifier {
         handler.next(e); // Pasar el error al flujo siguiente
       },
     ));
+  }
+  
+  // Método para agregar o actualizar usuarios en la lista
+  void addOrUpdateUser(UserModel user) {
+    final index = _usersList.indexWhere((u) => u.id == user.id);
+    if (index != -1) {
+      _usersList[index] = user;
+    } else {
+      _usersList.add(user);
+    }
+    notifyListeners(); // Notifica a los listeners sobre los cambios
   }
 
   Future<int> updateLocation(Position? location) async {
@@ -117,7 +125,7 @@ class UserService extends ChangeNotifier {
   }
 
   void logout() {
-    StorageService.clearSession(); // Limpia todos los datos almacenados
+    // StorageService.clearSession(); // Limpia todos los datos almacenados
   }
 
   // Validar y manejar respuesta
@@ -201,7 +209,7 @@ class UserService extends ChangeNotifier {
     } catch (e, stackTrace) {
       print('Error al obtener propiedades: $e');
       print('Detalles del error: $stackTrace');
-      rethrow; // Vuelve a lanzar el error para que pueda manejarse en otro nivel
+      rethrow;
     }
   }
 

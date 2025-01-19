@@ -25,23 +25,25 @@ class UserModelController extends GetxController {
   }
 
   // Actualizar datos del usuario en el backend
-  Future<void> updateUser({
-    String? name,
-    String? email,
-    String? password,
-    String? birthday,
-    bool? isAdmin,
-  }) async {
-    if (user.value == null) {
-      statusMessage.value = 'No hay usuario cargado para actualizar.';
-      return;
-    }
+  // Actualizar datos del usuario en el backend
+Future<void> updateUser({
+  String? name,
+  String? email,
+  String? password,
+  String? birthday,
+  bool? isAdmin,
+}) async {
+  if (user.value == null) {
+    statusMessage.value = 'No hay usuario cargado para actualizar.';
+    return;
+  }
 
-    try {
-      // Actualizar los datos en el modelo local
-      user.update((currentUser) {
-        if (currentUser != null) {
-          currentUser.setUser(
+  try {
+    // Actualizar los datos en el modelo local
+    user.update((currentUser) {
+      if (currentUser != null) {
+        // Llamamos a setUser con los parámetros opcionales
+        currentUser.setUser(
           name: name ?? currentUser.name, // Si no hay un nombre nuevo, mantenemos el antiguo
           email: email ?? currentUser.email, // Lo mismo con el email
           password: password ?? currentUser.password, // Lo mismo con la contraseña
@@ -49,24 +51,25 @@ class UserModelController extends GetxController {
           isAdmin: isAdmin ?? currentUser.isAdmin, // Lo mismo con el rol de admin
           id: currentUser.id, // El id no se cambia
         );
-        }
-      });
-
-      // Sincronizar cambios con el backend
-      if (user.value != null) {
-        statusMessage.value = 'Actualizando datos en el servidor...';
-        final statusCode = await userService.updateUser(user.value!);
-        if (statusCode == 200) {
-          statusMessage.value = 'Usuario actualizado correctamente.';
-        } else {
-          statusMessage.value = 'Error al actualizar usuario en el servidor.';
-        }
       }
-    } catch (e) {
-      statusMessage.value = 'Error al actualizar usuario.';
-      print('Error en updateUser: $e');
+    });
+
+    // Sincronizar cambios con el backend
+    if (user.value != null) {
+      statusMessage.value = 'Actualizando datos en el servidor...';
+      final statusCode = await userService.updateUser(user.value!);
+      if (statusCode == 200) {
+        statusMessage.value = 'Usuario actualizado correctamente.';
+      } else {
+        statusMessage.value = 'Error al actualizar usuario en el servidor.';
+      }
     }
+  } catch (e) {
+    statusMessage.value = 'Error al actualizar usuario.';
+    print('Error en updateUser: $e');
   }
+}
+
 
   // Eliminar datos del usuario en el backend
   Future<void> deleteUser() async {
