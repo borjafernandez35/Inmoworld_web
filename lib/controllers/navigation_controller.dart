@@ -10,8 +10,8 @@ class NavigationController extends GetxController {
   final List<String> routes = [
     '/properties',
     '/chat',
-    '/usuarios',
     '/chatbot',
+    '/usuarios',
     '/perfil', 
     '/home',
    // '/post',
