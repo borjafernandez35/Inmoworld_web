@@ -49,14 +49,9 @@ class BottomNavScaffold extends StatelessWidget {
                 icon: Icon(Icons.home),
                 label: S.current.Home,
               ),
-              /* BottomNavigationBarItem(
-                icon: Icon(Icons.image),
-                label: 'Post',
-              ), */
-              // Const ?
               BottomNavigationBarItem(
                 icon: Icon(Icons.smart_toy),
-                label: 'Chatbot',
+                label: S.current.ChatBot,
               ),
               BottomNavigationBarItem( 
                 icon: const Icon(Icons.location_pin),

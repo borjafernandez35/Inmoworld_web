@@ -20,16 +20,23 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(distance) => "Up to ${distance}";
+  static String m0(user) => "Chat - User ${user}";
 
-  static String m1(property) => "Price ${property}";
+  static String m1(distance) => "Up to ${distance}";
+
+  static String m2(property) => "Price ${property}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "AgregarResena": MessageLookupByLibrary.simpleMessage("Add Review"),
+        "Anadir": MessageLookupByLibrary.simpleMessage("Add"),
         "AnadirPropiedad": MessageLookupByLibrary.simpleMessage("Add Property"),
         "Birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
         "Cancelar": MessageLookupByLibrary.simpleMessage("Cancel"),
         "Catalan": MessageLookupByLibrary.simpleMessage("Catalan"),
+        "Chat": MessageLookupByLibrary.simpleMessage("Chat"),
+        "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
+        "ChatUsuario": m0,
         "Close": MessageLookupByLibrary.simpleMessage("Close"),
         "Contrasena": MessageLookupByLibrary.simpleMessage("Password"),
         "ContrasenaNoValida":
@@ -37,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ContrasenaValida":
             MessageLookupByLibrary.simpleMessage("Valid Password"),
         "CorreoElectronico": MessageLookupByLibrary.simpleMessage("Email"),
+        "Desconocido": MessageLookupByLibrary.simpleMessage("Unknwown"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Description"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Selected distance is not valid"),
@@ -44,12 +52,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "English": MessageLookupByLibrary.simpleMessage("English"),
         "ErrorLoadingData":
             MessageLookupByLibrary.simpleMessage("Error loading data"),
+        "EscribeMensaje":
+            MessageLookupByLibrary.simpleMessage("Typing a message..."),
+        "Escribiendo": MessageLookupByLibrary.simpleMessage("Typing..."),
         "Espanol": MessageLookupByLibrary.simpleMessage("Spanish"),
         "FailedToLoadMoreData":
             MessageLookupByLibrary.simpleMessage("Failed to load more data"),
         "GoogleSignIn": MessageLookupByLibrary.simpleMessage("Google sign in"),
         "Guardar": MessageLookupByLibrary.simpleMessage("Save"),
-        "Hasta": m0,
+        "Hasta": m1,
         "Home": MessageLookupByLibrary.simpleMessage("Home"),
         "IncorrectCredentials": MessageLookupByLibrary.simpleMessage(
             "\'Incorrect credentials. Please try again."),
@@ -59,24 +70,36 @@ class MessageLookup extends MessageLookupByLibrary {
         "Mapa": MessageLookupByLibrary.simpleMessage("Map"),
         "MapaPropiedades": MessageLookupByLibrary.simpleMessage("Property Map"),
         "Name": MessageLookupByLibrary.simpleMessage("Name"),
+        "NoPropertiesFound":
+            MessageLookupByLibrary.simpleMessage("No properties found."),
+        "NoReviewsFound":
+            MessageLookupByLibrary.simpleMessage("No reviews found"),
+        "NoSeRecibieronMensajes":
+            MessageLookupByLibrary.simpleMessage("No messages received"),
         "NoTienesCuenta":
             MessageLookupByLibrary.simpleMessage("Don\'t have account?"),
         "NuevaPropiedad":
             MessageLookupByLibrary.simpleMessage("Make new property"),
         "Perfil": MessageLookupByLibrary.simpleMessage("Profile"),
         "PerfilUsuario": MessageLookupByLibrary.simpleMessage("User Profile"),
-        "PrecioPropiedad": m1,
+        "PrecioPropiedad": m2,
         "Price": MessageLookupByLibrary.simpleMessage("Price"),
+        "Rating": MessageLookupByLibrary.simpleMessage("Rating"),
         "ReescribeContrasena":
             MessageLookupByLibrary.simpleMessage("Rewrite Password"),
         "Registrarse": MessageLookupByLibrary.simpleMessage("Sign up"),
         "Rumanno": MessageLookupByLibrary.simpleMessage("Romanian"),
+        "SearchProperties":
+            MessageLookupByLibrary.simpleMessage("Search properties..."),
         "SeleccionaTuCumpleanos":
             MessageLookupByLibrary.simpleMessage("Select your birthday"),
         "ServerError": MessageLookupByLibrary.simpleMessage(
             "Server error. Please try later"),
         "SinMensajes": MessageLookupByLibrary.simpleMessage("No Messages"),
+        "Subiendo": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "SubirImagen": MessageLookupByLibrary.simpleMessage("Upload Image"),
         "Success": MessageLookupByLibrary.simpleMessage("Success"),
+        "Tu": MessageLookupByLibrary.simpleMessage("You"),
         "Usuario": MessageLookupByLibrary.simpleMessage("User"),
         "Usuarios": MessageLookupByLibrary.simpleMessage("Users"),
         "Volver": MessageLookupByLibrary.simpleMessage("Return"),

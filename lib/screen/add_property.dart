@@ -120,7 +120,7 @@ class _PropertyAddScreenState extends State<PropertyAddScreen> {
                   }
                 },
                 child: Text(
-                  _isUploading ? 'Subiendo...' : 'Subir Imagen',
+                  _isUploading ? S.current.Subiendo : S.current.SubirImagen,
                 ),
               ),
               if (_uploadedPicture != null)

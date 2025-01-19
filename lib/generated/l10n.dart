@@ -440,6 +440,16 @@ class S {
     );
   }
 
+  /// `No messages received`
+  String get NoSeRecibieronMensajes {
+    return Intl.message(
+      'No messages received',
+      name: 'NoSeRecibieronMensajes',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Romanian`
   String get Rumanno {
     return Intl.message(
@@ -475,6 +485,156 @@ class S {
     return Intl.message(
       'EN',
       name: 'EN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search properties...`
+  String get SearchProperties {
+    return Intl.message(
+      'Search properties...',
+      name: 'SearchProperties',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknwown`
+  String get Desconocido {
+    return Intl.message(
+      'Unknwown',
+      name: 'Desconocido',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No properties found.`
+  String get NoPropertiesFound {
+    return Intl.message(
+      'No properties found.',
+      name: 'NoPropertiesFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Review`
+  String get AgregarResena {
+    return Intl.message(
+      'Add Review',
+      name: 'AgregarResena',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rating`
+  String get Rating {
+    return Intl.message(
+      'Rating',
+      name: 'Rating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get Anadir {
+    return Intl.message(
+      'Add',
+      name: 'Anadir',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No reviews found`
+  String get NoReviewsFound {
+    return Intl.message(
+      'No reviews found',
+      name: 'NoReviewsFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Typing a message...`
+  String get EscribeMensaje {
+    return Intl.message(
+      'Typing a message...',
+      name: 'EscribeMensaje',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat - User {user}`
+  String ChatUsuario(Object user) {
+    return Intl.message(
+      'Chat - User $user',
+      name: 'ChatUsuario',
+      desc: '',
+      args: [user],
+    );
+  }
+
+  /// `ChatBot`
+  String get ChatBot {
+    return Intl.message(
+      'ChatBot',
+      name: 'ChatBot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat`
+  String get Chat {
+    return Intl.message(
+      'Chat',
+      name: 'Chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You`
+  String get Tu {
+    return Intl.message(
+      'You',
+      name: 'Tu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Typing...`
+  String get Escribiendo {
+    return Intl.message(
+      'Typing...',
+      name: 'Escribiendo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Image`
+  String get SubirImagen {
+    return Intl.message(
+      'Upload Image',
+      name: 'SubirImagen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading...`
+  String get Subiendo {
+    return Intl.message(
+      'Loading...',
+      name: 'Subiendo',
       desc: '',
       args: [],
     );

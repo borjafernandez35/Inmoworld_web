@@ -269,10 +269,10 @@ class _MapScreenState extends State<MapScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
                         onChanged: _onSearchQueryChanged,
-                        decoration: const InputDecoration(
-                          labelText: 'Buscar propiedades...',
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: S.current.SearchProperties,
+                          prefixIcon: const Icon(Icons.search),
+                          border: const OutlineInputBorder(),
                         ),
                       ),
                     ),

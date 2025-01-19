@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../models/chat_model.dart';
 import '../services/chat.dart';
 import '../services/user.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import '../services/storage.dart';
 import '../controllers/chat_controller.dart';
 import '../controllers/navigation_controller.dart';
@@ -137,7 +138,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isMe ? "Tú" : widget.userName,
+                      isMe ? S.current.Tu : widget.userName,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: isMe ? Colors.white : Colors.black87),
@@ -200,11 +201,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 )),
           ),
           Obx(() => chatController.isTyping.value
-              ? const Padding(
-                  padding: EdgeInsets.all(8.0),
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Escribiendo...",
-                    style: TextStyle(color: Colors.grey),
+                    S.current.Escribiendo,
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 )
               : const SizedBox.shrink()),
@@ -223,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       }
                     },
                     decoration: InputDecoration(
-                      hintText: 'Escribe un mensaje...',
+                      hintText: S.current.EscribeMensaje,
                       filled: true,
                       fillColor: Color.fromRGBO(220, 220, 220, 1),
                       contentPadding:

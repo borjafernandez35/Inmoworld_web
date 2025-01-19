@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 
 void main() => runApp(ChatBotApp());
@@ -150,7 +151,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: TextField(
                           controller: _messageController,
                           decoration: InputDecoration(
-                            hintText: "Escribe un mensaje...",
+                            hintText: S.current.EscribeMensaje,
                             hintStyle: TextStyle(color: Colors.black26),
                             filled: true,
                             fillColor: Color.fromRGBO(220, 220, 220, 1),

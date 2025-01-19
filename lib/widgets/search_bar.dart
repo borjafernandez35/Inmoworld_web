@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 
 class SearchBar extends StatelessWidget {
   final Function(String) onSearchChanged;
@@ -12,7 +13,7 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: onSearchChanged,
         decoration: InputDecoration(
-          hintText: 'Search properties...',
+          hintText: S.current.SearchProperties,
           border: const OutlineInputBorder(),
           prefixIcon: const Icon(Icons.search),
           suffixIcon: IconButton(

@@ -102,10 +102,6 @@ class MyApp extends StatelessWidget {
                 name: '/usuarios',
                 page: () => BottomNavScaffold(child: const UserScreen()),
               ),
-              /* GetPage(
-               name: '/post',
-              page: () => BottomNavScaffold(child: const CloudinaryUploaderWeb()),
-             ), */
               GetPage(
                 name: '/home',
                 page: () => BottomNavScaffold(child: const PropertyScreen()),

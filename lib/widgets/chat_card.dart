@@ -3,6 +3,7 @@ import 'package:intl/intl.dart'; // Para formatear fechas
 import 'dart:convert';
 import '../services/chat.dart';
 import '../services/user.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import '../models/chat_model.dart'; // Importamos el modelo Chat
 import 'package:inmoworld_web/services/storage.dart';
 
@@ -99,7 +100,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat - Usuario: ${widget.userId}'),
+        title: Text(S.current.ChatUsuario(':${widget.userId}')),
       ),
       body: Column(
         children: <Widget>[
@@ -164,7 +165,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Escribe un mensaje...',
+                      hintText: S.current.EscribeMensaje,
                       border: OutlineInputBorder(),
                     ),
                   ),

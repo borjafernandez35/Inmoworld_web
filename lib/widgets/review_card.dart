@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:inmoworld_web/models/review_model.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 
 class ReviewCard extends StatelessWidget {
   final ReviewModel review;
@@ -23,7 +24,7 @@ class ReviewCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${review.ownerDetails?.name ?? 'Desconocido'}',
+                  '${review.ownerDetails?.name ?? S.current.Desconocido}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.0),

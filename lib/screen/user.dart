@@ -13,12 +13,9 @@ class UserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserListController userListController = Get.put(UserListController());
     
-    // Suponiendo que el idioma se pueda verificar de alguna manera
-    // Por ejemplo, se puede obtener el idioma actual del contexto o de la configuración
-    String language = 'es';  // Puedes hacer esta asignación dinámicamente según el idioma actual
-
+   
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(title: Text(S.current.Chat)),
       body: PagedListView<int, UserModel>(
         pagingController: userListController.pagingController,
         builderDelegate: PagedChildBuilderDelegate<UserModel>(

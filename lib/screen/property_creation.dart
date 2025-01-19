@@ -86,57 +86,6 @@ class _CloudinaryUploaderWebState extends State<CloudinaryUploaderWeb> {
     final description = _descriptionController.text;
     final address = _addressController.text;
 
-   /* if (_uploadedPicture == null || description.isEmpty || address.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Por favor, llena todos los campos y sube una imagen'),
-        backgroundColor: Colors.red,
-      ));
-      return;
-    }
-
-    try {
-      // Obtener el userId desde el UserService (suponiendo que ya tienes este método)
-      final userService = UserService();
-      final userId = await userService
-          .getUserIdFromToken(); // Método para obtener el ID del usuario desde el token
-
-      if (userId == null) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('No se pudo obtener el ID del usuario'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-
-      // Añadir el owner (userId) a los datos de la propiedad
-      final propertyData = {
-        "description": description,
-        "address": address,
-        "picture": _uploadedPicture,
-        "owner": userId, // Aquí se agrega el owner
-      };
-
-      // Llamamos a createProperty desde UserService para crear la propiedad
-      //final responseCode = await PropertyService.createProperty(propertyData);
-
-      if (responseCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Propiedad publicada exitosamente'),
-          backgroundColor: Colors.green,
-        ));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Propiedad publicada exitosamente'),
-          backgroundColor: Color.fromARGB(255, 50, 45, 19),
-        ));
-        Navigator.pushNamed(context, '/home');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Error de red al publicar la propiedad'),
-        backgroundColor: Colors.red,
-      ));
-    }*/
   } 
 
   @override

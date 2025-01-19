@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:inmoworld_web/screen/chat.dart';
 import 'package:inmoworld_web/models/user_model.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:get/get.dart';
 import '../services/chat.dart';
 import '../services/user.dart';
@@ -83,7 +84,7 @@ class _UserCardState extends State<UserCard> {
         
         userService.notifyListeners();  // Notificar a los listeners para que la UI se actualice
       } else {
-        print('No se recibieron mensajes en la respuesta.');
+        print(S.current.NoSeRecibieronMensajes);
       }
     } catch (e) {
       print('Error al procesar last-message-response: $e');
@@ -129,7 +130,7 @@ class _UserCardState extends State<UserCard> {
           ),
         ),
         subtitle: Text(
-          widget.user.lastMessage ?? 'Sin mensajes',
+          widget.user.lastMessage ?? S.current.SinMensajes,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

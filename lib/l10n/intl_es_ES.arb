@@ -38,8 +38,25 @@
     "Cancelar":"Cancelar",
     "English":"Ingles",
     "Catalan":"Catalán",
+    "NoSeRecibieronMensajes":"No se recibieron mensajes",
     "Rumanno":"Rumano",
     "Espanol":"Español",
     "flag":"assets/es.png",
-    "EN":"ES"
+    "EN":"ES",
+    "SearchProperties":"Buscar Propiedades...",
+    "Desconocido":"Desconocido",
+    "NoPropertiesFound":"No encontradas las propiedades.",
+    "AgregarResena":"Agregar Reseña",
+    "Rating":"Valoración",
+    "Anadir":"Añadir",
+    "NoReviewsFound":"Reseñas no encontradas",
+    "EscribeMensaje":"Escribe un mensaje...",
+    "ChatUsuario":"Chat - Usuario {user}",
+    "ChatBot":"ChatBot",
+    "Chat":"Chat",
+    "Tu":"Tú",
+    "Escribiendo":"Escribiendo...",
+    "SubirImagen":"Subir Imagen",
+    "Subiendo":"Cargando..."
+    
 }

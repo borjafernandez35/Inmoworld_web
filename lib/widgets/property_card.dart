@@ -6,7 +6,8 @@ import 'package:inmoworld_web/controllers/reviewController.dart';
 import 'package:inmoworld_web/controllers/user_model_controller.dart';
 import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/models/review_model.dart';
-import 'package:inmoworld_web/widgets/reviewCard.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
+import 'package:inmoworld_web/widgets/review_card.dart';
 import 'package:http/http.dart' as http;
 
 class PropertyCard extends StatefulWidget {
@@ -49,17 +50,17 @@ class _PropertyCardState extends State<PropertyCard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Agregar Reseña'),
+          title: Text(S.current.AgregarResena),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Descripción'),
+                decoration: InputDecoration(labelText: S.current.Descripcion),
               ),
               TextField(
                 controller: _ratingController,
-                decoration: InputDecoration(labelText: 'Rating'),
+                decoration: InputDecoration(labelText: S.current.Rating),
                 keyboardType: TextInputType.number,
               ),
             ],
@@ -67,7 +68,7 @@ class _PropertyCardState extends State<PropertyCard> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancelar'),
+              child: Text(S.current.Cancelar),
             ),
             TextButton(
               onPressed: () async {
@@ -83,7 +84,7 @@ class _PropertyCardState extends State<PropertyCard> {
                 Navigator.of(context).pop();
                 setState(() {});
               },
-              child: Text('Crear'),
+              child: Text(S.current.Anadir),
             ),
           ],
         );
@@ -232,7 +233,7 @@ class _PropertyCardState extends State<PropertyCard> {
                       );
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Text(
-                        'No reviews found',
+                        S.current.NoReviewsFound,
                         style: TextStyle(color: Colors.white70),
                       );
                     } else {
@@ -248,7 +249,7 @@ class _PropertyCardState extends State<PropertyCard> {
                 ),
                 ElevatedButton(
                   onPressed: () => _showCreateReviewDialog(widget.property.id),
-                  child: Text('Agregar Reseña'),
+                  child: Text(S.current.AgregarResena),
                 ),
               ],
             ),

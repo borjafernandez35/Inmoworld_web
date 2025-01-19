@@ -20,17 +20,24 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es_ES';
 
-  static String m0(distance) => "Hasta ${distance}";
+  static String m0(user) => "Chat - Usuario ${user}";
 
-  static String m1(property) => "Precio ${property}";
+  static String m1(distance) => "Hasta ${distance}";
+
+  static String m2(property) => "Precio ${property}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "AgregarResena": MessageLookupByLibrary.simpleMessage("Agregar Reseña"),
+        "Anadir": MessageLookupByLibrary.simpleMessage("Añadir"),
         "AnadirPropiedad":
             MessageLookupByLibrary.simpleMessage("Añadir propiedad"),
         "Birthday": MessageLookupByLibrary.simpleMessage("Cumpleaños"),
         "Cancelar": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "Catalan": MessageLookupByLibrary.simpleMessage("Catalán"),
+        "Chat": MessageLookupByLibrary.simpleMessage("Chat"),
+        "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
+        "ChatUsuario": m0,
         "Close": MessageLookupByLibrary.simpleMessage("Cerrar"),
         "Contrasena": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "ContrasenaNoValida":
@@ -38,7 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ContrasenaValida":
             MessageLookupByLibrary.simpleMessage("Contraseña valida"),
         "CorreoElectronico":
-            MessageLookupByLibrary.simpleMessage("Correo Electronica"),
+            MessageLookupByLibrary.simpleMessage("Correo Electrónico"),
+        "Desconocido": MessageLookupByLibrary.simpleMessage("Desconocido"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Descripción"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Distancia seleccionada no es valida"),
@@ -46,13 +54,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "English": MessageLookupByLibrary.simpleMessage("Ingles"),
         "ErrorLoadingData": MessageLookupByLibrary.simpleMessage(
             "Error al cargar la información"),
+        "EscribeMensaje":
+            MessageLookupByLibrary.simpleMessage("Escribe un mensaje..."),
+        "Escribiendo": MessageLookupByLibrary.simpleMessage("Escribiendo..."),
         "Espanol": MessageLookupByLibrary.simpleMessage("Español"),
         "FailedToLoadMoreData": MessageLookupByLibrary.simpleMessage(
             "Fallo al cargar mas información"),
         "GoogleSignIn":
             MessageLookupByLibrary.simpleMessage("Iniciar sesion con Google"),
         "Guardar": MessageLookupByLibrary.simpleMessage("Guardar"),
-        "Hasta": m0,
+        "Hasta": m1,
         "Home": MessageLookupByLibrary.simpleMessage("Casa"),
         "IncorrectCredentials": MessageLookupByLibrary.simpleMessage(
             "Credenciales incorrectas. Por favor intentalo de nuevo."),
@@ -63,6 +74,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "MapaPropiedades":
             MessageLookupByLibrary.simpleMessage("Mapa de Propiedades"),
         "Name": MessageLookupByLibrary.simpleMessage("Nombre"),
+        "NoPropertiesFound": MessageLookupByLibrary.simpleMessage(
+            "No encontradas las propiedades."),
+        "NoReviewsFound":
+            MessageLookupByLibrary.simpleMessage("Reseñas no encontradas"),
+        "NoSeRecibieronMensajes":
+            MessageLookupByLibrary.simpleMessage("No se recibieron mensajes"),
         "NoTienesCuenta":
             MessageLookupByLibrary.simpleMessage("No tienes cuenta?"),
         "NuevaPropiedad":
@@ -70,18 +87,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "Perfil": MessageLookupByLibrary.simpleMessage("Perfil"),
         "PerfilUsuario":
             MessageLookupByLibrary.simpleMessage("Perfil del Usuario"),
-        "PrecioPropiedad": m1,
+        "PrecioPropiedad": m2,
         "Price": MessageLookupByLibrary.simpleMessage("Precio"),
+        "Rating": MessageLookupByLibrary.simpleMessage("Valoración"),
         "ReescribeContrasena":
             MessageLookupByLibrary.simpleMessage("Reescribe Contraseña"),
         "Registrarse": MessageLookupByLibrary.simpleMessage("Registrarse"),
         "Rumanno": MessageLookupByLibrary.simpleMessage("Rumano"),
+        "SearchProperties":
+            MessageLookupByLibrary.simpleMessage("Buscar Propiedades..."),
         "SeleccionaTuCumpleanos": MessageLookupByLibrary.simpleMessage(
             "Selecciona tu fecha de nacimiento"),
         "ServerError": MessageLookupByLibrary.simpleMessage(
             "Error en el servidor. Por favor intentalo más tarde"),
         "SinMensajes": MessageLookupByLibrary.simpleMessage("Sin Mensajes"),
+        "Subiendo": MessageLookupByLibrary.simpleMessage("Cargando..."),
+        "SubirImagen": MessageLookupByLibrary.simpleMessage("Subir Imagen"),
         "Success": MessageLookupByLibrary.simpleMessage("Éxito"),
+        "Tu": MessageLookupByLibrary.simpleMessage("Tú"),
         "Usuario": MessageLookupByLibrary.simpleMessage("Usuario"),
         "Usuarios": MessageLookupByLibrary.simpleMessage("Usuarios"),
         "Volver": MessageLookupByLibrary.simpleMessage("Volver"),
