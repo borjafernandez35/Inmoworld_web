@@ -163,6 +163,20 @@ class UserService extends ChangeNotifier {
     }
   }
 
+  // Método para actualizar solo la imagen de perfil
+  Future<int> updateProfileImage(String userId, Map<String, dynamic> imageUrlData) async {
+    try {
+      final response = await dio.put(
+        '$baseUrl/user/$userId/profile-image',  // Endpoint específico para actualizar solo la imagen
+        data: imageUrlData,  // Enviar solo el campo 'imageUser'
+      );
+      return _validateResponse(response);
+    } catch (e) {
+      print('Error en updateProfileImage: $e');
+      return -1;
+    }
+  }
+
   // Obtener Usuario Actual
   Future<UserModel> getUser() async {
     print('GETTTTTUSEEERRRR!!!! me llamaaaaannnn!!!${StorageService.getId()}');
@@ -338,4 +352,5 @@ class UserService extends ChangeNotifier {
       return -1;
     }
   }
+
 }
