@@ -8,20 +8,17 @@ class NavigationController extends GetxController {
   var unreadMessages = 0.obs;
 
   final List<String> routes = [
-    '/properties',
-    '/chat',
-    '/chatbot',
     '/usuarios',
-    '/perfil', 
+    '/perfil',
     '/home',
-   // '/post',
-    '/map'
+    '/chatbot',
+    '/map',
   ];
 
   late ChatService chatService;
   late UserService userService;
 
- @override
+  @override
   void onInit() {
     super.onInit();
     userService = UserService();
