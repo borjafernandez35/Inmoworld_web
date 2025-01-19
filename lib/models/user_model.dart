@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // Importar ChangeNotifier
+import 'package:inmoworld_web/services/user.dart';
 
-class UserModel with ChangeNotifier {
+class UserModel with ChangeNotifier { // Extender de ChangeNotifier
   String? _id;
   String _name;
   String _email;
   String _password;
   String _birthday;
+  String? _imageUser; // Propiedad privada para la imagen
   bool _isAdmin;
 
   // Nuevas propiedades
@@ -18,24 +20,22 @@ class UserModel with ChangeNotifier {
     required String email,
     required String password,
     required String birthday,
+    String? imageUser, // Parámetro para la imagen
     bool isAdmin = false,
     String? id, 
     String? lastMessage,
     DateTime? lastMessageTime,
-
   })  : _id = id,
         _name = name,
         _email = email,
         _password = password,
-
         _birthday = birthday,
-
         _isAdmin = isAdmin,
         _lastMessage = lastMessage,
-        _lastMessageTime = lastMessageTime;
+        _lastMessageTime = lastMessageTime,
+        _imageUser = imageUser; // Inicializa la propiedad privada _imageUser
 
-
-  // Getters para las nuevas propiedades
+  // Getters
   String? get lastMessage => _lastMessage;
   DateTime? get lastMessageTime => _lastMessageTime;
   String? get id => _id;
@@ -43,17 +43,25 @@ class UserModel with ChangeNotifier {
   String get email => _email;
   String get password => _password;
   String get birthday => _birthday;
+  String? get imageUser => _imageUser; // Accede a la propiedad privada _imageUser
   bool get isAdmin => _isAdmin;
 
-  // Método para actualizar el usuario (extendido con nuevos campos)
+  // Setter para imageUser
+  set imageUser(String? value) {
+    _imageUser = value; // Asigna el valor a la propiedad privada
+    notifyListeners(); // Notifica a los oyentes sobre el cambio
+  }
+
+  // Método para actualizar el usuario
   void setUser(String name, String email, String password, bool isAdmin,
-      {String? id, String? lastMessage, DateTime? lastMessageTime}) {
+      {String? id, String? lastMessage, DateTime? lastMessageTime, String? imageUser}) {
     _id = id;
     _name = name;
     _email = email;
     _password = password;
     _birthday = birthday;
     _isAdmin = isAdmin;
+    if (imageUser != null) _imageUser = imageUser; // Actualiza la imagen de perfil solo si se pasa un valor
     _lastMessage = lastMessage;
     _lastMessageTime = lastMessageTime;
     notifyListeners();
@@ -72,6 +80,7 @@ class UserModel with ChangeNotifier {
       lastMessageTime: json['lastMessageTime'] != null
           ? DateTime.parse(json['lastMessageTime'])
           : null,
+      imageUser: json['imageUser']?.toString(), // Asegurarse de obtener la URL de la imagen si existe
     );
   }
 
@@ -84,6 +93,7 @@ class UserModel with ChangeNotifier {
       'password': _password,
       'birthday': _birthday,
       'isAdmin': _isAdmin,
+      'imageUser': _imageUser, // Usar la propiedad privada _imageUser
       'lastMessage': _lastMessage,
       'lastMessageTime': _lastMessageTime?.toIso8601String(),
     };

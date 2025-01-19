@@ -9,6 +9,8 @@ class UserModelController extends GetxController {
   final RxString statusMessage = ''.obs; // Mensajes para la UI
 
   
+// Dentro de UserModelController
+var isPasswordValid = false.obs;
 
 
 // Cargar datos del usuario desde el backend
@@ -23,6 +25,7 @@ class UserModelController extends GetxController {
       print('Error en fetchUser: $e');
     }
   }
+
 
   // Actualizar datos del usuario en el backend
   Future<void> updateUser({
@@ -46,6 +49,7 @@ class UserModelController extends GetxController {
             password ?? currentUser.password,
             isAdmin ?? currentUser.isAdmin,
             id: currentUser.id,
+            
           );
         }
       });
@@ -92,4 +96,52 @@ class UserModelController extends GetxController {
   bool isUserLoaded() {
     return user.value != null;
   }
+
+  // Método para actualizar la imagen de perfil del usuario
+Future<void> updateProfilePicture(String newImageUrl) async {
+  if (user.value == null) {
+    statusMessage.value = 'No hay usuario cargado para actualizar la imagen de perfil.';
+    return;
+  }
+
+  try {
+    // Actualizar la imagen en el modelo local
+    user.update((currentUser) {
+      if (currentUser != null) {
+        currentUser.imageUser = newImageUrl; // Asignar la nueva URL de la imagen
+      }
+    });
+
+    // Sincronizar cambios con el backend si es necesario
+    if (user.value != null) {
+      statusMessage.value = 'Actualizando imagen de perfil en el servidor...';
+
+      // Verificar si el ID del usuario es nulo antes de pasarlo a la función
+      if (user.value!.id == null) {
+        statusMessage.value = 'El ID del usuario no está disponible.';
+        return;
+      }
+
+      final imageUrlData = {
+        'imageUser': newImageUrl,
+      };
+
+      // Llamar a la función de actualización con el ID no nulo
+      final statusCode = await userService.updateProfileImage(user.value!.id!, imageUrlData); 
+
+      if (statusCode == 200) {
+        statusMessage.value = 'Imagen de perfil actualizada correctamente.';
+      } else {
+        statusMessage.value = 'Error al actualizar la imagen de perfil en el servidor.';
+      }
+    }
+
+  } catch (e) {
+    statusMessage.value = 'Error al actualizar la imagen de perfil.';
+    print('Error en updateProfilePicture: $e');
+  }
 }
+
+  
+}
+
