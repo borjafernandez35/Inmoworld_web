@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:inmoworld_web/screen/login.dart';
 import 'package:inmoworld_web/screen/register.dart';
-import 'package:inmoworld_web/services/storage.dart';
 import 'package:inmoworld_web/widgets/bottom_navigation_bar.dart';
 import 'package:inmoworld_web/screen/perfil.dart';
 import 'package:inmoworld_web/screen/user.dart';
