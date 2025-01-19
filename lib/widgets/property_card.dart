@@ -1,6 +1,12 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:inmoworld_web/models/property_model.dart';
+import 'package:inmoworld_web/controllers/reviewController.dart';
+import 'package:inmoworld_web/controllers/user_model_controller.dart';
+import 'package:inmoworld_web/services/storage.dart';
+import 'package:inmoworld_web/models/review_model.dart';
+import 'package:inmoworld_web/widgets/reviewCard.dart';
 import 'package:http/http.dart' as http;
 
 class PropertyCard extends StatefulWidget {
@@ -15,6 +21,8 @@ class PropertyCard extends StatefulWidget {
 class _PropertyCardState extends State<PropertyCard> {
   String? _address; // Dirección obtenida a partir de las coordenadas
   bool _isLoadingAddress = false;
+  final reviewController = Get.put(ReviewController());
+  final userController = Get.find<UserModelController>();
 
   @override
   void initState() {
@@ -31,6 +39,57 @@ class _PropertyCardState extends State<PropertyCard> {
       });
     }
     }
+
+  Future<void> _showCreateReviewDialog(String propertyId) async {
+    final TextEditingController _descriptionController = TextEditingController();
+    final TextEditingController _ratingController = TextEditingController();
+    
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Agregar Reseña'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: 'Descripción'),
+              ),
+              TextField(
+                controller: _ratingController,
+                decoration: InputDecoration(labelText: 'Rating'),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final newReview = ReviewModel(
+                  id: '',
+                  owner: StorageService.getId(),
+                  property: propertyId,
+                  date: DateTime.now(),
+                  rating: double.parse(_ratingController.text),
+                  description: _descriptionController.text,
+                );
+                await reviewController.createReview(newReview);
+                Navigator.of(context).pop();
+                setState(() {});
+              },
+              child: Text('Crear'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> _fetchAddress(double longitude, double latitude) async {
     if (latitude < -90 ||
@@ -159,6 +218,37 @@ class _PropertyCardState extends State<PropertyCard> {
                             ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 16),
+                FutureBuilder<List<ReviewModel>>(
+                  future: reviewController.fetchReviews(widget.property.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Error: ${snapshot.error}',
+                        style: TextStyle(color: Colors.white),
+                      );
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Text(
+                        'No reviews found',
+                        style: TextStyle(color: Colors.white70),
+                      );
+                    } else {
+                      final reviews = snapshot.data!;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: reviews.map((review) {
+                          return ReviewCard(review: review);
+                        }).toList(),
+                      );
+                    }
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () => _showCreateReviewDialog(widget.property.id),
+                  child: Text('Agregar Reseña'),
                 ),
               ],
             ),

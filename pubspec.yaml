@@ -34,6 +34,9 @@ dependencies:
   geolocator_android: ^4.6.0
   latlong2: ^0.9.1
   google_maps_flutter_web: ^0.5.10
+  flutter_rating_bar: ^4.0.1
+
+
 
 dev_dependencies:
   flutter_test:

@@ -39,6 +39,8 @@ class _PropertyScreenState extends State<PropertyScreen> {
     _pagingController.addPageRequestListener(_fetchPage);
   }
 
+  
+
   @override
   void dispose() {
     _pagingController.dispose();
@@ -64,7 +66,6 @@ class _PropertyScreenState extends State<PropertyScreen> {
     return Scaffold(
       body: Column(
         children: [
-          // Logo con tamaño duplicado
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Image.asset(
@@ -85,3 +86,7 @@ class _PropertyScreenState extends State<PropertyScreen> {
     );
   }
 }
+
+
+
+
