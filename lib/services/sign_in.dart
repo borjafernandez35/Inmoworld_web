@@ -27,8 +27,8 @@ class SignInService {
   final GoogleSignIn _googleSignIn;
   late final IdConfiguration idConfiguration;
   final Dio dio = Dio();
-  final String baseUrl = 'http://127.0.0.1:3000';
-  //final String baseUrl = 'http://147.83.7.157:3000';
+  //final String baseUrl = 'http://127.0.0.1:3000';
+  final String baseUrl = 'http://147.83.7.157:3000';
   
 
   GoogleSignInAccount? _currentUser;
@@ -36,11 +36,11 @@ class SignInService {
   String _contactText = '';
   String _token = '';
   bool _isRegistered = false;
-  String idClient =
-      '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com'; 
-
   /* String idClient =
-      '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com'; */
+      '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com';  */
+
+  String idClient =
+      '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com'; 
 
   SignInService({required String clientId})
       : _googleSignIn = GoogleSignIn(

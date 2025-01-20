@@ -35,11 +35,11 @@ class _TitleScreenState extends State<TitleScreen> {
   final isLoading = false.obs;
   final errorMessage = ''.obs;
 
-  String idClient =
-      '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com';
+  /* String idClient =
+      '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com'; */
 
-/*   String idClient =
-      '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com'; */
+  String idClient =
+      '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com';
 
   Locale currentLocale = Get.deviceLocale ?? const Locale('en');
 
@@ -263,10 +263,10 @@ class _TitleScreenState extends State<TitleScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           // Fondo de pantalla
-          /* Image.asset(
-            'assets/background.png',
+          Image.asset(
+            'assets/ciudad.png',
             fit: BoxFit.cover,
-          ), */
+          ),
           // Contenido de la pantalla
 
           _buildLanguageSelector(),

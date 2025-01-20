@@ -29,10 +29,10 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
   late StorageService _storageService;
 
   SignInService _signInService = SignInService(
+    /* clientId:
+        '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com', */
     clientId:
-        '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com', 
-  /*   clientId:
-        '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com', */
+        '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com',
   );
 
   // URL configurable según el entorno (localhost o servidor remoto)
@@ -51,9 +51,8 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
 
   // Función para enviar datos al backend usando dio
   Future<void> sendDataToBackend() async {
-    const String baseUrl = 'http://127.0.0.1:3000';
-    //const String baseUrl = 'http://147.83.7.157:3000';
-    
+    //const String baseUrl = 'http://127.0.0.1:3000';
+    const String baseUrl = 'http://147.83.7.157:3000';
 
     try {
       var requestData = {
@@ -76,7 +75,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
         StorageService.saveId(id);
         StorageService.saveAdmin(isAdmin);
 
-        Get.toNamed('/perfil');
+        Get.toNamed('/home');
         _handleLoginResponse(response.statusCode ?? 0);
       } else {
         _handleLoginResponse(response.statusCode ?? 0);

@@ -6,8 +6,8 @@ import 'package:inmoworld_web/models/property_model.dart';
 import 'package:geolocator/geolocator.dart';
 
 class UserService extends ChangeNotifier {
-  final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
- //final String baseUrl = 'http://147.83.7.157:3000';
+  //final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend Web
+ final String baseUrl = 'http://147.83.7.157:3000';
   
   final Dio dio = Dio();
   int totalPages = 1;
