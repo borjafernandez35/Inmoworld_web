@@ -87,7 +87,8 @@ class RegisterScreen extends StatelessWidget {
                           print(S.current.ContrasenaValida);
                           registerController.isPasswordValid.value =
                               true; // Habilita el botón
-                          print('El valor es....${registerController.isPasswordValid.value}');
+                          print(
+                              'El valor es....${registerController.isPasswordValid.value}');
                         },
                         onFail: () {
                           print(S.current.ContrasenaNoValida);

@@ -30,16 +30,15 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
 
   SignInService _signInService = SignInService(
     clientId:
-        '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com',
-        /* String idClient =
-      ' 560172619790-nbd2ml48ovh7lujriteosv8ma1tv0gbh.apps.googleusercontent.com' */
+        '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com', 
+  /*   clientId:
+        '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com', */
   );
- 
 
   // URL configurable según el entorno (localhost o servidor remoto)
-  final String baseUrl = bool.fromEnvironment('dart.vm.product') 
-      ? 'http://147.83.7.157:3000'  // Producción (servidor remoto)
-      : 'http://127.0.0.1:3001';  // Desarrollo (localhost)
+  /* final String baseUrl = bool.fromEnvironment('dart.vm.product')
+      ? 'http://147.83.7.157:3000' // Producción (servidor remoto)
+      : 'http://127.0.0.1:3000'; // Desarrollo (localhost) */
 
   // Función para generar una contraseña aleatoria
   String generateRandomPassword({int length = 8}) {
@@ -54,6 +53,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
   Future<void> sendDataToBackend() async {
     const String baseUrl = 'http://127.0.0.1:3000';
     //const String baseUrl = 'http://147.83.7.157:3000';
+    
 
     try {
       var requestData = {
@@ -100,7 +100,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
     if (statusCode == 201 || statusCode == 200) {
       Get.snackbar(S.current.Success, S.current.LoginSuccessful,
           snackPosition: SnackPosition.BOTTOM);
-      Get.toNamed('/perfil');
+      Get.toNamed('/home');
     } else if (statusCode == 400) {
       _showError(S.current.IncorrectCredentials);
     } else if (statusCode == 500) {
@@ -171,7 +171,8 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
               ),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: S.current.CorreoElectronico),
+                decoration:
+                    InputDecoration(labelText: S.current.CorreoElectronico),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please, fill in your email';

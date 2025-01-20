@@ -38,13 +38,14 @@ class _TitleScreenState extends State<TitleScreen> {
   String idClient =
       '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com';
 
+/*   String idClient =
+      '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com'; */
+
   Locale currentLocale = Get.deviceLocale ?? const Locale('en');
 
   @override
   void initState() {
     super.initState();
-
-   
 
     _signInService = SignInService(
       clientId: idClient,
@@ -131,18 +132,18 @@ class _TitleScreenState extends State<TitleScreen> {
     Get.snackbar('Error', message, snackPosition: SnackPosition.BOTTOM);
   }
 
-   void _changeLanguage(Locale locale) {
+  void _changeLanguage(Locale locale) {
     print('Cambiando idioma a: ${locale.languageCode}');
     setState(() {
       currentLocale = locale;
     });
     //StorageService.saveLocale(
-      //  locale.languageCode); // Guarda el idioma en GetStorage
+    //  locale.languageCode); // Guarda el idioma en GetStorage
     Get.updateLocale(locale); // Cambia el idioma global
     print('Idioma actual: ${Get.locale}');
   }
- 
- /*  void _changeLanguage(Locale locale) {
+
+  /*  void _changeLanguage(Locale locale) {
   setState(() {
     currentLocale = locale;
   });

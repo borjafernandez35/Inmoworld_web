@@ -7,7 +7,10 @@ import '../models/user_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
-  final String socketUrl = "http://127.0.0.1:3000"; // Cambia esta URL según tu backend
+  final String socketUrl =
+      "http://127.0.0.1:3000"; // Cambia esta URL según tu backend
+  //final String socketUrl = 'http://147.83.7.157:3000';
+
   IO.Socket? socket; // Socket nullable
   final Dio dio = Dio();
   late final UserService userService; // Aseguramos inicialización
@@ -34,51 +37,53 @@ class ChatService {
       socket!.on('message', (data) => print('Mensaje recibido: $data'));
 
       // Eventos personalizados
-    socket!.on('last-message-response', (data) {
-      try {
-        if (data != null) {
-          List<dynamic> messages = data;
+      socket!.on('last-message-response', (data) {
+        try {
+          if (data != null) {
+            List<dynamic> messages = data;
 
-          for (var messageData in messages) {
-            String senderId = messageData['sender'];
-            String lastMessage = messageData['message'];
-            DateTime lastMessageTime = DateTime.parse(messageData['timestamp']);
+            for (var messageData in messages) {
+              String senderId = messageData['sender'];
+              String lastMessage = messageData['message'];
+              DateTime lastMessageTime =
+                  DateTime.parse(messageData['timestamp']);
 
-            // Buscar usuario en la lista y actualizar su último mensaje
-            final user = StorageService.getUserList().firstWhere(
-              (user) => user.id == senderId,
-              orElse: () => UserModel( // Devolver un UserModel vacío si no se encuentra el usuario
-                name: 'Desconocido', 
-                email: 'No especificado',
-                password: '',
-                birthday: '',
-                isAdmin: false,
-              ),
-            );
-
-            // Si el usuario es un objeto válido, actualizamos su mensaje
-            if (user != null && user.id != null) {
-              user.setUser(
-                name: user.name, 
-                email: user.email, 
-                password: user.password, 
-                birthday: user.birthday, 
-                isAdmin: user.isAdmin, 
-                id: user.id,
-                lastMessage: lastMessage, 
-                lastMessageTime: lastMessageTime,
+              // Buscar usuario en la lista y actualizar su último mensaje
+              final user = StorageService.getUserList().firstWhere(
+                (user) => user.id == senderId,
+                orElse: () => UserModel(
+                  // Devolver un UserModel vacío si no se encuentra el usuario
+                  name: 'Desconocido',
+                  email: 'No especificado',
+                  password: '',
+                  birthday: '',
+                  isAdmin: false,
+                ),
               );
-            }
-          }
 
-          userService.notifyListeners();
-        } else {
-          print('No se recibieron mensajes en la respuesta.');
+              // Si el usuario es un objeto válido, actualizamos su mensaje
+              if (user != null && user.id != null) {
+                user.setUser(
+                  name: user.name,
+                  email: user.email,
+                  password: user.password,
+                  birthday: user.birthday,
+                  isAdmin: user.isAdmin,
+                  id: user.id,
+                  lastMessage: lastMessage,
+                  lastMessageTime: lastMessageTime,
+                );
+              }
+            }
+
+            userService.notifyListeners();
+          } else {
+            print('No se recibieron mensajes en la respuesta.');
+          }
+        } catch (e) {
+          print('Error al procesar last-message-response: $e');
         }
-      } catch (e) {
-        print('Error al procesar last-message-response: $e');
-      }
-    });
+      });
 
       socket!.connect();
     } catch (e) {
