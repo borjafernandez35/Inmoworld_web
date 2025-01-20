@@ -760,11 +760,121 @@ class S {
     );
   }
 
-  /// `¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.`
+  /// `Are you sure you want to delete your account? This action cannot be undone.`
   String get EstaSeguro {
     return Intl.message(
-      '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.',
+      'Are you sure you want to delete your account? This action cannot be undone.',
       name: 'EstaSeguro',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews`
+  String get Resena {
+    return Intl.message(
+      'Reviews',
+      name: 'Resena',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Book`
+  String get Reserva {
+    return Intl.message(
+      'Book',
+      name: 'Reserva',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reservation confirmed successfully`
+  String get ReservaConfirmada {
+    return Intl.message(
+      'Reservation confirmed successfully',
+      name: 'ReservaConfirmada',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get Direccion {
+    return Intl.message(
+      'Address',
+      name: 'Direccion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Owner`
+  String get Propietario {
+    return Intl.message(
+      'Owner',
+      name: 'Propietario',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Property details`
+  String get DetallesPropiedad {
+    return Intl.message(
+      'Property details',
+      name: 'DetallesPropiedad',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading owner...`
+  String get CargadoPropietario {
+    return Intl.message(
+      'Loading owner...',
+      name: 'CargadoPropietario',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading Address...`
+  String get CargandoDireccion {
+    return Intl.message(
+      'Loading Address...',
+      name: 'CargandoDireccion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not available`
+  String get NoDisponible {
+    return Intl.message(
+      'Not available',
+      name: 'NoDisponible',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get Crear {
+    return Intl.message(
+      'Create',
+      name: 'Crear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No reviews available.`
+  String get NoResena {
+    return Intl.message(
+      'No reviews available.',
+      name: 'NoResena',
       desc: '',
       args: [],
     );

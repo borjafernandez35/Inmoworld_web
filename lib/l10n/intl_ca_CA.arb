@@ -70,6 +70,17 @@
     "Eliminar":"Esborrar",
     "EliminarCuenta":"Suprimir Compte",
     "DeseasActualizar":"Vols actualitzar la teva foto de perfil amb la imatge seleccionada?",
-     "EstaSeguro":"Segur que vols eliminar el teu compte? Aquesta acció no es pot desfer."
+     "EstaSeguro":"Segur que vols eliminar el teu compte? Aquesta acció no es pot desfer.",
+     "Resena":"Comentaris",
+     "Reserva":"Reserva",
+    "ReservaConfirmada":"Reserva confirmada amb èxit",
+    "Direccion":"Adreça",
+    "Propietario":"Propietari",
+    "DetallesPropiedad":"Detalls de la propietat",
+    "CargadoPropietario":"Carregant propietari...",
+    "CargandoDireccion":"Carregant adreça...",
+    "NoDisponible":"No Disponible",
+    "Crear":"Crear",
+    "NoResena":"No hi ha valoracions disponibles."
 
 }

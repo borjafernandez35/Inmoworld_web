@@ -70,6 +70,17 @@
     "Eliminar":"Şterge",
     "EliminarCuenta":"Șterge contul",
     "DeseasActualizar":"Doriți să vă actualizați fotografia de profil cu imaginea selectată?",
-     "EstaSeguro":"Sigur doriți să vă ștergeți contul? Această acțiune nu poate fi anulată."
+     "EstaSeguro":"Sigur doriți să vă ștergeți contul? Această acțiune nu poate fi anulată.",
+     "Resena":"Recenzii",
+     "Reserva":"Rezervare",
+    "ReservaConfirmada":"Rezervarea a fost confirmată cu succes",
+    "Direccion":"Adresa",
+    "Propietario":"Proprietar",
+    "DetallesPropiedad":"Detalii de proprietate",
+    "CargadoPropietario":"Se încarcă proprietarul...",
+    "CargandoDireccion":"Se încarcă adresa...",
+    "NoDisponible":"Nu este disponibil",
+    "Crear":"Crea",
+    "NoResena":"Nu există recenzii disponibile."
 
 }

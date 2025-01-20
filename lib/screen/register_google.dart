@@ -29,10 +29,10 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen> {
   late StorageService _storageService;
 
   SignInService _signInService = SignInService(
+     clientId:
+        '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com', 
     /* clientId:
-        '103614501225-t83dvlcomsl5j8h2d10grk4o4sgu6ijl.apps.googleusercontent.com', */
-    clientId:
-        '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com',
+        '737041156442-u7cs8eqagg04f48tj4jhn1q3t6scruvg.apps.googleusercontent.com', */
   );
 
   // URL configurable según el entorno (localhost o servidor remoto)

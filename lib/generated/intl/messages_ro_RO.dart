@@ -47,6 +47,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Adăugați proprietate"),
         "Birthday": MessageLookupByLibrary.simpleMessage("Ziua de naștere"),
         "Cancelar": MessageLookupByLibrary.simpleMessage("Anula"),
+        "CargadoPropietario":
+            MessageLookupByLibrary.simpleMessage("Se încarcă proprietarul..."),
+        "CargandoDireccion":
+            MessageLookupByLibrary.simpleMessage("Se încarcă adresa..."),
         "Catalan": MessageLookupByLibrary.simpleMessage("Catalan"),
         "Chat": MessageLookupByLibrary.simpleMessage("Chat"),
         "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
@@ -61,11 +65,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Parolă validă"),
         "CorreoElectronico": MessageLookupByLibrary.simpleMessage("E-mail"),
         "CorreoPropiedad": m2,
+        "Crear": MessageLookupByLibrary.simpleMessage("Crea"),
         "CumpleanoPropiedad": m3,
         "Desconocido": MessageLookupByLibrary.simpleMessage("Necunoscut"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Descriere"),
         "DeseasActualizar": MessageLookupByLibrary.simpleMessage(
             "Doriți să vă actualizați fotografia de profil cu imaginea selectată?"),
+        "DetallesPropiedad":
+            MessageLookupByLibrary.simpleMessage("Detalii de proprietate"),
+        "Direccion": MessageLookupByLibrary.simpleMessage("Adresa"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Distanța selectată nu este validă"),
         "EN": MessageLookupByLibrary.simpleMessage("RO"),
@@ -97,8 +105,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "MapaPropiedades":
             MessageLookupByLibrary.simpleMessage("Harta proprietății"),
         "Name": MessageLookupByLibrary.simpleMessage("Nume"),
+        "NoDisponible":
+            MessageLookupByLibrary.simpleMessage("Nu este disponibil"),
         "NoPropertiesFound": MessageLookupByLibrary.simpleMessage(
             "Nu au fost găsite proprietăți."),
+        "NoResena": MessageLookupByLibrary.simpleMessage(
+            "Nu există recenzii disponibile."),
         "NoReviewsFound":
             MessageLookupByLibrary.simpleMessage("Nu au fost găsite recenzii"),
         "NoSeRecibieronMensajes":
@@ -112,10 +124,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Profil utilizator"),
         "PrecioPropiedad": m5,
         "Price": MessageLookupByLibrary.simpleMessage("Preţ"),
+        "Propietario": MessageLookupByLibrary.simpleMessage("Proprietar"),
         "Rating": MessageLookupByLibrary.simpleMessage("Evaluare"),
         "ReescribeContrasena":
             MessageLookupByLibrary.simpleMessage("Rescrieți parola"),
         "Registrarse": MessageLookupByLibrary.simpleMessage("Registru"),
+        "Resena": MessageLookupByLibrary.simpleMessage("Recenzii"),
+        "Reserva": MessageLookupByLibrary.simpleMessage("Rezervare"),
+        "ReservaConfirmada": MessageLookupByLibrary.simpleMessage(
+            "Rezervarea a fost confirmată cu succes"),
         "Rumanno": MessageLookupByLibrary.simpleMessage("Romanesc"),
         "SearchProperties":
             MessageLookupByLibrary.simpleMessage("Căutați proprietăți..."),

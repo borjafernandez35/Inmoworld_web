@@ -209,9 +209,9 @@ Widget build(BuildContext context) {
                   const SizedBox(width: 4),
                   Expanded(
                     child: _isLoadingAddress
-                        ? const Text('Cargando dirección...')
+                        ?  Text(S.current.CargandoDireccion)
                         : Text(
-                            _address ?? 'No disponible',
+                            _address ?? S.current.NoDisponible,
                             style: Theme.of(context).textTheme.bodyMedium,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inmoworld_web/models/review_model.dart';
 import 'package:inmoworld_web/widgets/review_card.dart';
 import 'package:inmoworld_web/controllers/reviewController.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:inmoworld_web/services/storage.dart';
 
 class ReviewsScreen extends StatefulWidget {
@@ -25,17 +26,17 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Agregar Reseña'),
+          title: Text(S.current.AgregarResena),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Descripción'),
+                decoration:  InputDecoration(labelText: S.current.Descripcion),
               ),
               TextField(
                 controller: ratingController,
-                decoration: const InputDecoration(labelText: 'Rating'),
+                decoration: InputDecoration(labelText: S.current.Rating),
                 keyboardType: TextInputType.number,
               ),
             ],
@@ -43,7 +44,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
+              child:  Text(S.current.Cancelar),
             ),
             TextButton(
               onPressed: () async {
@@ -62,7 +63,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 // Actualiza el estado para reconstruir el FutureBuilder
                 setState(() {});
               },
-              child: const Text('Crear'),
+              child:  Text(S.current.Crear),
             ),
           ],
         );
@@ -74,7 +75,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reseñas'),
+        title: Text(S.current.Resena),
       ),
       body: Column(
         children: [
@@ -87,7 +88,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No hay reseñas disponibles.'));
+                  return  Center(child: Text(S.current.NoResena));
                 } else {
                   final reviews = snapshot.data!;
                   return ListView.builder(
@@ -104,7 +105,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () => _showCreateReviewDialog(context),
-              child: const Text('Agregar Reseña'),
+              child: Text(S.current.AgregarResena),
             ),
           ),
         ],

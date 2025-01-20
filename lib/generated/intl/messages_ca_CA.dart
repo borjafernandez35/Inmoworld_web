@@ -46,6 +46,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Afegir propietat"),
         "Birthday": MessageLookupByLibrary.simpleMessage("Aniversari"),
         "Cancelar": MessageLookupByLibrary.simpleMessage("Cancel·lar"),
+        "CargadoPropietario":
+            MessageLookupByLibrary.simpleMessage("Carregant propietari..."),
+        "CargandoDireccion":
+            MessageLookupByLibrary.simpleMessage("Carregant adreça..."),
         "Catalan": MessageLookupByLibrary.simpleMessage("Català"),
         "Chat": MessageLookupByLibrary.simpleMessage("Chat"),
         "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
@@ -61,11 +65,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "CorreoElectronico":
             MessageLookupByLibrary.simpleMessage("Correu Electrònic"),
         "CorreoPropiedad": m2,
+        "Crear": MessageLookupByLibrary.simpleMessage("Crear"),
         "CumpleanoPropiedad": m3,
         "Desconocido": MessageLookupByLibrary.simpleMessage("Deconegut"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Descripció"),
         "DeseasActualizar": MessageLookupByLibrary.simpleMessage(
             "Vols actualitzar la teva foto de perfil amb la imatge seleccionada?"),
+        "DetallesPropiedad":
+            MessageLookupByLibrary.simpleMessage("Detalls de la propietat"),
+        "Direccion": MessageLookupByLibrary.simpleMessage("Adreça"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Distància seleccionada no es valida"),
         "EN": MessageLookupByLibrary.simpleMessage("CAT"),
@@ -98,8 +106,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "MapaPropiedades":
             MessageLookupByLibrary.simpleMessage("Mapa de Propietats"),
         "Name": MessageLookupByLibrary.simpleMessage("Nom"),
+        "NoDisponible": MessageLookupByLibrary.simpleMessage("No Disponible"),
         "NoPropertiesFound":
             MessageLookupByLibrary.simpleMessage("Propietats no trobades."),
+        "NoResena": MessageLookupByLibrary.simpleMessage(
+            "No hi ha valoracions disponibles."),
         "NoReviewsFound":
             MessageLookupByLibrary.simpleMessage("Valorracions no trobades"),
         "NoSeRecibieronMensajes":
@@ -113,10 +124,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Perfil d\'Usuari"),
         "PrecioPropiedad": m5,
         "Price": MessageLookupByLibrary.simpleMessage("Preu"),
+        "Propietario": MessageLookupByLibrary.simpleMessage("Propietari"),
         "Rating": MessageLookupByLibrary.simpleMessage("Valoració"),
         "ReescribeContrasena":
             MessageLookupByLibrary.simpleMessage("Reescriu Contrasenya"),
         "Registrarse": MessageLookupByLibrary.simpleMessage("Registrar-se"),
+        "Resena": MessageLookupByLibrary.simpleMessage("Comentaris"),
+        "Reserva": MessageLookupByLibrary.simpleMessage("Reserva"),
+        "ReservaConfirmada":
+            MessageLookupByLibrary.simpleMessage("Reserva confirmada amb èxit"),
         "Rumanno": MessageLookupByLibrary.simpleMessage("Romanès"),
         "SearchProperties":
             MessageLookupByLibrary.simpleMessage("Buscant Propietats..."),

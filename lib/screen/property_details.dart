@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:inmoworld_web/models/property_model.dart';
 import 'package:inmoworld_web/models/user_model.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:inmoworld_web/services/user.dart';
 
 class DetallesPropiedadScreen extends StatefulWidget {
@@ -131,7 +132,7 @@ class _DetallesPropiedadScreenState extends State<DetallesPropiedadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalles de la Propiedad'),
+        title: Text(S.current.DetallesPropiedad),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -171,21 +172,21 @@ class _DetallesPropiedadScreenState extends State<DetallesPropiedadScreen> {
 
               // Propietario
               Text(
-                'Propietario:',
+                S.current.Propietario,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
               _isLoadingOwner
-                  ? const Text('Cargando propietario...')
+                  ? Text(S.current.CargadoPropietario)
                   : Text(
-                      _ownerName ?? 'Desconocido',
+                      _ownerName ?? S.current.Desconocido,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
               const SizedBox(height: 16),
 
               // Descripción
               Text(
-                'Descripción:',
+                S.current.Descripcion,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
@@ -197,14 +198,14 @@ class _DetallesPropiedadScreenState extends State<DetallesPropiedadScreen> {
 
               // Dirección
               Text(
-                'Dirección:',
+                S.current.Direccion,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
               _isLoadingAddress
-                  ? const Text('Cargando dirección...')
+                  ?  Text(S.current.CargandoDireccion)
                   : Text(
-                      _address ?? 'No disponible',
+                      _address ?? S.current.NoDisponible,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
               const SizedBox(height: 16),
@@ -215,25 +216,25 @@ class _DetallesPropiedadScreenState extends State<DetallesPropiedadScreen> {
                 children: [
                   ElevatedButton.icon(
                     icon: const Icon(Icons.chat),
-                    label: const Text('Chat'),
+                    label:  Text(S.current.Chat),
                     onPressed: () {
                       Get.toNamed('/usuarios');
                     },
                   ),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.star),
-                    label: const Text('Reseñas'),
+                    label:  Text(S.current.Resena),
                     onPressed: () {
                       Get.toNamed('/reviews', arguments: widget.property.id);
                     },
                   ),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.book_online),
-                    label: const Text('Reservar'),
+                    label: Text(S.current.Reserva),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Reserva confirmada con éxito'),
+                         SnackBar(
+                          content: Text(S.current.ReservaConfirmada),
                           backgroundColor: Colors.green,
                           duration: Duration(seconds: 2),
                         ),

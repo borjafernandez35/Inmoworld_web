@@ -70,6 +70,17 @@
     "Eliminar":"Eliminar",
     "EliminarCuenta":"Eliminar Cuenta",
     "DeseasActualizar":"¿Deseas actualizar tu foto de perfil con la imagen seleccionada?",
-    "EstaSeguro":"Are you sure you want to delete your account? This action cannot be undone."
+    "EstaSeguro":"¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
+    "Resena":"Reseñas",
+    "Reserva":"Reserva",
+    "ReservaConfirmada":"Reserva confirmada con éxito",
+    "Direccion":"Dirección",
+    "Propietario":"Propietario",
+    "DetallesPropiedad":"Detalles de la propiedad",
+    "CargadoPropietario":"Cargando Propietario...",
+    "CargandoDireccion":"Cargando Dirección...",
+    "NoDisponible":"No Disponible",
+    "Crear":"Crear",
+    "NoResena":"No hay reseñas disponibles."
     
 }

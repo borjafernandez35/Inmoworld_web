@@ -44,6 +44,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "AnadirPropiedad": MessageLookupByLibrary.simpleMessage("Add Property"),
         "Birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
         "Cancelar": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "CargadoPropietario":
+            MessageLookupByLibrary.simpleMessage("Loading owner..."),
+        "CargandoDireccion":
+            MessageLookupByLibrary.simpleMessage("Loading Address..."),
         "Catalan": MessageLookupByLibrary.simpleMessage("Catalan"),
         "Chat": MessageLookupByLibrary.simpleMessage("Chat"),
         "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
@@ -58,11 +62,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Valid Password"),
         "CorreoElectronico": MessageLookupByLibrary.simpleMessage("Email"),
         "CorreoPropiedad": m2,
+        "Crear": MessageLookupByLibrary.simpleMessage("Create"),
         "CumpleanoPropiedad": m3,
         "Desconocido": MessageLookupByLibrary.simpleMessage("Unknwown"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Description"),
         "DeseasActualizar": MessageLookupByLibrary.simpleMessage(
             "Do you want to update your profile picture with the selected image?"),
+        "DetallesPropiedad":
+            MessageLookupByLibrary.simpleMessage("Property details"),
+        "Direccion": MessageLookupByLibrary.simpleMessage("Address"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Selected distance is not valid"),
         "EN": MessageLookupByLibrary.simpleMessage("EN"),
@@ -77,7 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Escribiendo": MessageLookupByLibrary.simpleMessage("Typing..."),
         "Espanol": MessageLookupByLibrary.simpleMessage("Spanish"),
         "EstaSeguro": MessageLookupByLibrary.simpleMessage(
-            "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."),
+            "Are you sure you want to delete your account? This action cannot be undone."),
         "FailedToLoadMoreData":
             MessageLookupByLibrary.simpleMessage("Failed to load more data"),
         "FotoPerfil": MessageLookupByLibrary.simpleMessage("Profile picture"),
@@ -93,8 +101,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "Mapa": MessageLookupByLibrary.simpleMessage("Map"),
         "MapaPropiedades": MessageLookupByLibrary.simpleMessage("Property Map"),
         "Name": MessageLookupByLibrary.simpleMessage("Name"),
+        "NoDisponible": MessageLookupByLibrary.simpleMessage("Not available"),
         "NoPropertiesFound":
             MessageLookupByLibrary.simpleMessage("No properties found."),
+        "NoResena":
+            MessageLookupByLibrary.simpleMessage("No reviews available."),
         "NoReviewsFound":
             MessageLookupByLibrary.simpleMessage("No reviews found"),
         "NoSeRecibieronMensajes":
@@ -107,10 +118,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "PerfilUsuario": MessageLookupByLibrary.simpleMessage("User Profile"),
         "PrecioPropiedad": m5,
         "Price": MessageLookupByLibrary.simpleMessage("Price"),
+        "Propietario": MessageLookupByLibrary.simpleMessage("Owner"),
         "Rating": MessageLookupByLibrary.simpleMessage("Rating"),
         "ReescribeContrasena":
             MessageLookupByLibrary.simpleMessage("Rewrite Password"),
         "Registrarse": MessageLookupByLibrary.simpleMessage("Sign up"),
+        "Resena": MessageLookupByLibrary.simpleMessage("Reviews"),
+        "Reserva": MessageLookupByLibrary.simpleMessage("Book"),
+        "ReservaConfirmada": MessageLookupByLibrary.simpleMessage(
+            "Reservation confirmed successfully"),
         "Rumanno": MessageLookupByLibrary.simpleMessage("Romanian"),
         "SearchProperties":
             MessageLookupByLibrary.simpleMessage("Search properties..."),
