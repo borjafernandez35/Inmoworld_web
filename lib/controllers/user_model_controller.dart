@@ -9,6 +9,8 @@ class UserModelController extends GetxController {
   final RxString statusMessage = ''.obs; // Mensajes para la UI
 
   
+// Dentro de UserModelController
+var isPasswordValid = false.obs;
 
 
 // Cargar datos del usuario desde el backend
@@ -24,52 +26,52 @@ class UserModelController extends GetxController {
     }
   }
 
-  // Actualizar datos del usuario en el backend
-  // Actualizar datos del usuario en el backend
-Future<void> updateUser({
-  String? name,
-  String? email,
-  String? password,
-  String? birthday,
-  bool? isAdmin,
-}) async {
-  if (user.value == null) {
-    statusMessage.value = 'No hay usuario cargado para actualizar.';
-    return;
-  }
 
-  try {
-    // Actualizar los datos en el modelo local
-    user.update((currentUser) {
-      if (currentUser != null) {
-        // Llamamos a setUser con los parámetros opcionales
-        currentUser.setUser(
-          name: name ?? currentUser.name, // Si no hay un nombre nuevo, mantenemos el antiguo
-          email: email ?? currentUser.email, // Lo mismo con el email
-          password: password ?? currentUser.password, // Lo mismo con la contraseña
-          birthday: birthday ?? currentUser.birthday, // Lo mismo con el cumpleaños
-          isAdmin: isAdmin ?? currentUser.isAdmin, // Lo mismo con el rol de admin
-          id: currentUser.id, // El id no se cambia
-        );
-      }
-    });
-
-    // Sincronizar cambios con el backend
-    if (user.value != null) {
-      statusMessage.value = 'Actualizando datos en el servidor...';
-      final statusCode = await userService.updateUser(user.value!);
-      if (statusCode == 200) {
-        statusMessage.value = 'Usuario actualizado correctamente.';
-      } else {
-        statusMessage.value = 'Error al actualizar usuario en el servidor.';
-      }
+  // Actualizar datos del usuario en el backend
+  Future<void> updateUser({
+    String? name,
+    String? email,
+    String? password,
+    bool? isAdmin,
+  }) async {
+    if (user.value == null) {
+      statusMessage.value = 'No hay usuario cargado para actualizar.';
+      return;
     }
-  } catch (e) {
-    statusMessage.value = 'Error al actualizar usuario.';
-    print('Error en updateUser: $e');
-  }
-}
 
+    try {
+      // Actualizar los datos en el modelo local
+      user.update((currentUser) {
+        if (currentUser != null) {
+          currentUser.setUser(
+            name: name ?? currentUser.name,
+            email: email ?? currentUser.email,
+            password: password ?? currentUser.password,
+            birthday: currentUser.birthday, // Asegúrate de incluir este campo
+            isAdmin: isAdmin ?? currentUser.isAdmin,
+            id: currentUser.id,
+            lastMessage: currentUser.lastMessage,
+            lastMessageTime: currentUser.lastMessageTime,
+            imageUser: currentUser.imageUser,
+          );
+        }
+      });
+
+      // Sincronizar cambios con el backend
+      if (user.value != null) {
+        statusMessage.value = 'Actualizando datos en el servidor...';
+        final statusCode = await userService.updateUser(user.value!);
+        if (statusCode == 200) {
+          statusMessage.value = 'Usuario actualizado correctamente.';
+        } else {
+          statusMessage.value = 'Error al actualizar usuario en el servidor.';
+        }
+      }
+    } catch (e) {
+      statusMessage.value = 'Error al actualizar usuario.';
+      print('Error en updateUser: $e');
+    }
+  }
 
   // Eliminar datos del usuario en el backend
   Future<void> deleteUser() async {
@@ -97,4 +99,51 @@ Future<void> updateUser({
   bool isUserLoaded() {
     return user.value != null;
   }
+
+  // Método para actualizar la imagen de perfil del usuario
+Future<void> updateProfilePicture(String newImageUrl) async {
+  if (user.value == null) {
+    statusMessage.value = 'No hay usuario cargado para actualizar la imagen de perfil.';
+    return;
+  }
+
+  try {
+    // Actualizar la imagen en el modelo local
+    user.update((currentUser) {
+      if (currentUser != null) {
+        currentUser.imageUser = newImageUrl; // Asignar la nueva URL de la imagen
+      }
+    });
+
+    // Sincronizar cambios con el backend si es necesario
+    if (user.value != null) {
+      statusMessage.value = 'Actualizando imagen de perfil en el servidor...';
+
+      // Verificar si el ID del usuario es nulo antes de pasarlo a la función
+      if (user.value!.id == null) {
+        statusMessage.value = 'El ID del usuario no está disponible.';
+        return;
+      }
+
+      final imageUrlData = {
+        'imageUser': newImageUrl,
+      };
+
+      // Llamar a la función de actualización con el ID no nulo
+      final statusCode = await userService.updateProfileImage(user.value!.id!, imageUrlData); 
+
+      if (statusCode == 200) {
+        statusMessage.value = 'Imagen de perfil actualizada correctamente.';
+      } else {
+        statusMessage.value = 'Error al actualizar la imagen de perfil en el servidor.';
+      }
+    }
+
+  } catch (e) {
+    statusMessage.value = 'Error al actualizar la imagen de perfil.';
+    print('Error en updateProfilePicture: $e');
+  }
+}
+
+  
 }
