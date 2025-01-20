@@ -149,113 +149,81 @@ class _PropertyCardState extends State<PropertyCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (widget.property.imageUrl != null &&
-              widget.property.imageUrl!.isNotEmpty)
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12)),
-              child: AspectRatio(
-                aspectRatio: 16 / 9, // Relación de aspecto (16:9)
-                child: Image.network(
-                  widget.property.imageUrl!,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    color: Colors.grey[300],
-                    child: const Center(child: Icon(Icons.image, size: 50)),
-                  ),
-                ),
-              ),
-            )
-          else
-            AspectRatio(
+Widget build(BuildContext context) {
+  return Card(
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.property.imageUrl != null &&
+            widget.property.imageUrl!.isNotEmpty)
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: AspectRatio(
               aspectRatio: 16 / 9,
-              child: Container(
-                color: Colors.grey[300],
-                child: const Center(child: Icon(Icons.image_not_supported)),
+              child: Image.network(
+                widget.property.imageUrl!,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  color: Colors.grey[300],
+                  child: const Center(child: Icon(Icons.image, size: 50)),
+                ),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.property.description,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '\$${widget.property.price.toStringAsFixed(2)}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(color: Colors.green),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.red[300]),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: _isLoadingAddress
-                          ? const Text('Cargando dirección...')
-                          : Text(
-                              _address ?? 'No disponible',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                FutureBuilder<List<ReviewModel>>(
-                  future: reviewController.fetchReviews(widget.property.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text(
-                        'Error: ${snapshot.error}',
-                        style: TextStyle(color: Colors.white),
-                      );
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Text(
-                        S.current.NoReviewsFound,
-                        style: TextStyle(color: Colors.white70),
-                      );
-                    } else {
-                      final reviews = snapshot.data!;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: reviews.map((review) {
-                          return ReviewCard(review: review);
-                        }).toList(),
-                      );
-                    }
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () => _showCreateReviewDialog(widget.property.id),
-                  child: Text(S.current.AgregarResena),
-                ),
-              ],
+          )
+        else
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              color: Colors.grey[300],
+              child: const Center(child: Icon(Icons.image_not_supported)),
             ),
           ),
-        ],
-      ),
-    );
-  }
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.property.description,
+                style: Theme.of(context).textTheme.titleMedium,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '\$${widget.property.price.toStringAsFixed(2)}',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Colors.green),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.location_on, color: Colors.red[300]),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: _isLoadingAddress
+                        ? const Text('Cargando dirección...')
+                        : Text(
+                            _address ?? 'No disponible',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
 }
