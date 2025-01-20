@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inmoworld_web/controllers/user_model_controller.dart';
 import 'package:intl/intl.dart';
+import 'package:inmoworld_web/generated/l10n.dart';
 import 'package:inmoworld_web/controllers/profil_picture_controller.dart';
 
 class PerfilScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class PerfilScreen extends StatelessWidget {
     userController.fetchUser();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil de Usuario')),
+      appBar: AppBar(title: Text(S.current.PerfilUsuario)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {
@@ -51,12 +52,15 @@ class PerfilScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 50,
                     // Verificar si la URL de la imagen es válida
-                    backgroundImage: user.imageUser != null && user.imageUser!.isNotEmpty
-                        ? NetworkImage(user.imageUser!)
-                        : null,
+                    backgroundImage:
+                        user.imageUser != null && user.imageUser!.isNotEmpty
+                            ? NetworkImage(user.imageUser!)
+                            : null,
                     child: user.imageUser == null || user.imageUser!.isEmpty
                         ? Text(
-                            user.name.isNotEmpty ? user.name[0].toUpperCase() : "?",
+                            user.name.isNotEmpty
+                                ? user.name[0].toUpperCase()
+                                : "?",
                             style: const TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -79,18 +83,21 @@ class PerfilScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Correo electrónico: ${user.email}',
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        S.current.CorreoPropiedad(': ${user.email}'),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Fecha de nacimiento: $formattedBirthday',
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        S.current.CumpleanoPropiedad(': $formattedBirthday'),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Contraseña: ********',
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        S.current.ContrasenaPropiedad(': ********'),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -106,30 +113,35 @@ class PerfilScreen extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () async {
                       print("Iniciando proceso para cambiar foto de perfil...");
-                      await profilePictureController.selectAndUploadProfileImage();
+                      await profilePictureController
+                          .selectAndUploadProfileImage();
 
                       if (profilePictureController.uploadedPicture != null) {
-                        print("Imagen seleccionada y subida, mostrando diálogo de confirmación...");
+                        print(
+                            "Imagen seleccionada y subida, mostrando diálogo de confirmación...");
                         showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Confirmación'),
-                              content: const Text('¿Deseas actualizar tu foto de perfil con la imagen seleccionada?'),
+                              title: Text(S.current.Confirmacion),
+                              content: Text(S.current.DeseasActualizar),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text('Cancelar'),
+                                  child: Text(S.current.Cancelar),
                                 ),
                                 ElevatedButton(
                                   onPressed: () async {
-                                    print("Imagen confirmada, actualizando la base de datos...");
-                                    await userController.updateProfilePicture(profilePictureController.uploadedPicture!);
+                                    print(
+                                        "Imagen confirmada, actualizando la base de datos...");
+                                    await userController.updateProfilePicture(
+                                        profilePictureController
+                                            .uploadedPicture!);
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text('Aceptar'),
+                                  child: Text(S.current.Aceptar),
                                 ),
                               ],
                             );
@@ -140,7 +152,7 @@ class PerfilScreen extends StatelessWidget {
                       }
                     },
                     icon: const Icon(Icons.photo_camera),
-                    label: const Text('Foto de Perfil'),
+                    label: Text(S.current.FotoPerfil),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
@@ -148,34 +160,36 @@ class PerfilScreen extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          final nameController = TextEditingController(text: user.name);
-                          final emailController = TextEditingController(text: user.email);
+                          final nameController =
+                              TextEditingController(text: user.name);
+                          final emailController =
+                              TextEditingController(text: user.email);
                           final passwordController = TextEditingController();
 
                           return AlertDialog(
-                            title: const Text('Actualizar Perfil'),
+                            title: Text(S.current.ActualizarPerfil),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 TextField(
                                   controller: nameController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Nombre',
+                                  decoration: InputDecoration(
+                                    labelText: S.current.Name,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
                                 TextField(
                                   controller: emailController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Correo electrónico',
+                                  decoration: InputDecoration(
+                                    labelText: S.current.CorreoElectronico,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
                                 TextField(
                                   controller: passwordController,
                                   obscureText: true,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Contraseña',
+                                  decoration: InputDecoration(
+                                    labelText: S.current.Contrasena,
                                   ),
                                 ),
                               ],
@@ -183,23 +197,27 @@ class PerfilScreen extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('Cancelar'),
+                                child: Text(S.current.Cancelar),
                               ),
                               ElevatedButton(
                                 onPressed: () async {
                                   final newName = nameController.text.trim();
                                   final newEmail = emailController.text.trim();
-                                  final newPassword = passwordController.text.trim();
+                                  final newPassword =
+                                      passwordController.text.trim();
 
                                   await userController.updateUser(
                                     name: newName.isNotEmpty ? newName : null,
-                                    email: newEmail.isNotEmpty ? newEmail : null,
-                                    password: newPassword.isNotEmpty ? newPassword : null,
+                                    email:
+                                        newEmail.isNotEmpty ? newEmail : null,
+                                    password: newPassword.isNotEmpty
+                                        ? newPassword
+                                        : null,
                                   );
 
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text('Actualizar'),
+                                child: Text(S.current.Actualizar),
                               ),
                             ],
                           );
@@ -207,7 +225,7 @@ class PerfilScreen extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.update),
-                    label: const Text('Actualizar Datos'),
+                    label: Text(S.current.ActualizarDatos),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
@@ -215,14 +233,14 @@ class PerfilScreen extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text('Confirmación'),
-                            content: const Text('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.'),
+                            title: Text(S.current.Confirmacion),
+                            content: Text(S.current.EstaSeguro),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text('Cancelar'),
+                                child: Text(S.current.Cancelar),
                               ),
                               ElevatedButton(
                                 onPressed: () async {
@@ -233,7 +251,7 @@ class PerfilScreen extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red,
                                 ),
-                                child: const Text('Eliminar'),
+                                child: Text(S.current.Eliminar),
                               ),
                             ],
                           );
@@ -241,7 +259,7 @@ class PerfilScreen extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.delete),
-                    label: const Text('Eliminar Cuenta'),
+                    label: Text(S.current.EliminarCuenta),
                   ),
                 ],
               ),
@@ -252,4 +270,3 @@ class PerfilScreen extends StatelessWidget {
     );
   }
 }
-

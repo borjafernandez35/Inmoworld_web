@@ -57,5 +57,19 @@
     "Tu":"Tu",
     "Escribiendo":"Escrivint...",
     "SubirImagen":"Pujar Imatge",
-    "Subiendo":"Carregant..."
+    "Subiendo":"Carregant...",
+    "CorreoPropiedad":"Correu Electrònic {property}",
+    "CumpleanoPropiedad":"Data de naixement {property}",
+    "ContrasenaPropiedad":"Contrasenya {property}",
+    "FotoPerfil":"Foto del perfil",
+    "Aceptar":"Acceptar",
+    "Actualizar":"Actualitzar",
+    "ActualizarPerfil":"Actualitzar Perfil",
+    "ActualizarDatos":"Update Dades",
+    "Confirmacion":"Confirmació",
+    "Eliminar":"Esborrar",
+    "EliminarCuenta":"Suprimir Compte",
+    "DeseasActualizar":"Vols actualitzar la teva foto de perfil amb la imatge seleccionada?",
+     "EstaSeguro":"Segur que vols eliminar el teu compte? Aquesta acció no es pot desfer."
+
 }

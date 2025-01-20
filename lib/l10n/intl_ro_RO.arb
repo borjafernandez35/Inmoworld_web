@@ -57,5 +57,19 @@
     "Tu":"Tu",
     "Escribiendo":"Scrie...",
     "SubirImagen":"Încărcați Imaginea",
-    "Subiendo":"Încărcare..."
+    "Subiendo":"Încărcare...",
+    "CorreoPropiedad":"E-mail {property}",
+    "CumpleanoPropiedad":"Ziua de naștere {property}",
+    "ContrasenaPropiedad":"Parolă {property}",
+    "FotoPerfil":"Poza de profil",
+    "Aceptar":"De acord cu",
+    "Actualizar":"Actualizare",
+    "ActualizarPerfil":"Actualizați profilul",
+    "ActualizarDatos":"Actualizați datele",
+    "Confirmacion":"Confirmare",
+    "Eliminar":"Şterge",
+    "EliminarCuenta":"Șterge contul",
+    "DeseasActualizar":"Doriți să vă actualizați fotografia de profil cu imaginea selectată?",
+     "EstaSeguro":"Sigur doriți să vă ștergeți contul? Această acțiune nu poate fi anulată."
+
 }

@@ -639,6 +639,136 @@ class S {
       args: [],
     );
   }
+
+  /// `Email {property}`
+  String CorreoPropiedad(Object property) {
+    return Intl.message(
+      'Email $property',
+      name: 'CorreoPropiedad',
+      desc: '',
+      args: [property],
+    );
+  }
+
+  /// `Birthday {property}`
+  String CumpleanoPropiedad(Object property) {
+    return Intl.message(
+      'Birthday $property',
+      name: 'CumpleanoPropiedad',
+      desc: '',
+      args: [property],
+    );
+  }
+
+  /// `Password {property}`
+  String ContrasenaPropiedad(Object property) {
+    return Intl.message(
+      'Password $property',
+      name: 'ContrasenaPropiedad',
+      desc: '',
+      args: [property],
+    );
+  }
+
+  /// `Profile picture`
+  String get FotoPerfil {
+    return Intl.message(
+      'Profile picture',
+      name: 'FotoPerfil',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Agree To`
+  String get Aceptar {
+    return Intl.message(
+      'Agree To',
+      name: 'Aceptar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get Actualizar {
+    return Intl.message(
+      'Update',
+      name: 'Actualizar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Profile`
+  String get ActualizarPerfil {
+    return Intl.message(
+      'Update Profile',
+      name: 'ActualizarPerfil',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Data`
+  String get ActualizarDatos {
+    return Intl.message(
+      'Update Data',
+      name: 'ActualizarDatos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmation`
+  String get Confirmacion {
+    return Intl.message(
+      'Confirmation',
+      name: 'Confirmacion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get Eliminar {
+    return Intl.message(
+      'Delete',
+      name: 'Eliminar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Account`
+  String get EliminarCuenta {
+    return Intl.message(
+      'Delete Account',
+      name: 'EliminarCuenta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to update your profile picture with the selected image?`
+  String get DeseasActualizar {
+    return Intl.message(
+      'Do you want to update your profile picture with the selected image?',
+      name: 'DeseasActualizar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.`
+  String get EstaSeguro {
+    return Intl.message(
+      '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.',
+      name: 'EstaSeguro',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

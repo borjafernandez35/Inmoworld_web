@@ -22,12 +22,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(user) => "Chat - User ${user}";
 
-  static String m1(distance) => "Up to ${distance}";
+  static String m1(property) => "Password ${property}";
 
-  static String m2(property) => "Price ${property}";
+  static String m2(property) => "Email ${property}";
+
+  static String m3(property) => "Birthday ${property}";
+
+  static String m4(distance) => "Up to ${distance}";
+
+  static String m5(property) => "Price ${property}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "Aceptar": MessageLookupByLibrary.simpleMessage("Agree To"),
+        "Actualizar": MessageLookupByLibrary.simpleMessage("Update"),
+        "ActualizarDatos": MessageLookupByLibrary.simpleMessage("Update Data"),
+        "ActualizarPerfil":
+            MessageLookupByLibrary.simpleMessage("Update Profile"),
         "AgregarResena": MessageLookupByLibrary.simpleMessage("Add Review"),
         "Anadir": MessageLookupByLibrary.simpleMessage("Add"),
         "AnadirPropiedad": MessageLookupByLibrary.simpleMessage("Add Property"),
@@ -38,17 +49,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
         "ChatUsuario": m0,
         "Close": MessageLookupByLibrary.simpleMessage("Close"),
+        "Confirmacion": MessageLookupByLibrary.simpleMessage("Confirmation"),
         "Contrasena": MessageLookupByLibrary.simpleMessage("Password"),
         "ContrasenaNoValida":
             MessageLookupByLibrary.simpleMessage("Invalid Password"),
+        "ContrasenaPropiedad": m1,
         "ContrasenaValida":
             MessageLookupByLibrary.simpleMessage("Valid Password"),
         "CorreoElectronico": MessageLookupByLibrary.simpleMessage("Email"),
+        "CorreoPropiedad": m2,
+        "CumpleanoPropiedad": m3,
         "Desconocido": MessageLookupByLibrary.simpleMessage("Unknwown"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Description"),
+        "DeseasActualizar": MessageLookupByLibrary.simpleMessage(
+            "Do you want to update your profile picture with the selected image?"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Selected distance is not valid"),
         "EN": MessageLookupByLibrary.simpleMessage("EN"),
+        "Eliminar": MessageLookupByLibrary.simpleMessage("Delete"),
+        "EliminarCuenta":
+            MessageLookupByLibrary.simpleMessage("Delete Account"),
         "English": MessageLookupByLibrary.simpleMessage("English"),
         "ErrorLoadingData":
             MessageLookupByLibrary.simpleMessage("Error loading data"),
@@ -56,11 +76,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Typing a message..."),
         "Escribiendo": MessageLookupByLibrary.simpleMessage("Typing..."),
         "Espanol": MessageLookupByLibrary.simpleMessage("Spanish"),
+        "EstaSeguro": MessageLookupByLibrary.simpleMessage(
+            "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."),
         "FailedToLoadMoreData":
             MessageLookupByLibrary.simpleMessage("Failed to load more data"),
+        "FotoPerfil": MessageLookupByLibrary.simpleMessage("Profile picture"),
         "GoogleSignIn": MessageLookupByLibrary.simpleMessage("Google sign in"),
         "Guardar": MessageLookupByLibrary.simpleMessage("Save"),
-        "Hasta": m1,
+        "Hasta": m4,
         "Home": MessageLookupByLibrary.simpleMessage("Home"),
         "IncorrectCredentials": MessageLookupByLibrary.simpleMessage(
             "\'Incorrect credentials. Please try again."),
@@ -82,7 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Make new property"),
         "Perfil": MessageLookupByLibrary.simpleMessage("Profile"),
         "PerfilUsuario": MessageLookupByLibrary.simpleMessage("User Profile"),
-        "PrecioPropiedad": m2,
+        "PrecioPropiedad": m5,
         "Price": MessageLookupByLibrary.simpleMessage("Price"),
         "Rating": MessageLookupByLibrary.simpleMessage("Rating"),
         "ReescribeContrasena":

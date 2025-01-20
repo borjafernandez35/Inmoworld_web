@@ -57,6 +57,19 @@
     "Tu":"Tú",
     "Escribiendo":"Escribiendo...",
     "SubirImagen":"Subir Imagen",
-    "Subiendo":"Cargando..."
+    "Subiendo":"Cargando...",
+    "CorreoPropiedad":"Correo Electrónico {property}",
+    "CumpleanoPropiedad":"Fecha de Nacimiento {property}",
+    "ContrasenaPropiedad":"Contraseña {property}",
+    "FotoPerfil":"Foto del Perfil",
+    "Aceptar":"Aceptar",
+    "Actualizar":"Actualizar",
+    "ActualizarPerfil":"Actualizar Perfil",
+    "ActualizarDatos":"Actulizar Datos",
+    "Confirmacion":"Confirmación",
+    "Eliminar":"Eliminar",
+    "EliminarCuenta":"Eliminar Cuenta",
+    "DeseasActualizar":"¿Deseas actualizar tu foto de perfil con la imagen seleccionada?",
+    "EstaSeguro":"Are you sure you want to delete your account? This action cannot be undone."
     
 }

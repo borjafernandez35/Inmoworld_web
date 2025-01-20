@@ -22,12 +22,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(user) => "Chat - Utilizator ${user}";
 
-  static String m1(distance) => "Până ${distance}";
+  static String m1(property) => "Parolă ${property}";
 
-  static String m2(property) => "Preţ ${property}";
+  static String m2(property) => "E-mail ${property}";
+
+  static String m3(property) => "Ziua de naștere ${property}";
+
+  static String m4(distance) => "Până ${distance}";
+
+  static String m5(property) => "Preţ ${property}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "Aceptar": MessageLookupByLibrary.simpleMessage("De acord cu"),
+        "Actualizar": MessageLookupByLibrary.simpleMessage("Actualizare"),
+        "ActualizarDatos":
+            MessageLookupByLibrary.simpleMessage("Actualizați datele"),
+        "ActualizarPerfil":
+            MessageLookupByLibrary.simpleMessage("Actualizați profilul"),
         "AgregarResena":
             MessageLookupByLibrary.simpleMessage("Adăugați o recenzie"),
         "Anadir": MessageLookupByLibrary.simpleMessage("Adăuga"),
@@ -40,17 +52,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "ChatBot": MessageLookupByLibrary.simpleMessage("ChatBot"),
         "ChatUsuario": m0,
         "Close": MessageLookupByLibrary.simpleMessage("Aproape"),
+        "Confirmacion": MessageLookupByLibrary.simpleMessage("Confirmare"),
         "Contrasena": MessageLookupByLibrary.simpleMessage("Parolă"),
         "ContrasenaNoValida":
             MessageLookupByLibrary.simpleMessage("Parolă nevalidă"),
+        "ContrasenaPropiedad": m1,
         "ContrasenaValida":
             MessageLookupByLibrary.simpleMessage("Parolă validă"),
         "CorreoElectronico": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "CorreoPropiedad": m2,
+        "CumpleanoPropiedad": m3,
         "Desconocido": MessageLookupByLibrary.simpleMessage("Necunoscut"),
         "Descripcion": MessageLookupByLibrary.simpleMessage("Descriere"),
+        "DeseasActualizar": MessageLookupByLibrary.simpleMessage(
+            "Doriți să vă actualizați fotografia de profil cu imaginea selectată?"),
         "DistanciaNoValida": MessageLookupByLibrary.simpleMessage(
             "Distanța selectată nu este validă"),
         "EN": MessageLookupByLibrary.simpleMessage("RO"),
+        "Eliminar": MessageLookupByLibrary.simpleMessage("Şterge"),
+        "EliminarCuenta": MessageLookupByLibrary.simpleMessage("Șterge contul"),
         "English": MessageLookupByLibrary.simpleMessage("Engleză"),
         "ErrorLoadingData": MessageLookupByLibrary.simpleMessage(
             "Eroare la încărcarea informațiilor"),
@@ -58,12 +78,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Introducerea unui mesaj..."),
         "Escribiendo": MessageLookupByLibrary.simpleMessage("Scrie..."),
         "Espanol": MessageLookupByLibrary.simpleMessage("Spaniola"),
+        "EstaSeguro": MessageLookupByLibrary.simpleMessage(
+            "Sigur doriți să vă ștergeți contul? Această acțiune nu poate fi anulată."),
         "FailedToLoadMoreData": MessageLookupByLibrary.simpleMessage(
             "Nu s-au încărcat mai multe informații"),
+        "FotoPerfil": MessageLookupByLibrary.simpleMessage("Poza de profil"),
         "GoogleSignIn":
             MessageLookupByLibrary.simpleMessage("Conectați-vă cu Google"),
         "Guardar": MessageLookupByLibrary.simpleMessage("Păstrează"),
-        "Hasta": m1,
+        "Hasta": m4,
         "Home": MessageLookupByLibrary.simpleMessage("Acasă"),
         "IncorrectCredentials": MessageLookupByLibrary.simpleMessage(
             "Acreditări incorecte. Vă rugăm să încercați din nou."),
@@ -87,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Perfil": MessageLookupByLibrary.simpleMessage("Profil"),
         "PerfilUsuario":
             MessageLookupByLibrary.simpleMessage("Profil utilizator"),
-        "PrecioPropiedad": m2,
+        "PrecioPropiedad": m5,
         "Price": MessageLookupByLibrary.simpleMessage("Preţ"),
         "Rating": MessageLookupByLibrary.simpleMessage("Evaluare"),
         "ReescribeContrasena":

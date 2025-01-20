@@ -57,6 +57,20 @@
     "Tu":"You",
     "Escribiendo":"Typing...",
     "SubirImagen":"Upload Image",
-    "Subiendo":"Loading..."
+    "Subiendo":"Loading...",
+    "CorreoPropiedad":"Email {property}",
+    "CumpleanoPropiedad":"Birthday {property}",
+    "ContrasenaPropiedad":"Password {property}",
+    "FotoPerfil":"Profile picture",
+    "Aceptar":"Agree To",
+    "Actualizar":"Update",
+    "ActualizarPerfil":"Update Profile",
+    "ActualizarDatos":"Update Data",
+    "Confirmacion":"Confirmation",
+    "Eliminar":"Delete",
+    "EliminarCuenta":"Delete Account",
+    "DeseasActualizar":"Do you want to update your profile picture with the selected image?",
+    "EstaSeguro":"¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."
+
 
 }   
