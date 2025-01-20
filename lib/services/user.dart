@@ -186,6 +186,26 @@ class UserService extends ChangeNotifier {
     }
   }
 
+  // Agregar este método a la clase UserService
+Future<UserModel?> getOwnerByProperty(PropertyModel property) async {
+  try {
+    if (property.owner == null) {
+      print("La propiedad no tiene un propietario asignado.");
+      return null;
+    }
+    // Llama al método `getUserById` para obtener al propietario
+    final owner = await getUserById(property.owner!);
+    if (owner == null) {
+      print("No se pudo encontrar al propietario con ID: ${property.owner}");
+    }
+    return owner;
+  } catch (e) {
+    print("Error al obtener al propietario de la propiedad: $e");
+    return null;
+  }
+}
+
+
   // Obtener Lista de Propiedades
   
    Future<List<PropertyModel>> getProperties( int page, int limit) async {

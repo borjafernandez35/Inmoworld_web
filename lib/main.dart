@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:inmoworld_web/generated/l10n.dart';
+import 'package:inmoworld_web/models/property_model.dart';
 import 'package:inmoworld_web/screen/chat_bot.dart';
 import 'package:inmoworld_web/screen/login.dart';
 import 'package:inmoworld_web/screen/register.dart';
@@ -14,9 +15,10 @@ import 'package:inmoworld_web/controllers/user_model_controller.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:inmoworld_web/screen/title.dart';
-import 'package:inmoworld_web/screen/map.dart'; // Importa la pantalla de mapa
+import 'package:inmoworld_web/screen/map.dart';
 import 'package:inmoworld_web/screen/add_property.dart';
-// Importa el controlador
+import 'package:inmoworld_web/screen/property_details.dart';
+import 'package:inmoworld_web/screen/reviews.dart';
 
 void main() async {
   await GetStorage.init();
@@ -109,6 +111,14 @@ class MyApp extends StatelessWidget {
               GetPage(
                 name: '/home',
                 page: () => BottomNavScaffold(child: const PropertyScreen()),
+              ),
+              GetPage(
+                name: '/details',
+                page: () => DetallesPropiedadScreen(property: Get.arguments as PropertyModel),
+              ),
+              GetPage(
+                name: '/reviews',
+                page: () => ReviewsScreen(propertyId: Get.arguments),
               ),
               GetPage(
                 name: '/chatbot',
